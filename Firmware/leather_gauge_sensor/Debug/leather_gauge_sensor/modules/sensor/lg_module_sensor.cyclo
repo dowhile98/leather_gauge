@@ -1,0 +1,4 @@
+../leather_gauge_sensor/modules/sensor/lg_module_sensor.c:28:9:lg_module_sensor_init	5
+../leather_gauge_sensor/modules/sensor/lg_module_sensor.c:56:9:lg_module_sensor_filter_set	2
+../leather_gauge_sensor/modules/sensor/lg_module_sensor.c:68:9:lg_module_sensor_get	1
+../leather_gauge_sensor/modules/sensor/lg_module_sensor.c:78:6:HAL_ADC_ConvCpltCallback	6

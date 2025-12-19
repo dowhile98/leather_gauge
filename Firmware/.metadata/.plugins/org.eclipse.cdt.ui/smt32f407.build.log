@@ -1,0 +1,41 @@
+22:33:54 **** Incremental Build of configuration Debug for project smt32f407 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F407xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:178:32: warning: passing argument 2 of 'HAL_UART_Receive_IT' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  178 |   HAL_UART_Receive_IT(&huart1, &rx_data, 1);
+      |                                ^~~~~~~~
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:411,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:748:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+  748 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/main.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/main.c:387:38: warning: passing argument 2 of 'HAL_UART_Receive_IT' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  387 |         HAL_UART_Receive_IT(&huart1, &rx_data, 1);
+      |                                      ^~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:748:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'volatile uint8_t *' {aka 'volatile unsigned char *'}
+  748 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+arm-none-eabi-gcc -o "smt32f407.elf" @"objects.list"   -mcpu=cortex-m4 -T"/home/tecna-smart-lab/Descargas/OTA/smt32f407/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="smt32f407.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: smt32f407.elf
+ 
+arm-none-eabi-size  smt32f407.elf 
+arm-none-eabi-objdump -h -S smt32f407.elf  > "smt32f407.list"
+arm-none-eabi-objcopy  -O ihex smt32f407.elf  "smt32f407.hex"
+arm-none-eabi-objcopy  -O binary smt32f407.elf  "smt32f407.bin"
+   text	   data	    bss	    dec	    hex	filename
+  21956	   1168	   2096	  25220	   6284	smt32f407.elf
+Finished building: default.size.stdout
+ 
+Finished building: smt32f407.bin
+ 
+Finished building: smt32f407.hex
+ 
+Finished building: smt32f407.list
+ 
+
+22:33:56 Build Finished. 0 errors, 2 warnings. (took 1s.358ms)
+

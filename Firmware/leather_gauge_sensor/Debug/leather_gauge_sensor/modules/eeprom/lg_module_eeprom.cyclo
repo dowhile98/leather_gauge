@@ -1,0 +1,6 @@
+../leather_gauge_sensor/modules/eeprom/lg_module_eeprom.c:46:17:BSP_CRC32_Calculate	6
+../leather_gauge_sensor/modules/eeprom/lg_module_eeprom.c:82:9:lg_module_eeprom_init	2
+../leather_gauge_sensor/modules/eeprom/lg_module_eeprom.c:111:9:lg_module_eeprom_conf_set	1
+../leather_gauge_sensor/modules/eeprom/lg_module_eeprom.c:124:9:lg_module_eeprom_conf_get	1
+../leather_gauge_sensor/modules/eeprom/lg_module_eeprom.c:140:16:lg_module_eeprom_read	2
+../leather_gauge_sensor/modules/eeprom/lg_module_eeprom.c:165:16:lg_module_eeprom_write	5

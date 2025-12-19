@@ -1,0 +1,13 @@
+../leather_gauge_sensor/modules/modbus/lg_module_modbus.c:63:9:lg_module_modbus_init	40	static
+../leather_gauge_sensor/modules/modbus/lg_module_modbus.c:102:9:lg_module_modbus_set_addr	24	static
+../leather_gauge_sensor/modules/modbus/lg_module_modbus.c:111:9:lg_module_modbus_pool	24	static
+../leather_gauge_sensor/modules/modbus/lg_module_modbus.c:124:6:HAL_UARTEx_RxEventCallback	16	static
+../leather_gauge_sensor/modules/modbus/lg_module_modbus.c:134:16:lg_module_read_serial	32	static
+../leather_gauge_sensor/modules/modbus/lg_module_modbus.c:150:16:lg_module_write_serial	40	static
+../leather_gauge_sensor/modules/modbus/lg_module_modbus.c:166:19:handle_read_coils	40	static
+../leather_gauge_sensor/modules/modbus/lg_module_modbus.c:183:19:handle_write_multiple_coils	40	static
+../leather_gauge_sensor/modules/modbus/lg_module_modbus.c:198:19:handler_read_holding_registers	40	static
+../leather_gauge_sensor/modules/modbus/lg_module_modbus.c:213:19:handle_write_multiple_registers	40	static
+../leather_gauge_sensor/modules/modbus/lg_module_modbus.c:226:19:handle_write_single_register	40	static
+../leather_gauge_sensor/modules/modbus/lg_module_modbus.c:232:13:modbus_server_update	176	static
+../leather_gauge_sensor/modules/modbus/lg_module_modbus.c:283:12:modbus_tcp_write_data	184	static

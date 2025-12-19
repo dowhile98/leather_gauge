@@ -1,0 +1,2 @@
+../leather_gauge_sensor/app/Src/leather_gauge.c:18:9:lg_sensor_init	3
+../leather_gauge_sensor/app/Src/leather_gauge.c:43:6:lg_sensor_run	1

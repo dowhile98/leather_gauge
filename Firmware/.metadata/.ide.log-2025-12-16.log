@@ -1,0 +1,169 @@
+2025-12-17 02:48:08,434 [INFO] WebApp:194 - Connection lost
+2025-12-17 02:48:08,785 [INFO] WebApp:191 - Connection restablished
+2025-12-17 02:48:40,185 [INFO] WebApp:194 - Connection lost
+2025-12-17 02:48:40,683 [INFO] WebApp:191 - Connection restablished
+2025-12-17 06:40:48,547 [INFO] WebApp:194 - Connection lost
+2025-12-17 06:40:56,112 [INFO] WebApp:191 - Connection restablished
+2025-12-17 07:00:44,635 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-17 07:00:46,575 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 631302256 Bytes (837812224)
+2025-12-17 07:00:46,843 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 651751536 Bytes (837812224)
+2025-12-17 07:00:47,795 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 705751152 Bytes (837812224)
+2025-12-17 07:00:48,571 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: TIM1_8G0
+2025-12-17 07:00:48,572 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SYS
+2025-12-17 07:00:48,572 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: ADC
+2025-12-17 07:00:48,572 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2025-12-17 07:00:48,573 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2025-12-17 07:00:48,573 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-17 07:00:48,573 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: DMA
+2025-12-17 07:00:48,574 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: GPIO
+2025-12-17 07:00:48,576 [INFO] CodeGenerator:892 - code generatio: config db path: /opt/st/stm32cubeide_1.18.1/../../../home/tecna-smart-lab/.eclipse/com.st.stm32cube.ide.mcu.rcp.product_1.18.1_139067097_linux_gtk_x86_64/plugins/com.st.stm32cube.common.mx_6.15.0.202507011659//db/
+2025-12-17 07:00:48,599 [INFO] Argument:325 - Argument : hdmavalue: null
+2025-12-17 07:00:48,600 [INFO] Argument:327 - 	 sub Args: 
+2025-12-17 07:00:48,600 [INFO] Argument:325 - Argument : Instancevalue: DMA1_Channel3
+2025-12-17 07:00:48,601 [INFO] Argument:335 - Argument : Instancevalue: DMA1_Channel3
+2025-12-17 07:00:48,601 [INFO] Argument:325 - Argument : Initvalue: null
+2025-12-17 07:00:48,601 [INFO] Argument:327 - 	 sub Args: 
+2025-12-17 07:00:48,601 [INFO] Argument:325 - Argument : Requestvalue: DMA_REQUEST_ADC1
+2025-12-17 07:00:48,602 [INFO] Argument:335 - Argument : Requestvalue: DMA_REQUEST_ADC1
+2025-12-17 07:00:48,602 [INFO] Argument:325 - Argument : Directionvalue: DMA_PERIPH_TO_MEMORY
+2025-12-17 07:00:48,602 [INFO] Argument:335 - Argument : Directionvalue: DMA_PERIPH_TO_MEMORY
+2025-12-17 07:00:48,602 [INFO] Argument:325 - Argument : PeriphIncvalue: DMA_PINC_DISABLE
+2025-12-17 07:00:48,603 [INFO] Argument:335 - Argument : PeriphIncvalue: DMA_PINC_DISABLE
+2025-12-17 07:00:48,603 [INFO] Argument:325 - Argument : MemIncvalue: DMA_MINC_ENABLE
+2025-12-17 07:00:48,603 [INFO] Argument:335 - Argument : MemIncvalue: DMA_MINC_ENABLE
+2025-12-17 07:00:48,604 [INFO] Argument:325 - Argument : PeriphDataAlignmentvalue: DMA_PDATAALIGN_HALFWORD
+2025-12-17 07:00:48,604 [INFO] Argument:335 - Argument : PeriphDataAlignmentvalue: DMA_PDATAALIGN_HALFWORD
+2025-12-17 07:00:48,604 [INFO] Argument:325 - Argument : MemDataAlignmentvalue: DMA_MDATAALIGN_HALFWORD
+2025-12-17 07:00:48,604 [INFO] Argument:335 - Argument : MemDataAlignmentvalue: DMA_MDATAALIGN_HALFWORD
+2025-12-17 07:00:48,605 [INFO] Argument:325 - Argument : Modevalue: DMA_CIRCULAR
+2025-12-17 07:00:48,605 [INFO] Argument:335 - Argument : Modevalue: DMA_CIRCULAR
+2025-12-17 07:00:48,605 [INFO] Argument:325 - Argument : Priorityvalue: DMA_PRIORITY_LOW
+2025-12-17 07:00:48,606 [INFO] Argument:335 - Argument : Priorityvalue: DMA_PRIORITY_LOW
+2025-12-17 07:00:48,606 [INFO] Argument:325 - Argument : Lockvalue: null
+2025-12-17 07:00:48,606 [INFO] Argument:335 - Argument : Lockvalue: null
+2025-12-17 07:00:48,606 [INFO] Argument:325 - Argument : Statevalue: null
+2025-12-17 07:00:48,607 [INFO] Argument:335 - Argument : Statevalue: null
+2025-12-17 07:00:48,607 [INFO] Argument:325 - Argument : Parentvalue: null
+2025-12-17 07:00:48,607 [INFO] Argument:335 - Argument : Parentvalue: null
+2025-12-17 07:00:48,609 [INFO] Argument:325 - Argument : XferCpltCallbackvalue: null
+2025-12-17 07:00:48,609 [INFO] Argument:335 - Argument : XferCpltCallbackvalue: null
+2025-12-17 07:00:48,609 [INFO] Argument:325 - Argument : XferHalfCpltCallbackvalue: null
+2025-12-17 07:00:48,610 [INFO] Argument:335 - Argument : XferHalfCpltCallbackvalue: null
+2025-12-17 07:00:48,610 [INFO] Argument:325 - Argument : XferErrorCallbackvalue: null
+2025-12-17 07:00:48,610 [INFO] Argument:335 - Argument : XferErrorCallbackvalue: null
+2025-12-17 07:00:48,610 [INFO] Argument:325 - Argument : XferAbortCallbackvalue: null
+2025-12-17 07:00:48,610 [INFO] Argument:335 - Argument : XferAbortCallbackvalue: null
+2025-12-17 07:00:48,610 [INFO] Argument:325 - Argument : ErrorCodevalue: null
+2025-12-17 07:00:48,611 [INFO] Argument:335 - Argument : ErrorCodevalue: null
+2025-12-17 07:00:48,611 [INFO] Argument:325 - Argument : ChannelIndexvalue: null
+2025-12-17 07:00:48,611 [INFO] Argument:335 - Argument : ChannelIndexvalue: null
+2025-12-17 07:00:48,611 [INFO] Argument:325 - Argument : DMAmuxChannelvalue: null
+2025-12-17 07:00:48,611 [INFO] Argument:335 - Argument : DMAmuxChannelvalue: null
+2025-12-17 07:00:48,611 [INFO] Argument:325 - Argument : DMAmuxChannelStatusvalue: null
+2025-12-17 07:00:48,612 [INFO] Argument:335 - Argument : DMAmuxChannelStatusvalue: null
+2025-12-17 07:00:48,612 [INFO] Argument:325 - Argument : DMAmuxChannelStatusMaskvalue: null
+2025-12-17 07:00:48,612 [INFO] Argument:335 - Argument : DMAmuxChannelStatusMaskvalue: null
+2025-12-17 07:00:48,612 [INFO] Argument:325 - Argument : DMAmuxRequestGenvalue: null
+2025-12-17 07:00:48,612 [INFO] Argument:335 - Argument : DMAmuxRequestGenvalue: null
+2025-12-17 07:00:48,612 [INFO] Argument:325 - Argument : DMAmuxRequestGenStatusvalue: null
+2025-12-17 07:00:48,612 [INFO] Argument:335 - Argument : DMAmuxRequestGenStatusvalue: null
+2025-12-17 07:00:48,613 [INFO] Argument:325 - Argument : DMAmuxRequestGenStatusMaskvalue: null
+2025-12-17 07:00:48,613 [INFO] Argument:335 - Argument : DMAmuxRequestGenStatusMaskvalue: null
+2025-12-17 07:00:48,660 [INFO] Argument:325 - Argument : hdmavalue: null
+2025-12-17 07:00:48,661 [INFO] Argument:327 - 	 sub Args: 
+2025-12-17 07:00:48,661 [INFO] Argument:325 - Argument : Instancevalue: DMA1_Channel1
+2025-12-17 07:00:48,662 [INFO] Argument:335 - Argument : Instancevalue: DMA1_Channel1
+2025-12-17 07:00:48,662 [INFO] Argument:325 - Argument : Initvalue: null
+2025-12-17 07:00:48,662 [INFO] Argument:327 - 	 sub Args: 
+2025-12-17 07:00:48,662 [INFO] Argument:325 - Argument : Requestvalue: DMA_REQUEST_USART1_RX
+2025-12-17 07:00:48,662 [INFO] Argument:335 - Argument : Requestvalue: DMA_REQUEST_USART1_RX
+2025-12-17 07:00:48,663 [INFO] Argument:325 - Argument : Directionvalue: DMA_PERIPH_TO_MEMORY
+2025-12-17 07:00:48,663 [INFO] Argument:335 - Argument : Directionvalue: DMA_PERIPH_TO_MEMORY
+2025-12-17 07:00:48,664 [INFO] Argument:325 - Argument : PeriphIncvalue: DMA_PINC_DISABLE
+2025-12-17 07:00:48,664 [INFO] Argument:335 - Argument : PeriphIncvalue: DMA_PINC_DISABLE
+2025-12-17 07:00:48,664 [INFO] Argument:325 - Argument : MemIncvalue: DMA_MINC_ENABLE
+2025-12-17 07:00:48,664 [INFO] Argument:335 - Argument : MemIncvalue: DMA_MINC_ENABLE
+2025-12-17 07:00:48,664 [INFO] Argument:325 - Argument : PeriphDataAlignmentvalue: DMA_PDATAALIGN_BYTE
+2025-12-17 07:00:48,664 [INFO] Argument:335 - Argument : PeriphDataAlignmentvalue: DMA_PDATAALIGN_BYTE
+2025-12-17 07:00:48,665 [INFO] Argument:325 - Argument : MemDataAlignmentvalue: DMA_MDATAALIGN_BYTE
+2025-12-17 07:00:48,665 [INFO] Argument:335 - Argument : MemDataAlignmentvalue: DMA_MDATAALIGN_BYTE
+2025-12-17 07:00:48,665 [INFO] Argument:325 - Argument : Modevalue: DMA_NORMAL
+2025-12-17 07:00:48,665 [INFO] Argument:335 - Argument : Modevalue: DMA_NORMAL
+2025-12-17 07:00:48,665 [INFO] Argument:325 - Argument : Priorityvalue: DMA_PRIORITY_LOW
+2025-12-17 07:00:48,666 [INFO] Argument:335 - Argument : Priorityvalue: DMA_PRIORITY_LOW
+2025-12-17 07:00:48,666 [INFO] Argument:325 - Argument : Lockvalue: null
+2025-12-17 07:00:48,667 [INFO] Argument:335 - Argument : Lockvalue: null
+2025-12-17 07:00:48,667 [INFO] Argument:325 - Argument : Statevalue: null
+2025-12-17 07:00:48,668 [INFO] Argument:335 - Argument : Statevalue: null
+2025-12-17 07:00:48,668 [INFO] Argument:325 - Argument : Parentvalue: null
+2025-12-17 07:00:48,668 [INFO] Argument:335 - Argument : Parentvalue: null
+2025-12-17 07:00:48,668 [INFO] Argument:325 - Argument : XferCpltCallbackvalue: null
+2025-12-17 07:00:48,668 [INFO] Argument:335 - Argument : XferCpltCallbackvalue: null
+2025-12-17 07:00:48,668 [INFO] Argument:325 - Argument : XferHalfCpltCallbackvalue: null
+2025-12-17 07:00:48,668 [INFO] Argument:335 - Argument : XferHalfCpltCallbackvalue: null
+2025-12-17 07:00:48,668 [INFO] Argument:325 - Argument : XferErrorCallbackvalue: null
+2025-12-17 07:00:48,669 [INFO] Argument:335 - Argument : XferErrorCallbackvalue: null
+2025-12-17 07:00:48,669 [INFO] Argument:325 - Argument : XferAbortCallbackvalue: null
+2025-12-17 07:00:48,669 [INFO] Argument:335 - Argument : XferAbortCallbackvalue: null
+2025-12-17 07:00:48,669 [INFO] Argument:325 - Argument : ErrorCodevalue: null
+2025-12-17 07:00:48,669 [INFO] Argument:335 - Argument : ErrorCodevalue: null
+2025-12-17 07:00:48,669 [INFO] Argument:325 - Argument : ChannelIndexvalue: null
+2025-12-17 07:00:48,670 [INFO] Argument:335 - Argument : ChannelIndexvalue: null
+2025-12-17 07:00:48,670 [INFO] Argument:325 - Argument : DMAmuxChannelvalue: null
+2025-12-17 07:00:48,670 [INFO] Argument:335 - Argument : DMAmuxChannelvalue: null
+2025-12-17 07:00:48,670 [INFO] Argument:325 - Argument : DMAmuxChannelStatusvalue: null
+2025-12-17 07:00:48,670 [INFO] Argument:335 - Argument : DMAmuxChannelStatusvalue: null
+2025-12-17 07:00:48,670 [INFO] Argument:325 - Argument : DMAmuxChannelStatusMaskvalue: null
+2025-12-17 07:00:48,671 [INFO] Argument:335 - Argument : DMAmuxChannelStatusMaskvalue: null
+2025-12-17 07:00:48,671 [INFO] Argument:325 - Argument : DMAmuxRequestGenvalue: null
+2025-12-17 07:00:48,671 [INFO] Argument:335 - Argument : DMAmuxRequestGenvalue: null
+2025-12-17 07:00:48,671 [INFO] Argument:325 - Argument : DMAmuxRequestGenStatusvalue: null
+2025-12-17 07:00:48,671 [INFO] Argument:335 - Argument : DMAmuxRequestGenStatusvalue: null
+2025-12-17 07:00:48,672 [INFO] Argument:325 - Argument : DMAmuxRequestGenStatusMaskvalue: null
+2025-12-17 07:00:48,672 [INFO] Argument:335 - Argument : DMAmuxRequestGenStatusMaskvalue: null
+2025-12-17 07:00:48,833 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/MXTmpFiles/license.tmp_save
+2025-12-17 07:00:49,807 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/MXTmpFiles/license.tmp
+2025-12-17 07:00:49,953 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/gpio.c_save
+2025-12-17 07:00:50,518 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/gpio.c
+2025-12-17 07:00:50,526 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/gpio.h_save
+2025-12-17 07:00:50,844 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/gpio.h
+2025-12-17 07:00:52,497 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/adc.c_save
+2025-12-17 07:00:53,307 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/adc.c
+2025-12-17 07:00:53,313 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/adc.h_save
+2025-12-17 07:00:53,689 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/adc.h
+2025-12-17 07:00:53,846 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/dma.c_save
+2025-12-17 07:00:54,289 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/dma.c
+2025-12-17 07:00:54,297 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/dma.h_save
+2025-12-17 07:00:54,730 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/dma.h
+2025-12-17 07:00:54,752 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/tim.c_save
+2025-12-17 07:00:55,326 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/tim.c
+2025-12-17 07:00:55,330 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/tim.h_save
+2025-12-17 07:00:55,675 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/tim.h
+2025-12-17 07:00:55,686 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/usart.c_save
+2025-12-17 07:00:56,028 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/usart.c
+2025-12-17 07:00:56,031 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/usart.h_save
+2025-12-17 07:00:56,215 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/usart.h
+2025-12-17 07:00:56,232 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/stm32g0xx_it.c_save
+2025-12-17 07:00:56,690 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/stm32g0xx_it.c
+2025-12-17 07:00:56,698 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/stm32g0xx_it.h_save
+2025-12-17 07:00:56,902 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/stm32g0xx_it.h
+2025-12-17 07:00:56,925 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/stm32g0xx_hal_msp.c_save
+2025-12-17 07:00:57,235 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/stm32g0xx_hal_msp.c
+2025-12-17 07:00:57,244 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/MXTmpFiles/system.tmp_save
+2025-12-17 07:00:57,445 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/MXTmpFiles/system.tmp
+2025-12-17 07:00:57,460 [INFO] CodeEngine:321 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/stm32g0xx_hal_conf.h_save
+2025-12-17 07:00:57,684 [INFO] CodeEngine:345 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/stm32g0xx_hal_conf.h
+2025-12-17 07:00:57,766 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/main.h_save
+2025-12-17 07:00:58,129 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/main.h
+2025-12-17 07:00:58,148 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/main.c_save
+2025-12-17 07:00:58,494 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/main.c
+2025-12-17 07:00:59,144 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 132mS.
+2025-12-17 07:00:59,151 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2025-12-17 07:00:59,612 [INFO] ConfigFileManager:1595 - The Die is : DIE466
+2025-12-17 07:01:02,795 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 3643mS.
+2025-12-17 07:01:02,796 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-17 07:01:02,797 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-17 08:03:22,444 [INFO] WebApp:194 - Connection lost
+2025-12-17 08:03:29,379 [INFO] WebApp:191 - Connection restablished
+2025-12-17 08:04:40,456 [INFO] WebApp:194 - Connection lost
+2025-12-17 08:04:40,914 [INFO] WebApp:191 - Connection restablished

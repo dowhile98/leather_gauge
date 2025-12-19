@@ -1,0 +1,4 @@
+leather_gauge_sensor/middlewares/lwrb/src/lwrb/lwrb_ex.o: \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwrb/src/lwrb/lwrb_ex.c \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwrb/src/include/lwrb/lwrb.h
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwrb/src/include/lwrb/lwrb.h:

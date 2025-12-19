@@ -1,0 +1,1096 @@
+2025-12-16 00:00:05,441 [INFO] MainUpdater:2872 - connection check result : 10
+2025-12-16 00:00:05,450 [INFO] MainUpdater:2872 - connection check result : 10
+2025-12-16 00:00:05,473 [INFO] MicroXplorer:468 - Change Database Path : 
+2025-12-16 00:00:05,474 [INFO] MicroXplorer:498 - Change Database Version : DB.6.0.150
+2025-12-16 00:00:05,484 [WARN] ThirdParty:871 - waiting for thirdparty lock release [close project]
+2025-12-16 00:00:05,485 [INFO] ThirdParty:873 - entering critical section [close project]
+2025-12-16 00:00:05,487 [INFO] ThirdParty:883 - exiting critical section [close project]
+2025-12-16 00:00:05,489 [INFO] PinOutPanel:1589 - setPackage(No Configuration,No Configuration)
+2025-12-16 00:00:05,491 [INFO] UtilMem:75 - Begin LoadConfig() Used Memory: 546150816 Bytes (748683264)
+2025-12-16 00:00:05,493 [INFO] MicroXplorer:468 - Change Database Path : 
+2025-12-16 00:00:05,493 [INFO] MicroXplorer:498 - Change Database Version : DB.6.0.150
+2025-12-16 00:00:05,493 [INFO] OpenFileManager:355 - Change cursor
+2025-12-16 00:00:05,591 [INFO] Mcu:2029 - Initializing MCU STM32F446RCTx STM32F446RCTx STM32F446RCT6
+2025-12-16 00:00:09,075 [INFO] Context:786 - Trying to add GPIOservice into a context  which must be forbidden
+2025-12-16 00:00:10,275 [INFO] ImportTextPane:234 - (OptionalMessage_ERROR) Unable to find key (Mcu.ThirdPartyNb) in loaded IOC file
+2025-12-16 00:00:10,276 [INFO] ImportTextPane:234 - (OptionalMessage_ERROR) Unable to find key (Mcu.PinsNb) in loaded IOC file
+2025-12-16 00:00:10,277 [INFO] ImportTextPane:234 - (OptionalMessage_ERROR) Pin0 (VP_RIF_VS_RIF1) cannot be retrieved for this MCU
+2025-12-16 00:00:10,278 [INFO] ImportTextPane:234 - (OptionalMessage_ERROR) Unable to find key (Mcu.IPNb) in loaded IOC file
+2025-12-16 00:00:10,577 [INFO] RtosManager:558 - Registered RTOS mode: class=CMSIS, group=RTOS, mode=CMSIS_V1, owner=FREERTOS
+2025-12-16 00:00:10,578 [INFO] RtosManager:558 - Registered RTOS mode: class=CMSIS, group=RTOS2, mode=CMSIS_V2, owner=FREERTOS
+2025-12-16 00:00:10,578 [INFO] RtosManager:558 - Registered RTOS mode: class=RTOS, group=Core, mode=CMSIS_V1, owner=FREERTOS
+2025-12-16 00:00:10,578 [INFO] RtosManager:558 - Registered RTOS mode: class=RTOS, group=Core, mode=CMSIS_V2, owner=FREERTOS
+2025-12-16 00:00:10,579 [WARN] ModelIntegratedComponent:184 - Missing modes for component STMicroelectronics:FreeRTOS:0.0.1:STMicroelectronics:RTOS:FreeRTOS:Core:::10.2.0:
+2025-12-16 00:00:10,604 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,605 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,605 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,605 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,605 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,606 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,606 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,606 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,606 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,606 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,606 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,606 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,606 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,606 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,606 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,607 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,607 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,607 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,607 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,607 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,607 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,607 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,607 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,607 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,607 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,608 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,608 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,608 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,608 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,609 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,609 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,609 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,609 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,609 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,610 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:00:10,610 [WARN] ModelPack:524 - Component already loaded: STMicroelectronics:HAL Drivers:0.0.0:STMicroelectronics:Device:STMicro_Driver:XSPI:HAL::0.0.1:HAL_XSPI
+2025-12-16 00:00:11,426 [INFO] ThirdPartyModel:298 - Start build external matchings
+2025-12-16 00:00:14,437 [INFO] ThirdPartyModel:316 - End build external matchings
+2025-12-16 00:00:14,956 [INFO] UtilMem:75 - End LoadConfig() Used Memory: 561969584 Bytes (1040187392)
+2025-12-16 00:00:15,005 [WARN] ThirdParty:833 - waiting for thirdparty lock release [change project]
+2025-12-16 00:00:15,007 [INFO] ThirdParty:835 - entering critical section [change project]
+2025-12-16 00:00:15,012 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-PM33A1 1.0.0
+2025-12-16 00:00:15,013 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USBPD 4.1
+2025-12-16 00:00:15,013 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_HOST 2.0.0
+2025-12-16 00:00:15,013 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-MOTENVWB1 1.4.0
+2025-12-16 00:00:15,013 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-F4 1.1.0
+2025-12-16 00:00:15,013 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics LIBJPEG 8.0.0
+2025-12-16 00:00:15,014 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-ATR-ASTRA1 2.0.2
+2025-12-16 00:00:15,019 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :Avnet-IotConnect X-CUBE-IoTC-DA16k-PMOD 1.0.0
+2025-12-16 00:00:15,021 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SMBUS 2.1.0
+2025-12-16 00:00:15,024 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ISPU 2.1.0
+2025-12-16 00:00:15,024 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-IPS 3.2.0
+2025-12-16 00:00:15,024 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ST60 1.0.0
+2025-12-16 00:00:15,024 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC12 1.0.0
+2025-12-16 00:00:15,024 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-F7 1.1.0
+2025-12-16 00:00:15,024 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-L5 2.0.0
+2025-12-16 00:00:15,025 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_DEVICE 2.0.0
+2025-12-16 00:00:15,025 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC6 3.1.0
+2025-12-16 00:00:15,025 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-MOTENV1 5.1.0
+2025-12-16 00:00:15,025 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FreeRTOS 0.0.1
+2025-12-16 00:00:15,025 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :Infineon AIROC-Wi-Fi-Bluetooth-STM32 1.7.0
+2025-12-16 00:00:15,025 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics PDM2PCM 3.3.0
+2025-12-16 00:00:15,025 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-H7 3.4.0
+2025-12-16 00:00:15,025 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-DISPLAY 3.0.0
+2025-12-16 00:00:15,025 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC10 1.0.0
+2025-12-16 00:00:15,025 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLEMGR 4.0.0
+2025-12-16 00:00:15,025 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-FREERTOS 1.3.1
+2025-12-16 00:00:15,025 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics HAL Drivers 0.0.0
+2025-12-16 00:00:15,026 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ST60 1.1.0
+2025-12-16 00:00:15,026 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :emotas I-CUBE-CANOPEN 1.3.0
+2025-12-16 00:00:15,026 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-FREERTOS 1.3.0
+2025-12-16 00:00:15,027 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC7 1.0.1
+2025-12-16 00:00:15,027 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics MBEDTLS 2.14.1
+2025-12-16 00:00:15,027 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-GNSS1 7.1.0
+2025-12-16 00:00:15,027 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOUCHGFX 4.26.0
+2025-12-16 00:00:15,027 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :quantropi X-CUBE-qispace-sdk-base 2.0.0
+2025-12-16 00:00:15,027 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 10.0.0
+2025-12-16 00:00:15,027 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-STBOX1 2.1.0
+2025-12-16 00:00:15,027 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-STAIOTCFT 1.0.0
+2025-12-16 00:00:15,027 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-SMARTAG2 1.2.0
+2025-12-16 00:00:15,027 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-FLIGHT1 5.1.0
+2025-12-16 00:00:15,027 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-WL 2.0.0
+2025-12-16 00:00:15,028 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-DPower 1.3.0
+2025-12-16 00:00:15,028 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-MOTENV1 5.0.0
+2025-12-16 00:00:15,028 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_DEVICE 1.0.0
+2025-12-16 00:00:15,028 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-H7RS 1.2.0
+2025-12-16 00:00:15,028 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-L4 2.0.0
+2025-12-16 00:00:15,028 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics ThreadX 0.0.2
+2025-12-16 00:00:15,028 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :WES I-CUBE-Cesium 1.3.0
+2025-12-16 00:00:15,028 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics lwIP 2.1.2
+2025-12-16 00:00:15,028 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SFXS2LP1 4.0.0
+2025-12-16 00:00:15,028 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE2 3.3.0
+2025-12-16 00:00:15,028 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :Avnet-IOTCONNECT X-CUBE-iotc-st67-sdk 1.0.0
+2025-12-16 00:00:15,029 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics PDM2PCM 3.2.0
+2025-12-16 00:00:15,029 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-H7 3.3.0
+2025-12-16 00:00:15,030 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC9 1.0.0
+2025-12-16 00:00:15,034 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE1 7.1.0
+2025-12-16 00:00:15,035 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :wolfSSL I-CUBE-wolfMQTT 1.19.2
+2025-12-16 00:00:15,035 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_DEVICE 3.0.0
+2025-12-16 00:00:15,035 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-FREERTOS 1.4.0
+2025-12-16 00:00:15,035 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-EEPRMA1 5.2.0
+2025-12-16 00:00:15,036 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLEMGR 4.1.0
+2025-12-16 00:00:15,036 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-WB 2.0.0
+2025-12-16 00:00:15,036 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-GNSS1 7.0.1
+2025-12-16 00:00:15,036 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOUCHGFX 4.25.0
+2025-12-16 00:00:15,036 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ST67W61 1.1.0
+2025-12-16 00:00:15,036 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 10.1.0
+2025-12-16 00:00:15,036 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-STBOX1 2.0.0
+2025-12-16 00:00:15,037 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 12.0.0
+2025-12-16 00:00:15,040 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 11.2.0
+2025-12-16 00:00:15,041 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-G0 1.1.0
+2025-12-16 00:00:15,041 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SAFEA1 1.2.2
+2025-12-16 00:00:15,041 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC4 3.0.0
+2025-12-16 00:00:15,041 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SUBG2 5.0.0
+2025-12-16 00:00:15,041 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-H7RS 1.1.0
+2025-12-16 00:00:15,041 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics STM32_WPAN 1.0.0
+2025-12-16 00:00:15,041 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :EmbeddedOffice I-CUBE-FS-RTOS 1.0.1
+2025-12-16 00:00:15,041 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics lwIP 2.0.3
+2025-12-16 00:00:15,041 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :Cesanta I-CUBE-Mongoose 7.13.0
+2025-12-16 00:00:15,041 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_HOST 1.0.0
+2025-12-16 00:00:15,042 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-G4 2.0.0
+2025-12-16 00:00:15,042 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-WB05N 2.0.0
+2025-12-16 00:00:15,042 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics PDM2PCM 3.1.0
+2025-12-16 00:00:15,042 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :wolfSSL I-CUBE-wolfTPM 3.8.0
+2025-12-16 00:00:15,042 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :wolfSSL I-CUBE-wolfSSH 1.4.20
+2025-12-16 00:00:15,042 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC7 2.0.0
+2025-12-16 00:00:15,042 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TCPP 4.2.0
+2025-12-16 00:00:15,043 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :RealThread X-CUBE-RT-Thread_Nano 4.1.1
+2025-12-16 00:00:15,043 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-ATR-SIGFOX1 3.2.0
+2025-12-16 00:00:15,043 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-EEPRMA1 5.1.0
+2025-12-16 00:00:15,043 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics MBEDTLS 2.16.2
+2025-12-16 00:00:15,043 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-IPS 3.1.0
+2025-12-16 00:00:15,043 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ALS 1.0.2
+2025-12-16 00:00:15,043 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :wolfSSL I-CUBE-wolfSSL 5.7.6
+2025-12-16 00:00:15,043 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :ITTIA_DB I-CUBE-ITTIADB 8.9.0
+2025-12-16 00:00:15,044 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-STSE01 1.0.0
+2025-12-16 00:00:15,044 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :portGmbH I-Cube-SoM-uGOAL 1.1.0
+2025-12-16 00:00:15,044 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ST67W61 1.0.0
+2025-12-16 00:00:15,044 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 10.2.0
+2025-12-16 00:00:15,044 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics ThreadX 1.0.0
+2025-12-16 00:00:15,044 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :SEGGER I-CUBE-embOS 1.3.1
+2025-12-16 00:00:15,044 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ALGOBUILD 1.4.0
+2025-12-16 00:00:15,044 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 11.3.0
+2025-12-16 00:00:15,045 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOF1 3.4.3
+2025-12-16 00:00:15,045 [INFO] ThirdParty:841 - exiting critical section [change project]
+2025-12-16 00:00:16,453 [INFO] PinOutPanel:1589 - setPackage(No Configuration,No Configuration)
+2025-12-16 00:00:16,457 [INFO] PinOutPanel:1589 - setPackage(STM32F446RCTx,LQFP64)
+2025-12-16 00:00:17,711 [INFO] UtilMem:75 - Before build in PCC Used Memory: 895817456 Bytes (1040187392)
+2025-12-16 00:00:19,169 [INFO] UtilMem:75 - After build in PCC Used Memory: 586873424 Bytes (1040187392)
+2025-12-16 00:00:19,368 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,369 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,369 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,370 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,370 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,370 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,370 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,371 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,371 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,371 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,371 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,371 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,371 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,372 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,372 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,372 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,372 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,372 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,373 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,373 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,373 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,374 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,374 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,374 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,374 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,374 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,374 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,375 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,375 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,375 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,375 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,375 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,375 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,375 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,376 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,376 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,376 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,376 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,376 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,376 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,377 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,377 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,377 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,377 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,378 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,378 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,378 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,379 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,379 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,380 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,380 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,380 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,381 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,381 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,381 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,382 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,382 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,383 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,383 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,384 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:00:19,485 [INFO] ApiDbMcu:532 - Load IP Config File for PDM2PCM
+2025-12-16 00:00:19,957 [INFO] CADModel:165 - CPN selected for project levelSTM32F446RCT6
+2025-12-16 00:00:19,957 [INFO] CADModel:114 - Register for checkConnection events
+2025-12-16 00:00:20,012 [INFO] OpenFileManager:386 - Restore cursor
+2025-12-16 00:00:21,238 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 837071080 Bytes (1040187392)
+2025-12-16 00:00:21,452 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 888840904 Bytes (1040187392)
+2025-12-16 00:00:23,011 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2025-12-16 00:00:23,014 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2025-12-16 00:00:23,016 [INFO] CodeGenerator:892 - code generatio: config db path: /opt/st/stm32cubeide_1.18.1/../../../home/tecna-smart-lab/.eclipse/com.st.stm32cube.ide.mcu.rcp.product_1.18.1_139067097_linux_gtk_x86_64/plugins/com.st.stm32cube.common.mx_6.15.0.202507011659//db/
+2025-12-16 00:00:23,374 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/MXTmpFiles/license.tmp_save
+2025-12-16 00:00:24,136 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/MXTmpFiles/license.tmp
+2025-12-16 00:00:24,159 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/stm32f4xx_it.c_save
+2025-12-16 00:00:24,369 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/stm32f4xx_it.c
+2025-12-16 00:00:24,370 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/stm32f4xx_it.h_save
+2025-12-16 00:00:24,490 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/stm32f4xx_it.h
+2025-12-16 00:00:24,586 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/stm32f4xx_hal_msp.c_save
+2025-12-16 00:00:24,869 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/stm32f4xx_hal_msp.c
+2025-12-16 00:00:24,872 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/MXTmpFiles/system.tmp_save
+2025-12-16 00:00:25,061 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/MXTmpFiles/system.tmp
+2025-12-16 00:00:25,072 [INFO] CodeEngine:321 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/stm32f4xx_hal_conf.h_save
+2025-12-16 00:00:25,286 [INFO] CodeEngine:345 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/stm32f4xx_hal_conf.h
+2025-12-16 00:00:25,366 [WARN] IPConfigManager:3238 - Warning: the RefConfig PLL2P_FOR_MCO is not available in your config.xml file
+2025-12-16 00:00:25,393 [INFO] ApiDbMcu:532 - Load IP Config File for RCC
+2025-12-16 00:00:25,405 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/main.h_save
+2025-12-16 00:00:25,663 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/main.h
+2025-12-16 00:00:25,668 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/main.c_save
+2025-12-16 00:00:25,939 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/main.c
+2025-12-16 00:00:26,373 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 65mS.
+2025-12-16 00:00:26,380 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2025-12-16 00:00:26,514 [INFO] ConfigFileManager:1595 - The Die is : DIE421
+2025-12-16 00:00:26,523 [INFO] ApiDbMcu:532 - Load IP Config File for FATFS
+2025-12-16 00:00:26,532 [INFO] ApiDbMcu:532 - Load IP Config File for FREERTOS
+2025-12-16 00:00:26,535 [INFO] ApiDbMcu:532 - Load IP Config File for LIBJPEG
+2025-12-16 00:00:26,545 [INFO] ApiDbMcu:532 - Load IP Config File for MBEDTLS
+2025-12-16 00:00:26,557 [INFO] ApiDbMcu:532 - Load IP Config File for USB_DEVICE
+2025-12-16 00:00:26,565 [INFO] ApiDbMcu:532 - Load IP Config File for USB_HOST
+2025-12-16 00:00:30,469 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 4090mS.
+2025-12-16 00:00:30,470 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-16 00:00:30,470 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-16 00:00:31,844 [INFO] McuFinderGlobals:76 - Set McuFinderConnectedMode to true
+2025-12-16 00:00:31,850 [INFO] ApiDb:448 - Save user favorites file /home/tecna-smart-lab/.stm32cubeide/favorites.mcus.txt: 0 item(s)
+2025-12-16 00:00:31,850 [INFO] ApiDb:452 - User favorites MCUs=[]
+2025-12-16 00:06:18,384 [INFO] ApiDbMcu:532 - Load IP Config File for STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0
+2025-12-16 00:06:18,832 [WARN] SupportedApi:132 - Cannot load RTOS API schema: s4s-elt-must-match.1: The content of 'definitions' must match (annotation?, (simpleType | complexType)?, (unique | key | keyref)*)). A problem was found starting at: attribute.
+2025-12-16 00:06:18,836 [INFO] RtosManager:558 - Registered RTOS mode: class=RTOS, group=ThreadX, mode=RTOSJjThreadX, owner=STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0
+2025-12-16 00:06:19,395 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:06:36,306 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-16 00:06:38,963 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-16 00:06:39,215 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-16 00:10:12,623 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,509x257,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-16 00:10:13,932 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-16 00:10:51,275 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-16 00:10:55,580 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-16 00:12:10,851 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-12-16 00:12:10,851 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-12-16 00:12:10,906 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-12-16 00:12:10,906 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-12-16 00:12:10,907 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-12-16 00:12:10,907 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-12-16 00:12:10,968 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-12-16 00:12:10,968 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-12-16 00:12:10,969 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-12-16 00:12:10,969 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-12-16 00:12:32,910 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-16 00:12:36,683 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-16 00:12:41,783 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-16 00:12:56,017 [INFO] RtosManager:1018 - Current active RTOS is STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0 [Cortex-M4NS]
+2025-12-16 00:12:56,632 [WARN] IP:2250 - TX_NO_TIMER not found: check if there is a RefParameter without a condition.
+2025-12-16 00:12:56,633 [WARN] IP:2250 - ALIGN_TYPE_VAL not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:13,676 [WARN] IP:2250 - TX_NO_TIMER not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:13,676 [WARN] IP:2250 - ALIGN_TYPE_VAL not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:35,413 [WARN] IP:2250 - TX_NO_TIMER not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:35,414 [WARN] IP:2250 - ALIGN_TYPE_VAL not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:35,545 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:35,546 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:35,547 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:35,548 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:35,832 [WARN] IP:2250 - TX_NO_TIMER not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:35,833 [WARN] IP:2250 - ALIGN_TYPE_VAL not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:35,940 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:35,940 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:35,940 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:35,940 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:36,108 [WARN] IP:2250 - TX_NO_TIMER not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:36,109 [WARN] IP:2250 - ALIGN_TYPE_VAL not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:36,206 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:36,206 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:36,207 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:36,207 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:42,019 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 537402600 Bytes (1073741824)
+2025-12-16 00:13:45,629 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 575677672 Bytes (1073741824)
+2025-12-16 00:13:51,104 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 823141608 Bytes (1073741824)
+2025-12-16 00:13:51,513 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0
+2025-12-16 00:13:51,513 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SYS
+2025-12-16 00:13:51,514 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2025-12-16 00:13:51,514 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: I2C
+2025-12-16 00:13:51,514 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USB_OTG_FS
+2025-12-16 00:13:51,514 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2025-12-16 00:13:51,514 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-16 00:13:51,514 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-16 00:13:51,515 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: DMA
+2025-12-16 00:13:51,515 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: UART
+2025-12-16 00:13:51,516 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: GPIO
+2025-12-16 00:13:51,520 [WARN] IP:2250 - TX_NO_TIMER not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:51,521 [WARN] IP:2250 - ALIGN_TYPE_VAL not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:51,524 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,524 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,524 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,524 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,524 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,524 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,524 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,525 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,525 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,525 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,525 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,527 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,528 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,528 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,528 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,528 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,528 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,528 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,528 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:51,545 [INFO] CodeGenerator:892 - code generatio: config db path: /opt/st/stm32cubeide_1.18.1/../../../home/tecna-smart-lab/.eclipse/com.st.stm32cube.ide.mcu.rcp.product_1.18.1_139067097_linux_gtk_x86_64/plugins/com.st.stm32cube.common.mx_6.15.0.202507011659//db/
+2025-12-16 00:13:51,550 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:51,551 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-12-16 00:13:51,741 [INFO] IP:3329 - RTE Config file name : RTE_Component
+2025-12-16 00:13:51,742 [INFO] IP:3347 - RTE template : RTE_Components.ftl
+2025-12-16 00:13:51,753 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/MXTmpFiles/license.tmp_save
+2025-12-16 00:13:52,320 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/MXTmpFiles/license.tmp
+2025-12-16 00:13:52,386 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/gpio.c_save
+2025-12-16 00:13:52,544 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/gpio.c
+2025-12-16 00:13:52,550 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/gpio.h_save
+2025-12-16 00:13:52,716 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/gpio.h
+2025-12-16 00:13:54,022 [WARN] IPConfigManager:3238 - Warning: the RefConfig PWREx_EnableUSBVoltageDetector is not available in your config.xml file
+2025-12-16 00:13:54,118 [INFO] Middleware:1452 - No code input for Bsp Dependency
+2025-12-16 00:13:54,173 [INFO] Middleware:1452 - No code input for Bsp Dependency
+2025-12-16 00:13:54,226 [INFO] Middleware:1452 - No code input for Bsp Dependency
+2025-12-16 00:13:54,275 [INFO] Middleware:1452 - No code input for Bsp Dependency
+2025-12-16 00:13:54,285 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/tx_user.h_save
+2025-12-16 00:13:54,496 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/tx_user.h
+2025-12-16 00:13:54,502 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/tx_initialize_low_level.s_save
+2025-12-16 00:13:54,675 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/tx_initialize_low_level.s
+2025-12-16 00:13:54,683 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/app_threadx.h_save
+2025-12-16 00:13:54,817 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/app_threadx.h
+2025-12-16 00:13:54,823 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/app_threadx.c_save
+2025-12-16 00:13:54,977 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/app_threadx.c
+2025-12-16 00:13:54,982 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/AZURE_RTOS/App/app_azure_rtos_config.h_save
+2025-12-16 00:13:55,104 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/AZURE_RTOS/App/app_azure_rtos_config.h
+2025-12-16 00:13:55,108 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/AZURE_RTOS/App/app_azure_rtos.c_save
+2025-12-16 00:13:55,203 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/AZURE_RTOS/App/app_azure_rtos.c
+2025-12-16 00:13:55,206 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/AZURE_RTOS/App/app_azure_rtos.h_save
+2025-12-16 00:13:55,286 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/AZURE_RTOS/App/app_azure_rtos.h
+2025-12-16 00:13:55,289 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/USBX/App/ux_user.h_save
+2025-12-16 00:13:55,412 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/USBX/App/ux_user.h
+2025-12-16 00:13:55,418 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/USBX/Target/ux_stm32_config.h_save
+2025-12-16 00:13:55,591 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/USBX/Target/ux_stm32_config.h
+2025-12-16 00:13:55,596 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/USBX/App/app_usbx_host.c_save
+2025-12-16 00:13:55,759 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/USBX/App/app_usbx_host.c
+2025-12-16 00:13:55,764 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/USBX/App/app_usbx_host.h_save
+2025-12-16 00:13:55,877 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/USBX/App/app_usbx_host.h
+2025-12-16 00:13:56,010 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/dma.c_save
+2025-12-16 00:13:56,174 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/dma.c
+2025-12-16 00:13:56,179 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/dma.h_save
+2025-12-16 00:13:56,334 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/dma.h
+2025-12-16 00:13:56,342 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/i2c.c_save
+2025-12-16 00:13:56,646 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/i2c.c
+2025-12-16 00:13:56,651 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/i2c.h_save
+2025-12-16 00:13:56,787 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/i2c.h
+2025-12-16 00:13:56,795 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/usart.c_save
+2025-12-16 00:13:57,047 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/usart.c
+2025-12-16 00:13:57,051 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/usart.h_save
+2025-12-16 00:13:57,191 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/usart.h
+2025-12-16 00:13:57,204 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/usb_otg.c_save
+2025-12-16 00:13:57,373 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/usb_otg.c
+2025-12-16 00:13:57,376 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/usb_otg.h_save
+2025-12-16 00:13:57,487 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/usb_otg.h
+2025-12-16 00:13:57,504 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/stm32f4xx_it.c_save
+2025-12-16 00:13:57,956 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/stm32f4xx_it.c
+2025-12-16 00:13:57,959 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/stm32f4xx_it.h_save
+2025-12-16 00:13:58,107 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/stm32f4xx_it.h
+2025-12-16 00:13:58,108 [INFO] IP:3329 - RTE Config file name : RTE_Component
+2025-12-16 00:13:58,108 [INFO] IP:3347 - RTE template : RTE_Components.ftl
+2025-12-16 00:13:58,108 [INFO] CodeGenerator:2312 - Add RTE Code Input 
+2025-12-16 00:13:58,114 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/RTE_Components.h_save
+2025-12-16 00:13:58,249 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/RTE_Components.h
+2025-12-16 00:13:58,272 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/stm32f4xx_hal_msp.c_save
+2025-12-16 00:13:58,462 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/stm32f4xx_hal_msp.c
+2025-12-16 00:13:58,467 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/MXTmpFiles/system.tmp_save
+2025-12-16 00:13:58,561 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/MXTmpFiles/system.tmp
+2025-12-16 00:13:58,565 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/stm32f4xx_hal_timebase_tim.c_save
+2025-12-16 00:13:58,670 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/stm32f4xx_hal_timebase_tim.c
+2025-12-16 00:13:58,676 [INFO] CodeEngine:321 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/stm32f4xx_hal_conf.h_save
+2025-12-16 00:13:58,817 [INFO] CodeEngine:345 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/stm32f4xx_hal_conf.h
+2025-12-16 00:13:58,860 [WARN] IPConfigManager:3238 - Warning: the RefConfig PLL2P_FOR_MCO is not available in your config.xml file
+2025-12-16 00:13:58,877 [INFO] ApiDbMcu:532 - Load IP Config File for I2C1
+2025-12-16 00:13:58,885 [INFO] ApiDbMcu:532 - Load IP Config File for UART5
+2025-12-16 00:13:58,890 [INFO] ApiDbMcu:532 - Load IP Config File for USART3
+2025-12-16 00:13:58,896 [INFO] ApiDbMcu:532 - Load IP Config File for USART6
+2025-12-16 00:13:58,901 [INFO] ApiDbMcu:532 - Load IP Config File for USB_OTG_FS
+2025-12-16 00:13:58,914 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/main.h_save
+2025-12-16 00:13:59,162 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Inc/main.h
+2025-12-16 00:13:59,168 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/main.c_save
+2025-12-16 00:13:59,397 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/Core/Src/main.c
+2025-12-16 00:13:59,849 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 54mS.
+2025-12-16 00:13:59,851 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,851 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,851 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,851 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,852 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,852 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,852 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,852 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,852 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,852 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,852 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,852 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,852 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,852 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,852 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,853 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,853 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,853 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,853 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,853 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,853 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,853 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,853 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,853 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,853 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,853 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,854 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,854 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,854 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,854 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,854 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,854 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,854 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,854 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,855 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,855 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,855 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,855 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,855 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,855 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,856 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,856 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,856 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,856 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,856 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,856 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,856 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,857 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,857 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,857 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,857 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,857 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,857 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,857 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,857 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,858 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,858 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,858 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,858 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,858 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,858 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,859 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,859 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,859 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,859 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,859 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,860 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,860 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,860 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,860 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,860 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,861 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,861 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,861 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,862 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,862 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,862 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,863 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,863 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,863 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,864 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,864 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,864 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,864 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,864 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,865 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,865 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,865 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,865 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,865 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,865 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,866 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,866 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,866 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,866 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,867 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,867 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,867 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,867 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,867 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,868 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,868 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,868 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,868 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,868 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,868 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,868 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,869 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,869 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,869 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,869 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,869 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,869 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,870 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,870 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,870 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,870 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,871 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,871 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,871 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,871 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,871 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,871 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,872 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,872 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,872 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,872 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,872 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,872 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,872 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,872 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,873 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,873 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,873 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,873 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,873 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,873 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,874 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,874 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,874 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,874 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,874 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,874 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,875 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,875 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,875 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,875 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,875 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,875 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,875 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,875 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,875 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,875 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,875 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,875 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,875 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,875 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,876 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,876 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,876 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,876 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,876 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,876 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,876 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,876 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,876 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,876 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,877 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,877 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,877 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,877 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,877 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,877 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,877 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,878 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,878 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,878 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,878 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,878 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,878 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,878 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,878 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,878 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,879 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,879 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,879 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,880 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,880 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,880 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,880 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,880 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,881 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,881 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,881 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,881 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,881 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,881 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,881 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,882 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,882 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,882 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,882 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,882 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,882 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,883 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,883 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,883 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,883 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,883 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,883 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,884 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,884 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,884 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,884 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,884 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,884 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,884 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,884 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,885 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,885 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,885 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,885 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,885 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,885 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,885 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,885 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,885 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,885 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,885 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,885 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,886 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,886 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,886 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,886 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,886 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,886 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,886 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,886 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,886 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,887 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,887 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,887 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,887 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,887 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,887 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,887 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,888 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,888 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,888 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,888 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,888 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,888 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,888 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,888 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,888 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,888 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,888 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,889 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,889 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,889 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,889 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,889 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,889 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,889 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,889 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,889 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,890 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,890 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,890 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,890 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,890 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,890 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,890 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,890 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,890 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,890 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,891 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,891 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,891 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,891 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,891 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,891 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,891 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,891 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,891 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,891 [ERROR] Middleware:2950 - Invalid RefComponent list
+2025-12-16 00:13:59,892 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,893 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,893 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,893 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,893 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,893 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,893 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,893 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,894 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,894 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,894 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 IAR Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,897 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,897 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,897 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,897 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,897 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,897 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,897 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:13:59,897 [WARN] ThirdPartyIpManager:480 - Condition 'CM4 ARMC6 Condition' not fulfilled in pack 'STMicroelectronics.X-CUBE-AZRTOS-F4.1.1.0'
+2025-12-16 00:14:00,224 [INFO] ProjectBuilder:9437 - Time for Copy ThirdParty[1] : 304mS.
+2025-12-16 00:14:00,341 [INFO] ProjectBuilder:9437 - Time for Copy ThirdParty[1] : 116mS.
+2025-12-16 00:14:00,356 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2025-12-16 00:14:00,558 [INFO] ConfigFileManager:1595 - The Die is : DIE421
+2025-12-16 00:14:02,663 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 2308mS.
+2025-12-16 00:14:02,664 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 1mS.
+2025-12-16 00:14:02,672 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-16 00:14:51,491 [INFO] MainUpdater:2872 - connection check result : 10
+2025-12-16 00:14:51,669 [INFO] McuFinderGlobals:76 - Set McuFinderConnectedMode to true
+2025-12-16 00:14:51,671 [INFO] MultiScanPanel:200 - Auto-refresh data requested => check proxy status ongoing
+2025-12-16 00:14:51,672 [INFO] FinderPluginLoader:96 - Searching for filters in installed packs
+2025-12-16 00:14:55,886 [INFO] LoadUrlFilesThread:185 - End of LoadServerUrlFiles without Thread
+2025-12-16 00:14:55,887 [INFO] DetailPanel:341 - Set advertising image to /home/tecna-smart-lab/STM32Cube/Repository//en.prom-st67w-expansion-board.png
+2025-12-16 00:16:01,241 [INFO] ApiDb:581 - Connected to CubeFinder SQLite database (/home/tecna-smart-lab/.stmcufinder/plugins/mcufinder/mcu/cube-finder-db.db)
+2025-12-16 00:16:32,799 [INFO] MainUpdater:2872 - connection check result : 10
+2025-12-16 00:16:32,800 [INFO] MainUpdater:2872 - connection check result : 10
+2025-12-16 00:16:32,868 [INFO] MicroXplorer:468 - Change Database Path : 
+2025-12-16 00:16:32,869 [INFO] MicroXplorer:498 - Change Database Version : DB.6.0.150
+2025-12-16 00:16:32,892 [ERROR] ProjectManagerView:395 - 
+java.lang.NullPointerException: Cannot invoke "javax.swing.JTextField.getText()" because the return value of "java.util.List.get(int)" is null
+	at com.st.microxplorer.plugins.projectmanager.gui.ProjectChoiceTab$9.caretUpdate(ProjectChoiceTab.java:2706) ~[filemanager.jar:?]
+	at javax.swing.text.JTextComponent.fireCaretUpdate(JTextComponent.java:408) ~[?:?]
+	at javax.swing.text.JTextComponent$MutableCaretEvent.fire(JTextComponent.java:4484) ~[?:?]
+	at javax.swing.text.JTextComponent$MutableCaretEvent.stateChanged(JTextComponent.java:4506) ~[?:?]
+	at javax.swing.text.DefaultCaret.fireStateChanged(DefaultCaret.java:857) ~[?:?]
+	at javax.swing.text.DefaultCaret.changeCaretPosition(DefaultCaret.java:1343) ~[?:?]
+	at javax.swing.text.DefaultCaret.handleSetDot(DefaultCaret.java:1242) ~[?:?]
+	at javax.swing.text.DefaultCaret.setDot(DefaultCaret.java:1223) ~[?:?]
+	at javax.swing.text.DefaultCaret$Handler.insertUpdate(DefaultCaret.java:1819) ~[?:?]
+	at javax.swing.text.AbstractDocument.fireInsertUpdate(AbstractDocument.java:227) ~[?:?]
+	at javax.swing.text.AbstractDocument.handleInsertString(AbstractDocument.java:781) ~[?:?]
+	at javax.swing.text.AbstractDocument.insertString(AbstractDocument.java:740) ~[?:?]
+	at javax.swing.text.PlainDocument.insertString(PlainDocument.java:131) ~[?:?]
+	at javax.swing.text.AbstractDocument.replace(AbstractDocument.java:699) ~[?:?]
+	at javax.swing.text.JTextComponent.setText(JTextComponent.java:1725) ~[?:?]
+	at com.st.microxplorer.plugins.projectmanager.gui.ProjectChoiceTab.createHeapStackFields(ProjectChoiceTab.java:993) ~[filemanager.jar:?]
+	at com.st.microxplorer.plugins.projectmanager.gui.ProjectChoiceTab.buildLinkSettingsPanel(ProjectChoiceTab.java:3813) ~[filemanager.jar:?]
+	at com.st.microxplorer.plugins.projectmanager.gui.ProjectChoiceTab.defineWindowsFields(ProjectChoiceTab.java:1987) ~[filemanager.jar:?]
+	at com.st.microxplorer.plugins.projectmanager.gui.ProjectChoiceTab.updateSettings(ProjectChoiceTab.java:558) ~[filemanager.jar:?]
+	at com.st.microxplorer.plugins.projectmanager.gui.ProjectSettingsPanel.UpdateDialog(ProjectSettingsPanel.java:247) ~[filemanager.jar:?]
+	at com.st.microxplorer.plugins.projectmanager.ProjectManagerView.propertyChange(ProjectManagerView.java:392) ~[filemanager.jar:?]
+	at java.beans.PropertyChangeSupport.fire(PropertyChangeSupport.java:343) ~[?:?]
+	at java.beans.PropertyChangeSupport.firePropertyChange(PropertyChangeSupport.java:335) ~[?:?]
+	at java.beans.PropertyChangeSupport.firePropertyChange(PropertyChangeSupport.java:268) ~[?:?]
+	at com.st.microxplorer.util.MXPropertyChangeSupport.firePropertyChange(MXPropertyChangeSupport.java:54) ~[STM32CubeMX.jar:?]
+	at com.st.microxplorer.mxsystem.MxSystem.closeConfig(MxSystem.java:899) ~[STM32CubeMX.jar:?]
+	at com.st.microxplorer.maingui.MainPanel.closeConfig(MainPanel.java:792) ~[STM32CubeMX.jar:?]
+	at com.st.microxplorer.plugins.filemanager.engine.OpenFileManager.loadConfigurationFile(OpenFileManager.java:288) ~[filemanager.jar:?]
+	at com.st.microxplorer.plugins.filemanager.engine.MainFileManager.userLoadConfig(MainFileManager.java:364) ~[filemanager.jar:?]
+	at com.st.microxplorer.plugins.filemanager.engine.MainFileManager.userLoadConfig(MainFileManager.java:342) ~[filemanager.jar:?]
+	at com.st.microxplorer.plugins.filemanager.FileManagerView.getSpecificTask(FileManagerView.java:264) ~[filemanager.jar:?]
+	at com.st.stm32cube.common.mx.editor.CubeMxEditor.getMxTabbedPaneInstance(CubeMxEditor.java:1198) ~[com.st.stm32cube.common.mx_6.15.0.202507011659/:?]
+	at com.st.stm32cube.common.mx.editor.CubeMxEditor$12$1.createSwingComponent(CubeMxEditor.java:1068) ~[com.st.stm32cube.common.mx_6.15.0.202507011659/:?]
+	at com.st.stm32cube.common.mx.oss.core.awtswtbridge.EmbeddedSwingComposite.doComponentCreation(EmbeddedSwingComposite.java:492) ~[com.st.stm32cube.common.mx.oss_6.15.0.202507011659/:?]
+	at com.st.stm32cube.common.mx.oss.core.awtswtbridge.EmbeddedSwingComposite$4.run(EmbeddedSwingComposite.java:291) ~[com.st.stm32cube.common.mx.oss_6.15.0.202507011659/:?]
+	at com.st.stm32cube.common.mx.oss.core.awtswtbridge.AwtEnvironment$2.run(AwtEnvironment.java:166) ~[com.st.stm32cube.common.mx.oss_6.15.0.202507011659/:?]
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:318) ~[?:?]
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:773) ~[?:?]
+	at java.awt.EventQueue$4.run(EventQueue.java:720) ~[?:?]
+	at java.awt.EventQueue$4.run(EventQueue.java:714) ~[?:?]
+	at java.security.AccessController.doPrivileged(AccessController.java:400) ~[?:?]
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:87) ~[?:?]
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:742) ~[?:?]
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203) ~[?:?]
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124) ~[?:?]
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113) ~[?:?]
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109) ~[?:?]
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101) ~[?:?]
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:90) ~[?:?]
+2025-12-16 00:16:32,911 [WARN] ThirdParty:871 - waiting for thirdparty lock release [close project]
+2025-12-16 00:16:32,911 [INFO] ThirdParty:873 - entering critical section [close project]
+2025-12-16 00:16:32,919 [INFO] ThirdParty:883 - exiting critical section [close project]
+2025-12-16 00:16:32,922 [INFO] PinOutPanel:1589 - setPackage(No Configuration,No Configuration)
+2025-12-16 00:16:32,935 [WARN] IpParametersView:155 - Warning: This peripheral hasn't parameters
+2025-12-16 00:16:32,944 [WARN] MainPanel:289 - <html><b><center>Warning: This peripheral has no parameters to be configured<br></b></html>
+2025-12-16 00:16:32,959 [INFO] UtilMem:75 - Begin LoadConfig() Used Memory: 761507912 Bytes (1073741824)
+2025-12-16 00:16:32,961 [INFO] MicroXplorer:468 - Change Database Path : 
+2025-12-16 00:16:32,961 [INFO] MicroXplorer:498 - Change Database Version : DB.6.0.150
+2025-12-16 00:16:32,962 [INFO] OpenFileManager:355 - Change cursor
+2025-12-16 00:16:32,990 [INFO] RulesReader:64 - Compatibility file has been processed (317 Rules)
+2025-12-16 00:16:33,001 [INFO] Mcu:2029 - Initializing MCU STM32G030C8Tx STM32G030C8Tx STM32G030C8T6
+2025-12-16 00:16:34,051 [INFO] Context:786 - Trying to add GPIOservice into a context  which must be forbidden
+2025-12-16 00:16:34,840 [INFO] ImportTextPane:234 - (OptionalMessage_ERROR) Unable to find key (Mcu.ThirdPartyNb) in loaded IOC file
+2025-12-16 00:16:34,840 [INFO] ImportTextPane:234 - (OptionalMessage_ERROR) Unable to find key (Mcu.PinsNb) in loaded IOC file
+2025-12-16 00:16:34,841 [INFO] ImportTextPane:234 - (OptionalMessage_ERROR) Pin0 (VP_RIF_VS_RIF1) cannot be retrieved for this MCU
+2025-12-16 00:16:34,841 [INFO] ImportTextPane:234 - (OptionalMessage_ERROR) Unable to find key (Mcu.IPNb) in loaded IOC file
+2025-12-16 00:16:34,937 [INFO] RtosManager:558 - Registered RTOS mode: class=CMSIS, group=RTOS, mode=CMSIS_V1, owner=FREERTOS
+2025-12-16 00:16:34,937 [INFO] RtosManager:558 - Registered RTOS mode: class=CMSIS, group=RTOS2, mode=CMSIS_V2, owner=FREERTOS
+2025-12-16 00:16:34,937 [INFO] RtosManager:558 - Registered RTOS mode: class=RTOS, group=Core, mode=CMSIS_V1, owner=FREERTOS
+2025-12-16 00:16:34,937 [INFO] RtosManager:558 - Registered RTOS mode: class=RTOS, group=Core, mode=CMSIS_V2, owner=FREERTOS
+2025-12-16 00:16:34,938 [WARN] ModelIntegratedComponent:184 - Missing modes for component STMicroelectronics:FreeRTOS:0.0.1:STMicroelectronics:RTOS:FreeRTOS:Core:::10.2.0:
+2025-12-16 00:16:34,976 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,977 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,977 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,977 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,977 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,977 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,977 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,977 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,978 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,978 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,978 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,978 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,978 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,978 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,978 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,978 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,978 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,978 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,978 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,978 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,979 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,979 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,979 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,979 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,979 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,979 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,979 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,979 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,979 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,979 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,979 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,980 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,980 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,980 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,980 [WARN] ModelIntegratedComponent:63 - No mode defined for component null
+2025-12-16 00:16:34,980 [WARN] ModelPack:524 - Component already loaded: STMicroelectronics:HAL Drivers:0.0.0:STMicroelectronics:Device:STMicro_Driver:XSPI:HAL::0.0.1:HAL_XSPI
+2025-12-16 00:16:35,670 [INFO] ThirdPartyModel:298 - Start build external matchings
+2025-12-16 00:16:39,152 [INFO] ThirdPartyModel:316 - End build external matchings
+2025-12-16 00:16:39,499 [INFO] UtilMem:75 - End LoadConfig() Used Memory: 401191568 Bytes (1073741824)
+2025-12-16 00:16:39,521 [WARN] ThirdParty:833 - waiting for thirdparty lock release [change project]
+2025-12-16 00:16:39,522 [INFO] ThirdParty:835 - entering critical section [change project]
+2025-12-16 00:16:39,522 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-PM33A1 1.0.0
+2025-12-16 00:16:39,522 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USBPD 4.1
+2025-12-16 00:16:39,522 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_HOST 2.0.0
+2025-12-16 00:16:39,522 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-MOTENVWB1 1.4.0
+2025-12-16 00:16:39,522 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-F4 1.1.0
+2025-12-16 00:16:39,523 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics LIBJPEG 8.0.0
+2025-12-16 00:16:39,523 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-ATR-ASTRA1 2.0.2
+2025-12-16 00:16:39,523 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :Avnet-IotConnect X-CUBE-IoTC-DA16k-PMOD 1.0.0
+2025-12-16 00:16:39,523 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SMBUS 2.1.0
+2025-12-16 00:16:39,523 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ISPU 2.1.0
+2025-12-16 00:16:39,523 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-IPS 3.2.0
+2025-12-16 00:16:39,523 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ST60 1.0.0
+2025-12-16 00:16:39,523 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC12 1.0.0
+2025-12-16 00:16:39,523 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-F7 1.1.0
+2025-12-16 00:16:39,523 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-L5 2.0.0
+2025-12-16 00:16:39,523 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_DEVICE 2.0.0
+2025-12-16 00:16:39,523 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC6 3.1.0
+2025-12-16 00:16:39,523 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-MOTENV1 5.1.0
+2025-12-16 00:16:39,523 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FreeRTOS 0.0.1
+2025-12-16 00:16:39,524 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :Infineon AIROC-Wi-Fi-Bluetooth-STM32 1.7.0
+2025-12-16 00:16:39,524 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics PDM2PCM 3.3.0
+2025-12-16 00:16:39,524 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-H7 3.4.0
+2025-12-16 00:16:39,524 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-DISPLAY 3.0.0
+2025-12-16 00:16:39,524 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC10 1.0.0
+2025-12-16 00:16:39,524 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLEMGR 4.0.0
+2025-12-16 00:16:39,524 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-FREERTOS 1.3.1
+2025-12-16 00:16:39,524 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics HAL Drivers 0.0.0
+2025-12-16 00:16:39,524 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ST60 1.1.0
+2025-12-16 00:16:39,525 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :emotas I-CUBE-CANOPEN 1.3.0
+2025-12-16 00:16:39,525 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-FREERTOS 1.3.0
+2025-12-16 00:16:39,525 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC7 1.0.1
+2025-12-16 00:16:39,525 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics MBEDTLS 2.14.1
+2025-12-16 00:16:39,525 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-GNSS1 7.1.0
+2025-12-16 00:16:39,525 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOUCHGFX 4.26.0
+2025-12-16 00:16:39,525 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :quantropi X-CUBE-qispace-sdk-base 2.0.0
+2025-12-16 00:16:39,525 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 10.0.0
+2025-12-16 00:16:39,526 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-STBOX1 2.1.0
+2025-12-16 00:16:39,527 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-STAIOTCFT 1.0.0
+2025-12-16 00:16:39,527 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-SMARTAG2 1.2.0
+2025-12-16 00:16:39,527 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-FLIGHT1 5.1.0
+2025-12-16 00:16:39,528 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-WL 2.0.0
+2025-12-16 00:16:39,528 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-DPower 1.3.0
+2025-12-16 00:16:39,528 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-MOTENV1 5.0.0
+2025-12-16 00:16:39,528 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_DEVICE 1.0.0
+2025-12-16 00:16:39,528 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-H7RS 1.2.0
+2025-12-16 00:16:39,528 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-L4 2.0.0
+2025-12-16 00:16:39,528 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics ThreadX 0.0.2
+2025-12-16 00:16:39,528 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :WES I-CUBE-Cesium 1.3.0
+2025-12-16 00:16:39,528 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics lwIP 2.1.2
+2025-12-16 00:16:39,528 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SFXS2LP1 4.0.0
+2025-12-16 00:16:39,528 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE2 3.3.0
+2025-12-16 00:16:39,529 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :Avnet-IOTCONNECT X-CUBE-iotc-st67-sdk 1.0.0
+2025-12-16 00:16:39,529 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics PDM2PCM 3.2.0
+2025-12-16 00:16:39,529 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-H7 3.3.0
+2025-12-16 00:16:39,529 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC9 1.0.0
+2025-12-16 00:16:39,529 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLE1 7.1.0
+2025-12-16 00:16:39,529 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :wolfSSL I-CUBE-wolfMQTT 1.19.2
+2025-12-16 00:16:39,529 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_DEVICE 3.0.0
+2025-12-16 00:16:39,529 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-FREERTOS 1.4.0
+2025-12-16 00:16:39,529 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-EEPRMA1 5.2.0
+2025-12-16 00:16:39,529 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-BLEMGR 4.1.0
+2025-12-16 00:16:39,529 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-WB 2.0.0
+2025-12-16 00:16:39,529 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-GNSS1 7.0.1
+2025-12-16 00:16:39,529 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOUCHGFX 4.25.0
+2025-12-16 00:16:39,530 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ST67W61 1.1.0
+2025-12-16 00:16:39,530 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 10.1.0
+2025-12-16 00:16:39,530 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-SNS-STBOX1 2.0.0
+2025-12-16 00:16:39,530 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 12.0.0
+2025-12-16 00:16:39,530 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 11.2.0
+2025-12-16 00:16:39,530 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-G0 1.1.0
+2025-12-16 00:16:39,530 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SAFEA1 1.2.2
+2025-12-16 00:16:39,530 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC4 3.0.0
+2025-12-16 00:16:39,530 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-SUBG2 5.0.0
+2025-12-16 00:16:39,530 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-H7RS 1.1.0
+2025-12-16 00:16:39,530 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics STM32_WPAN 1.0.0
+2025-12-16 00:16:39,531 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :EmbeddedOffice I-CUBE-FS-RTOS 1.0.1
+2025-12-16 00:16:39,531 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics lwIP 2.0.3
+2025-12-16 00:16:39,531 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :Cesanta I-CUBE-Mongoose 7.13.0
+2025-12-16 00:16:39,531 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics USB_HOST 1.0.0
+2025-12-16 00:16:39,531 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AZRTOS-G4 2.0.0
+2025-12-16 00:16:39,531 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-WB05N 2.0.0
+2025-12-16 00:16:39,531 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics PDM2PCM 3.1.0
+2025-12-16 00:16:39,531 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :wolfSSL I-CUBE-wolfTPM 3.8.0
+2025-12-16 00:16:39,531 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :wolfSSL I-CUBE-wolfSSH 1.4.20
+2025-12-16 00:16:39,531 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-NFC7 2.0.0
+2025-12-16 00:16:39,531 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TCPP 4.2.0
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :RealThread X-CUBE-RT-Thread_Nano 4.1.1
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics FP-ATR-SIGFOX1 3.2.0
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-EEPRMA1 5.1.0
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics MBEDTLS 2.16.2
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-IPS 3.1.0
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ALS 1.0.2
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :wolfSSL I-CUBE-wolfSSL 5.7.6
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :ITTIA_DB I-CUBE-ITTIADB 8.9.0
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-STSE01 1.0.0
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :portGmbH I-Cube-SoM-uGOAL 1.1.0
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ST67W61 1.0.0
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-AI 10.2.0
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics ThreadX 1.0.0
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :SEGGER I-CUBE-embOS 1.3.1
+2025-12-16 00:16:39,532 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-ALGOBUILD 1.4.0
+2025-12-16 00:16:39,533 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-MEMS1 11.3.0
+2025-12-16 00:16:39,533 [INFO] ThirdParty:1030 - CMSIS Pack Vendor :STMicroelectronics X-CUBE-TOF1 3.4.3
+2025-12-16 00:16:39,533 [INFO] ThirdParty:841 - exiting critical section [change project]
+2025-12-16 00:16:40,036 [INFO] PinOutPanel:1589 - setPackage(No Configuration,No Configuration)
+2025-12-16 00:16:40,041 [INFO] PinOutPanel:1589 - setPackage(STM32G030C8Tx,LQFP48)
+2025-12-16 00:16:40,321 [INFO] UtilMem:75 - Before build in PCC Used Memory: 499227160 Bytes (1073741824)
+2025-12-16 00:16:41,173 [INFO] UtilMem:75 - After build in PCC Used Memory: 570003992 Bytes (1073741824)
+2025-12-16 00:16:41,268 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,268 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,269 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,269 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,269 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,270 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,270 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,271 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,271 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,272 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,272 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,273 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,274 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,275 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,275 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,275 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,275 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,275 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,276 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,276 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,276 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,276 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,276 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,276 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,277 [INFO] IPUIPlugin:80 - create IPUIPlugin
+2025-12-16 00:16:41,342 [INFO] CADModel:165 - CPN selected for project levelSTM32G030C8T6
+2025-12-16 00:16:41,342 [INFO] CADModel:114 - Register for checkConnection events
+2025-12-16 00:16:41,391 [INFO] OpenFileManager:386 - Restore cursor
+2025-12-16 00:16:42,130 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 647076376 Bytes (1073741824)
+2025-12-16 00:16:42,241 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 668174200 Bytes (1073741824)
+2025-12-16 00:16:42,415 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2025-12-16 00:16:42,415 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2025-12-16 00:16:42,416 [INFO] CodeGenerator:892 - code generatio: config db path: /opt/st/stm32cubeide_1.18.1/../../../home/tecna-smart-lab/.eclipse/com.st.stm32cube.ide.mcu.rcp.product_1.18.1_139067097_linux_gtk_x86_64/plugins/com.st.stm32cube.common.mx_6.15.0.202507011659//db/
+2025-12-16 00:16:42,500 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/MXTmpFiles/license.tmp_save
+2025-12-16 00:16:42,602 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/MXTmpFiles/license.tmp
+2025-12-16 00:16:42,609 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/stm32g0xx_it.c_save
+2025-12-16 00:16:42,719 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/stm32g0xx_it.c
+2025-12-16 00:16:42,720 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/stm32g0xx_it.h_save
+2025-12-16 00:16:42,817 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/stm32g0xx_it.h
+2025-12-16 00:16:42,845 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/stm32g0xx_hal_msp.c_save
+2025-12-16 00:16:42,985 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/stm32g0xx_hal_msp.c
+2025-12-16 00:16:42,987 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/MXTmpFiles/system.tmp_save
+2025-12-16 00:16:43,094 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/MXTmpFiles/system.tmp
+2025-12-16 00:16:43,099 [INFO] CodeEngine:321 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/stm32g0xx_hal_conf.h_save
+2025-12-16 00:16:43,208 [INFO] CodeEngine:345 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/stm32g0xx_hal_conf.h
+2025-12-16 00:16:43,228 [INFO] ApiDbMcu:532 - Load IP Config File for RCC
+2025-12-16 00:16:43,232 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/main.h_save
+2025-12-16 00:16:43,347 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/main.h
+2025-12-16 00:16:43,348 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/main.c_save
+2025-12-16 00:16:43,496 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/main.c
+2025-12-16 00:16:43,817 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 66mS.
+2025-12-16 00:16:43,819 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2025-12-16 00:16:44,058 [INFO] ConfigFileManager:1595 - The Die is : DIE466
+2025-12-16 00:16:44,064 [INFO] ApiDbMcu:532 - Load IP Config File for FATFS
+2025-12-16 00:16:44,074 [INFO] ApiDbMcu:532 - Load IP Config File for FREERTOS
+2025-12-16 00:16:46,442 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 2623mS.
+2025-12-16 00:16:46,443 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-16 00:16:46,444 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.
+2025-12-16 00:16:47,209 [INFO] McuFinderGlobals:76 - Set McuFinderConnectedMode to true
+2025-12-16 00:16:47,214 [INFO] ApiDb:448 - Save user favorites file /home/tecna-smart-lab/.stm32cubeide/favorites.mcus.txt: 0 item(s)
+2025-12-16 00:16:47,214 [INFO] ApiDb:452 - User favorites MCUs=[]
+2025-12-16 00:19:26,057 [INFO] NvicIntPanel:101 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2025-12-16 00:19:59,030 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 703703464 Bytes (1073741824)
+2025-12-16 00:19:59,360 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 723570168 Bytes (1073741824)
+2025-12-16 00:20:00,774 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 790152696 Bytes (1073741824)
+2025-12-16 00:20:01,040 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SYS
+2025-12-16 00:20:01,040 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: ADC
+2025-12-16 00:20:01,040 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2025-12-16 00:20:01,040 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2025-12-16 00:20:01,041 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: USART
+2025-12-16 00:20:01,041 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: DMA
+2025-12-16 00:20:01,042 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: GPIO
+2025-12-16 00:20:01,043 [INFO] CodeGenerator:892 - code generatio: config db path: /opt/st/stm32cubeide_1.18.1/../../../home/tecna-smart-lab/.eclipse/com.st.stm32cube.ide.mcu.rcp.product_1.18.1_139067097_linux_gtk_x86_64/plugins/com.st.stm32cube.common.mx_6.15.0.202507011659//db/
+2025-12-16 00:20:01,178 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/MXTmpFiles/license.tmp_save
+2025-12-16 00:20:01,483 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/MXTmpFiles/license.tmp
+2025-12-16 00:20:01,581 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/gpio.c_save
+2025-12-16 00:20:01,749 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/gpio.c
+2025-12-16 00:20:01,751 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/gpio.h_save
+2025-12-16 00:20:01,880 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/gpio.h
+2025-12-16 00:20:02,412 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/adc.c_save
+2025-12-16 00:20:02,680 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/adc.c
+2025-12-16 00:20:02,684 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/adc.h_save
+2025-12-16 00:20:02,923 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/adc.h
+2025-12-16 00:20:03,009 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/dma.c_save
+2025-12-16 00:20:03,239 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/dma.c
+2025-12-16 00:20:03,242 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/dma.h_save
+2025-12-16 00:20:03,437 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/dma.h
+2025-12-16 00:20:03,445 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/usart.c_save
+2025-12-16 00:20:03,732 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/usart.c
+2025-12-16 00:20:03,734 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/usart.h_save
+2025-12-16 00:20:03,902 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/usart.h
+2025-12-16 00:20:03,913 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/stm32g0xx_it.c_save
+2025-12-16 00:20:04,127 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/stm32g0xx_it.c
+2025-12-16 00:20:04,131 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/stm32g0xx_it.h_save
+2025-12-16 00:20:04,326 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/stm32g0xx_it.h
+2025-12-16 00:20:04,336 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/stm32g0xx_hal_msp.c_save
+2025-12-16 00:20:04,591 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/stm32g0xx_hal_msp.c
+2025-12-16 00:20:04,595 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/MXTmpFiles/system.tmp_save
+2025-12-16 00:20:04,772 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/MXTmpFiles/system.tmp
+2025-12-16 00:20:04,786 [INFO] CodeEngine:321 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/stm32g0xx_hal_conf.h_save
+2025-12-16 00:20:04,981 [INFO] CodeEngine:345 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/stm32g0xx_hal_conf.h
+2025-12-16 00:20:05,015 [INFO] ApiDbMcu:532 - Load IP Config File for ADC1
+2025-12-16 00:20:05,038 [INFO] ApiDbMcu:532 - Load IP Config File for USART1
+2025-12-16 00:20:05,043 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/main.h_save
+2025-12-16 00:20:05,171 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Inc/main.h
+2025-12-16 00:20:05,174 [INFO] CodeEngine:265 - oldGeneratedFile, /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/main.c_save
+2025-12-16 00:20:05,439 [INFO] CodeEngine:289 - Generated code: /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor/Core/Src/main.c
+2025-12-16 00:20:05,704 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 33mS.
+2025-12-16 00:20:05,706 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2025-12-16 00:20:05,841 [INFO] ConfigFileManager:1595 - The Die is : DIE466
+2025-12-16 00:20:07,444 [INFO] ProjectBuilder:5496 - Time for Generating toolchain IDE Files: 1737mS.
+2025-12-16 00:20:07,445 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 1mS.
+2025-12-16 00:20:07,446 [INFO] ProjectBuilder:3463 - Time for Copy CMSIS : 0mS.

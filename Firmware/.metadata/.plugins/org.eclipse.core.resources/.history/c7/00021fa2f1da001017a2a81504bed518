@@ -1,0 +1,19 @@
+
+
+#include "leather_gauge.h"
+
+uint8_t lg_sensor_init(void)
+{
+    uint8_t ret = 0;
+
+    return 0;
+}
+
+void lg_sensor_run(void)
+{
+
+    while (1)
+    {
+        /* code */
+    }
+}
