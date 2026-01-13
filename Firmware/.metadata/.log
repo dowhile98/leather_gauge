@@ -2312,3 +2312,18 @@ Command-line arguments:  -os linux -ws gtk -arch x86_64 -data /home/tecna-smart-
 
 !ENTRY org.eclipse.cdt.core 1 0 2026-01-13 00:31:57.075
 !MESSAGE Indexed 'leather_gauge_controller' (387 sources, 238 headers) in 15.1 sec: 24,806 declarations; 123,029 references; 6 unresolved inclusions; 130 syntax errors; 396 unresolved names (0.27%)
+!SESSION 2026-01-13 11:34:18.103 -----------------------------------------------
+eclipse.buildId=Version 1.18.1
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=es_ES
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-13 11:34:45.413
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-13 11:34:45.413
+!MESSAGE Log4j2 initialized with config file /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-13 11:34:53.376
+!MESSAGE Started RMI Server, listening on port 41338
