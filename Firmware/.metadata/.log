@@ -2309,3 +2309,6 @@ Command-line arguments:  -os linux -ws gtk -arch x86_64 -data /home/tecna-smart-
 
 !ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-13 00:00:49.758
 !MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-01-13 00:31:57.075
+!MESSAGE Indexed 'leather_gauge_controller' (387 sources, 238 headers) in 15.1 sec: 24,806 declarations; 123,029 references; 6 unresolved inclusions; 130 syntax errors; 396 unresolved names (0.27%)
