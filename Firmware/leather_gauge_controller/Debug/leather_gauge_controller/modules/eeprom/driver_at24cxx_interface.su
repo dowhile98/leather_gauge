@@ -1,0 +1,8 @@
+../leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.c:53:9:at24cxx_interface_iic_init	8	static
+../leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.c:66:9:at24cxx_interface_iic_deinit	8	static
+../leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.c:83:9:at24cxx_interface_iic_read	32	static
+../leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.c:103:9:at24cxx_interface_iic_write	32	static
+../leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.c:123:9:at24cxx_interface_iic_read_address16	40	static
+../leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.c:143:9:at24cxx_interface_iic_write_address16	40	static
+../leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.c:157:6:at24cxx_interface_delay_ms	16	static
+../leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.c:167:6:at24cxx_interface_debug_print	4	static

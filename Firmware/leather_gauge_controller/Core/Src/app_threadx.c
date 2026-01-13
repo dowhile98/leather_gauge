@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "lgc.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,6 +63,8 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
 
   /* USER CODE BEGIN App_ThreadX_Init */
   (void)byte_pool;
+
+  lgc_system_init(memory_ptr);
   /* USER CODE END App_ThreadX_Init */
 
   return ret;

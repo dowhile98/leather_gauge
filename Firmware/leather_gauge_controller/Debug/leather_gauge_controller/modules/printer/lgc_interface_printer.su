@@ -1,0 +1,8 @@
+../leather_gauge_controller/modules/printer/lgc_interface_printer.c:79:9:lgc_interface_printer_init	40	static
+../leather_gauge_controller/modules/printer/lgc_interface_printer.c:109:9:lgc_interface_printer_writeData	24	static
+../leather_gauge_controller/modules/printer/lgc_interface_printer.c:127:9:lgc_interface_printer_connected	4	static
+../leather_gauge_controller/modules/printer/lgc_interface_printer.c:134:13:usbx_app_thread_entry	32	static
+../leather_gauge_controller/modules/printer/lgc_interface_printer.c:190:13:ux_host_error_callback	32	static
+../leather_gauge_controller/modules/printer/lgc_interface_printer.c:212:13:MX_USB_Host_Init	16	static
+../leather_gauge_controller/modules/printer/lgc_interface_printer.c:246:13:USBH_DriverVBUS	16	static
+../leather_gauge_controller/modules/printer/lgc_interface_printer.c:261:13:ux_host_event_callback	48	static

@@ -1,0 +1,38 @@
+/*
+ * lgc.c
+ *
+ *  Created on: Jan 8, 2026
+ *      Author: tecna-smart-lab
+ */
+
+
+#include "lgc.h"
+
+
+extern uint8_t osPoolInit(void *pointer);
+
+
+error_t lgc_system_init(void *memory)
+{
+	error_t ret = NO_ERROR;
+	//memory pool init
+	osPoolInit(memory);
+
+	//init interfaces
+
+	//HMI
+	ret = lgc_hmi_init();
+	if( ret != NO_ERROR)
+	{
+		return ret;
+	}
+	//PRINTER
+
+	ret = lgc_printer_init();
+
+	if(ret != NO_ERROR)
+	{
+		return ret;
+	}
+
+}

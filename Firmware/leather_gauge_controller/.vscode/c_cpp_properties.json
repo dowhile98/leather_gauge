@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "LGC",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/**"
+            ],
+            "defines": [
+                "DEBUG",
+                "USE_HAL_DRIVER",
+                "STM32F446xx",
+                "TX_INCLUDE_USER_DEFINE_FILE",
+                "UX_INCLUDE_USER_DEFINE_FILE",
+            ],
+            "compilerPath": "arm-none-eabi-gcc",
+            "cStandard": "c11",
+            "cppStandard": "gnu++11",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}

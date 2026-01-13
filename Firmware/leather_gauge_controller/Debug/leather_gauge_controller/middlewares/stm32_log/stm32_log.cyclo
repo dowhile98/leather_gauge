@@ -1,0 +1,5 @@
+../Drivers/CMSIS/Include/core_cm4.h:2064:26:ITM_SendChar	4
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/stm32_log/stm32_log.c:17:16:stm32_log_out	2
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/stm32_log/stm32_log.c:33:9:stm32_log_init	2
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/stm32_log/stm32_log.c:51:32:stm32_log_timestamp	1
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/stm32_log/stm32_log.c:63:6:stm32_log_write	2

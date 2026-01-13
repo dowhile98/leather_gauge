@@ -1,0 +1,55 @@
+/**
+ *
+ */
+
+//-------------------------------------------------------------------------------
+// includes
+//-------------------------------------------------------------------------------
+#include "lgc.h"
+#include "lgc_interface_printer.h"
+#include "error.h"
+#include "os_port.h"
+#include "ESC_POS_Printer.h"
+
+//-------------------------------------------------------------------------------
+// defines
+//-------------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------------
+// global variables
+//-------------------------------------------------------------------------------
+static esc_pos_printer_t lgc_printer = {0};
+
+static OsTaskId lgc_printer_task = NULL;
+//-------------------------------------------------------------------------------
+// private function prototype
+//-------------------------------------------------------------------------------
+static void printer_delay(uint32_t ms);
+
+static void lgc_printer_task_entrye(void *params);
+//-------------------------------------------------------------------------------
+// public function definitions
+//-------------------------------------------------------------------------------
+uint8_t lgc_printer_connected(void)
+{
+    return lgc_interface_printer_connected();
+}
+//-------------------------------------------------------------------------------
+// private function definition
+//-------------------------------------------------------------------------------
+static void printer_delay(uint32_t ms)
+{
+    osDelayTask(ms);
+}
+//-------------------------------------------------------------------------------
+// public
+//-------------------------------------------------------------------------------
+error_t lgc_printer_init(void)
+{
+	OsTaskParameters params = OS_TASK_DEFAULT_PARAMS;
+    error_t err = NO_ERROR;
+
+    esc_pos_init(&lgc_printer, lgc_interface_printer_writeData, printer_delay, PRINTER_80MM);
+
+    return err;
+}

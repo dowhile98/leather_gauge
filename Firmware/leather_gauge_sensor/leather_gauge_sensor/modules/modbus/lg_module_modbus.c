@@ -17,8 +17,8 @@
 #define LG_UART_RX_BUFFER_SIZE 64
 #endif
 
-#define COILS_ADDR_MAX 2
-#define REGS_ADDR_MAX 10
+#define COILS_ADDR_MAX LG_ADC_SENAOR_MAX_SIZE
+
 
 /* ============================================================================
  * typedefs
@@ -47,16 +47,17 @@ static int32_t lg_module_write_serial(const uint8_t *buf, uint16_t count, int32_
 static nmbs_error handle_read_coils(uint16_t address, uint16_t quantity, nmbs_bitfield coils_out, uint8_t unit_id, void *arg);
 
 static nmbs_error handle_write_multiple_coils(uint16_t address, uint16_t quantity, const nmbs_bitfield coils, uint8_t unit_id,
-											  void *arg);
+		void *arg);
 
 static nmbs_error handler_read_holding_registers(uint16_t address, uint16_t quantity, uint16_t *registers_out, uint8_t unit_id,
-												 void *arg);
+		void *arg);
 static nmbs_error handle_write_multiple_registers(uint16_t address, uint16_t quantity, const uint16_t *registers,
-												  uint8_t unit_id, void *arg);
+		uint8_t unit_id, void *arg);
 static nmbs_error handle_write_single_register(uint16_t address, uint16_t value,
-											   uint8_t unit_id, void *arg);
+		uint8_t unit_id, void *arg);
 
 static void modbus_server_update(void);
+nmbs_error modbus_tcp_write_data(uint16_t address, uint16_t val);
 /* ============================================================================
  * public function definition
  * ========================================================================= */
@@ -121,12 +122,22 @@ uint8_t lg_module_modbus_pool(void)
 /* ============================================================================
  * private function definition
  * ========================================================================= */
+
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+{
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_buffer, LG_UART_RX_BUFFER_SIZE);
+
+	HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_RESET);
+}
+
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
 	/*write to ring buffer*/
 	lwrb_write(&rb, rx_buffer, Size);
 	/*Receive another data*/
 	HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_buffer, LG_UART_RX_BUFFER_SIZE);
+
+	HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_RESET);
 
 	return;
 }
@@ -158,7 +169,7 @@ static int32_t lg_module_write_serial(const uint8_t *buf, uint16_t count, int32_
 		ret = 0;
 	}
 	// set input dir
-	HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_RESET);
 
 	return ret;
 }
@@ -181,7 +192,7 @@ static nmbs_error handle_read_coils(uint16_t address, uint16_t quantity, nmbs_bi
 }
 
 static nmbs_error handle_write_multiple_coils(uint16_t address, uint16_t quantity, const nmbs_bitfield coils, uint8_t unit_id,
-											  void *arg)
+		void *arg)
 {
 	if (address + quantity > COILS_ADDR_MAX + 1)
 		return NMBS_EXCEPTION_ILLEGAL_DATA_ADDRESS;
@@ -196,9 +207,9 @@ static nmbs_error handle_write_multiple_coils(uint16_t address, uint16_t quantit
 }
 
 static nmbs_error handler_read_holding_registers(uint16_t address, uint16_t quantity, uint16_t *registers_out, uint8_t unit_id,
-												 void *arg)
+		void *arg)
 {
-	if (address + quantity > REGS_ADDR_MAX + 1)
+	if (address + quantity > LB_MODBUS_ADDR_MAX + 1)
 		return NMBS_EXCEPTION_ILLEGAL_DATA_ADDRESS;
 
 	// update current data
@@ -211,20 +222,30 @@ static nmbs_error handler_read_holding_registers(uint16_t address, uint16_t quan
 }
 
 static nmbs_error handle_write_multiple_registers(uint16_t address, uint16_t quantity, const uint16_t *registers,
-												  uint8_t unit_id, void *arg)
+		uint8_t unit_id, void *arg)
 {
-	if (address + quantity > REGS_ADDR_MAX + 1)
+	nmbs_error err = NMBS_ERROR_NONE;
+
+	if (address + quantity > LB_MODBUS_ADDR_MAX + 1)
 		return NMBS_EXCEPTION_ILLEGAL_DATA_ADDRESS;
 
 	// Write registers values to our server_registers
 	for (int i = 0; i < quantity; i++)
-		server_registers[address + i] = registers[i];
+	{
+		if (modbus_tcp_write_data(address + i, registers[i]) != NMBS_ERROR_NONE)
+		{
+			err = NMBS_EXCEPTION_ILLEGAL_DATA_ADDRESS;
+			break;
+		}
+	}
 
-	return NMBS_ERROR_NONE;
+	modbus_server_update();
+
+	return err;
 }
 
 static nmbs_error handle_write_single_register(uint16_t address, uint16_t value,
-											   uint8_t unit_id, void *arg)
+		uint8_t unit_id, void *arg)
 {
 	return handle_write_multiple_registers(address, 1, &value, unit_id, arg);
 }

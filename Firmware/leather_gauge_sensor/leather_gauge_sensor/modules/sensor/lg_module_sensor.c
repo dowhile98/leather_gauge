@@ -90,11 +90,11 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
         sensor.D[i] = sensor.S[i] - conf.offset[i];
         sensor.D[i] = (sensor.D[i] < 0) ? 0 : sensor.D[i];
         /*detect*/
-        if (sensor.D[i] >= conf.threshold)
+        if (sensor.D[i] <= conf.threshold)
         {
             sensor.value |= 1 << (i); // set bit
         }
-        else if (sensor.D[i] <= (conf.threshold - LB_THESHOLD_HYSTERESIS))
+        else if (sensor.D[i] >= (conf.threshold + LB_THESHOLD_HYSTERESIS))
         {
             sensor.value &= ~(1 << i); // clear
         }

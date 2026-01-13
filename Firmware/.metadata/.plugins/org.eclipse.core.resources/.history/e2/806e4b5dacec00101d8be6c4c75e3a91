@@ -1,0 +1,118 @@
+/*
+ * lgc_inteface_modbus.c
+ *
+ *  Created on: Jan 6, 2026
+ *      Author: tecna-smart-lab
+ */
+/*includes*/
+#include "lgc_interface_modbus.h"
+#include "nanomodbus.h"
+#include "usart.h"
+
+
+#ifndef NMBS_READ_TIMEOUT
+#define NMBS_READ_TIMEOUT 100
+#endif
+
+#ifndef NMBS_WRITE_TIMEOUT
+#define NMBS_WRITE_TIMEOUT 1000
+#endif
+/*global variables*/
+static nmbs_platform_conf platform_conf;
+static nmbs_t nmbs;
+static OsMutex mutex;
+/*private function prototype*/
+static int32_t lgc_modbus_uart_read(uint8_t *buffer, uint16_t count, int32_t timeout, void *args);
+static int32_t lgc_modbus_uart_write(uint8_t *buffer, uint16_t count, int32_t timeout, void *args);
+
+/*public function definitions*/
+error_t lgc_interface_modbus_init(void)
+{
+	error_t err = NO_ERROR;
+
+	nmbs_platform_conf_create(&platform_conf);
+	platform_conf.transport = NMBS_TRANSPORT_RTU;
+	platform_conf.read = lgc_modbus_uart_read;
+	platform_conf.write = lgc_modbus_uart_write;
+	platform_conf.arg = NULL;
+
+	err = nmbs_init(&nmbs, &platform_conf);
+
+	nmbs_set_destination_rtu_address(&nmbs, 1); // Set Modbus slave address
+
+	//set timeout
+	nmbs_set_byte_timeout(&nmbs, NMBS_WRITE_TIMEOUT);
+	nmbs_set_read_timeout(&nmbs, NMBS_READ_TIMEOUT);
+
+	nmbs_set_byte_timeout(&nmbs, NMBS_READ_TIMEOUT);
+
+
+	/*init modbus mutex*/
+	if(osCreateMutex(&mutex) != TRUE)
+	{
+		return ERROR_FAILURE;
+	}
+	return err;
+}
+/*private function definition*/
+static int32_t lgc_modbus_uart_read(uint8_t *buffer, uint16_t count, int32_t timeout, void *args)
+{
+	//Set dir
+	HAL_GPIO_WritePin(DIR_SENSORES_GPIO_Port, DIR_SENSORES_Pin, GPIO_PIN_RESET);
+	//read
+	if (HAL_UART_Receive(&huart3, buffer, count, timeout) == HAL_OK)
+	{
+		return (int32_t)count;
+	}
+
+	return 0;
+}
+
+static int32_t lgc_modbus_uart_write(uint8_t *buffer, uint16_t count, int32_t timeout, void *args)
+{
+	//Set dir
+	HAL_GPIO_WritePin(DIR_SENSORES_GPIO_Port, DIR_SENSORES_Pin, GPIO_PIN_SET);
+	//write
+	if (HAL_UART_Transmit(&huart3, buffer, count, timeout) == HAL_OK)
+	{
+		return (int32_t)count;
+	}
+
+	return 0;
+}
+
+
+//public functions
+error_t lgc_modbus_read_holding_regs(uint16_t address, uint16_t *regs, size_t len)
+{
+	osAcquireMutex(&mutex);
+
+	error_t err = nmbs_read_holding_registers(&nmbs, address, len, regs);
+
+	osReleaseMutex(&mutex);
+
+	return err;
+}
+
+error_t lgc_modbus_read_coils(uint16_t address, uint8_t *coils, size_t len)
+{
+	osAcquireMutex(&mutex);
+
+	error_t err = nmbs_read_coils(&nmbs, address, len, (nmbs_bitfield )coils);
+
+	osReleaseMutex(&mutex);
+
+	return err;
+}
+
+
+error_t lgc_modbus_write_holding_regs(uint16_t address, uint16_t *regs, size_t len)
+{
+	osAcquireMutex(&mutex);
+
+	error_t err = nmbs_write_multiple_registers(&nmbs, address, len, regs);
+
+	osReleaseMutex(&mutex);
+
+	return err;
+}

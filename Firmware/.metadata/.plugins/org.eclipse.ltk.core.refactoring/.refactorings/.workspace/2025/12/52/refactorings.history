@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;leather_gauge_controller/leather_gauge_controller/app/source&apos;" deleteContents="false" description="Delete resource &apos;leather_gauge_controller/leather_gauge_controller/app/source&apos;" element1="/leather_gauge_controller/leather_gauge_controller/app/source" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1766401796459"/>
+</session>

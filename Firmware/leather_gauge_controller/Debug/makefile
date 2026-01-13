@@ -9,6 +9,37 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include leather_gauge_controller/osal/portable/zephyr/subdir.mk
+-include leather_gauge_controller/osal/portable/windows/subdir.mk
+-include leather_gauge_controller/osal/portable/ucos3/subdir.mk
+-include leather_gauge_controller/osal/portable/ucos2/subdir.mk
+-include leather_gauge_controller/osal/portable/threadx/subdir.mk
+-include leather_gauge_controller/osal/portable/sys_bios/subdir.mk
+-include leather_gauge_controller/osal/portable/safertos/subdir.mk
+-include leather_gauge_controller/osal/portable/rtx/subdir.mk
+-include leather_gauge_controller/osal/portable/px5/subdir.mk
+-include leather_gauge_controller/osal/portable/posix/subdir.mk
+-include leather_gauge_controller/osal/portable/none/subdir.mk
+-include leather_gauge_controller/osal/portable/freertos/subdir.mk
+-include leather_gauge_controller/osal/portable/embos/subdir.mk
+-include leather_gauge_controller/osal/portable/cmx_rtx/subdir.mk
+-include leather_gauge_controller/osal/portable/cmsis_rtos2/subdir.mk
+-include leather_gauge_controller/osal/portable/cmsis_rtos/subdir.mk
+-include leather_gauge_controller/osal/portable/chibios/subdir.mk
+-include leather_gauge_controller/osal/common/subdir.mk
+-include leather_gauge_controller/modules/printer/subdir.mk
+-include leather_gauge_controller/modules/modbus/subdir.mk
+-include leather_gauge_controller/modules/eeprom/subdir.mk
+-include leather_gauge_controller/middlewares/stm32_log/subdir.mk
+-include leather_gauge_controller/middlewares/nanoMODBUS/subdir.mk
+-include leather_gauge_controller/middlewares/lwrb/src/lwrb/subdir.mk
+-include leather_gauge_controller/middlewares/lwprintf/src/system/subdir.mk
+-include leather_gauge_controller/middlewares/lwprintf/src/lwprintf/subdir.mk
+-include leather_gauge_controller/middlewares/dwin/subdir.mk
+-include leather_gauge_controller/middlewares/at24cxx/subdir.mk
+-include leather_gauge_controller/app/src/printer/subdir.mk
+-include leather_gauge_controller/app/src/hmi/subdir.mk
+-include leather_gauge_controller/app/src/subdir.mk
 -include USBX/App/subdir.mk
 -include Middlewares/ST/usbx/common/usbx_stm32_host_controllers/subdir.mk
 -include Middlewares/ST/usbx/common/usbx_host_classes/src/subdir.mk

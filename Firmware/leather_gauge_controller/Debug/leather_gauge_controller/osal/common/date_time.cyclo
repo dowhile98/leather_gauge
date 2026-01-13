@@ -1,0 +1,8 @@
+../leather_gauge_controller/osal/common/date_time.c:77:15:formatSystemTime	5
+../leather_gauge_controller/osal/common/date_time.c:135:15:formatDate	3
+../leather_gauge_controller/osal/common/date_time.c:169:6:getCurrentDate	1
+../leather_gauge_controller/osal/common/date_time.c:186:20:getCurrentUnixTime	1
+../leather_gauge_controller/osal/common/date_time.c:204:6:convertUnixTimeToDate	3
+../leather_gauge_controller/osal/common/date_time.c:266:8:convertDateToUnixTime	2
+../leather_gauge_controller/osal/common/date_time.c:310:7:compareDateTime	15
+../leather_gauge_controller/osal/common/date_time.c:389:9:computeDayOfWeek	2

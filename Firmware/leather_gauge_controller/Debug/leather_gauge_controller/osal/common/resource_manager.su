@@ -1,0 +1,2 @@
+../leather_gauge_controller/osal/common/resource_manager.c:40:9:resGetData	48	static
+../leather_gauge_controller/osal/common/resource_manager.c:143:9:resSearchFile	40	static

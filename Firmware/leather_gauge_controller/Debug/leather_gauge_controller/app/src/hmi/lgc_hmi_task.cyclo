@@ -1,0 +1,15 @@
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:69:6:lgc_hmi_task_entry	2
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:102:10:lgc_dwin_uart_transmit	2
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:114:10:lgc_dwin_get_tick	1
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:118:6:lgc_dwin_lock	1
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:122:6:lgc_dwin_unlock	1
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:127:6:lgc_dwin_signal	1
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:132:6:lgc_dwin_signal_set	1
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:138:6:lgc_dwin_new_data_signal	1
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:145:6:lgc_dwin_new_data_signal_set	1
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:152:13:lgc_dwin_process_task_entry	1
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:163:13:on_dwin_event	1
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:170:13:lgc_dwin_uart_ErrorCallback	1
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:176:13:lgc_dwin_uart_RxEventCallback	1
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:188:9:lgc_hmi_init	9
+../leather_gauge_controller/app/src/hmi/lgc_hmi_task.c:262:9:lgc_hmi_send_msg	2
