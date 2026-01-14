@@ -1,1 +1,2 @@
-../leather_gauge_controller/app/src/lgc_main_task.c:35:6:lgc_main_task_entry	3
+../leather_gauge_controller/app/src/lgc_main_task.c:36:6:lgc_main_task_entry	3
+../leather_gauge_controller/app/src/lgc_main_task.c:66:13:lgc_encoder_callback	1

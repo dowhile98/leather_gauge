@@ -1,0 +1,2 @@
+../leather_gauge_controller/modules/encoder/lgc_module_encoder.c:12:9:lgc_module_encoder_init	16	static
+../leather_gauge_controller/modules/encoder/lgc_module_encoder.c:25:6:HAL_GPIO_EXTI_Callback	16	static

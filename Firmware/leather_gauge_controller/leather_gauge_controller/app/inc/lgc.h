@@ -2,8 +2,8 @@
  *
  */
 
-#ifndef LGC_TYPEDEFS_H
-#define LGC_TYPEDEFS_H
+#ifndef LGC_H
+#define LGC_H
 
 //-------------------------------------------------------------------------------
 // includes
@@ -12,6 +12,8 @@
 #include "lgc_typedefs.h"
 #include "error.h"
 #include "os_port.h"
+#include "lgc_module_input.h"
+#include "lgc_module_eeprom.h"
 //-------------------------------------------------------------------------------
 // defines
 //-------------------------------------------------------------------------------

@@ -1,0 +1,7 @@
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwbtn/src/lwbtn/lwbtn.c:111:1:prv_process_btn	19
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwbtn/src/lwbtn/lwbtn.c:333:1:lwbtn_init_ex	7
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwbtn/src/lwbtn/lwbtn.c:392:1:lwbtn_process_ex	3
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwbtn/src/lwbtn/lwbtn.c:415:1:lwbtn_process_btn_ex	3
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwbtn/src/lwbtn/lwbtn.c:430:1:lwbtn_set_btn_state	1
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwbtn/src/lwbtn/lwbtn.c:451:1:lwbtn_is_btn_active	3
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwbtn/src/lwbtn/lwbtn.c:481:1:lwbtn_reset	4

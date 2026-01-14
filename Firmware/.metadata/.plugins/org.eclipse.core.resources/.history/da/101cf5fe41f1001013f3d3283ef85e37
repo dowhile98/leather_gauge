@@ -1,0 +1,8 @@
+/*
+ * lgc_module_eeprom.c
+ *
+ *  Created on: Jan 14, 2026
+ *      Author: tecna-smart-lab
+ */
+
+#include "lgc_module_eeprom.h"

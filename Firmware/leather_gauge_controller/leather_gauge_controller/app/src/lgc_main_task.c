@@ -8,7 +8,7 @@
 #include "lgc.h"
 #include "lgc_interface_printer.h"
 #include "os_port.h"
-
+#include "lgc_module_input.h"
 
 //-------------------------------------------------------------------------------
 // defines
@@ -25,10 +25,11 @@ typedef struct
 // global variables
 //-------------------------------------------------------------------------------
 lgc_t data;
+static OsSemaphore encoder_flag;
 //-------------------------------------------------------------------------------
 // private function prototype
 //-------------------------------------------------------------------------------
-
+static void lgc_encoder_callback(void);
 //-------------------------------------------------------------------------------
 // task definition
 //-------------------------------------------------------------------------------
@@ -36,8 +37,16 @@ void lgc_main_task_entry(void *param)
 {
 	error_t err = NO_ERROR;
 
+
+	/*create semaphore*/
+	osCreateSemaphore(&encoder_flag, 0);
+	/*encoder init*/
+	lgc_module_encoder_init(lgc_encoder_callback);
+
     for (;;)
     {
+    	/*state machine*/
+
     	for(uint8_t i = 0; i<LGC_SENSOR_NUMBER; i++)
     	{
     		err = lgc_modbus_read_holding_regs(i +1 , 45, &data.sensor[i], 1);
@@ -50,6 +59,14 @@ void lgc_main_task_entry(void *param)
         /* code */
         osDelayTask(1000);
     }
+}
+//-------------------------------------------------------------------------------
+// callbacks
+//-------------------------------------------------------------------------------
+static void lgc_encoder_callback(void)
+{
+	//set flag
+	osReleaseSemaphore(&encoder_flag);
 }
 //-------------------------------------------------------------------------------
 // private function definition

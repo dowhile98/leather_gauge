@@ -29,12 +29,15 @@ RM := rm -rf
 -include leather_gauge_controller/osal/common/subdir.mk
 -include leather_gauge_controller/modules/printer/subdir.mk
 -include leather_gauge_controller/modules/modbus/subdir.mk
+-include leather_gauge_controller/modules/encoder/subdir.mk
 -include leather_gauge_controller/modules/eeprom/subdir.mk
+-include leather_gauge_controller/modules/di/subdir.mk
 -include leather_gauge_controller/middlewares/stm32_log/subdir.mk
 -include leather_gauge_controller/middlewares/nanoMODBUS/subdir.mk
 -include leather_gauge_controller/middlewares/lwrb/src/lwrb/subdir.mk
 -include leather_gauge_controller/middlewares/lwprintf/src/system/subdir.mk
 -include leather_gauge_controller/middlewares/lwprintf/src/lwprintf/subdir.mk
+-include leather_gauge_controller/middlewares/lwbtn/src/lwbtn/subdir.mk
 -include leather_gauge_controller/middlewares/dwin/subdir.mk
 -include leather_gauge_controller/middlewares/at24cxx/subdir.mk
 -include leather_gauge_controller/app/src/printer/subdir.mk

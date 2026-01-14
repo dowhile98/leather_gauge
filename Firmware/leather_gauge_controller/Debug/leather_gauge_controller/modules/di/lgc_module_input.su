@@ -1,0 +1,4 @@
+../leather_gauge_controller/modules/di/lgc_module_input.c:42:9:lgc_module_input_init	48	static
+../leather_gauge_controller/modules/di/lgc_module_input.c:69:16:lwbtn_get_state	24	static
+../leather_gauge_controller/modules/di/lgc_module_input.c:105:13:lwbtn_evt	32	static
+../leather_gauge_controller/modules/di/lgc_module_input.c:115:13:lgc_btns_task_entry	16	static

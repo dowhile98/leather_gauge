@@ -37,12 +37,15 @@ leather_gauge_controller/app/src \
 leather_gauge_controller/app/src/printer \
 leather_gauge_controller/middlewares/at24cxx \
 leather_gauge_controller/middlewares/dwin \
+leather_gauge_controller/middlewares/lwbtn/src/lwbtn \
 leather_gauge_controller/middlewares/lwprintf/src/lwprintf \
 leather_gauge_controller/middlewares/lwprintf/src/system \
 leather_gauge_controller/middlewares/lwrb/src/lwrb \
 leather_gauge_controller/middlewares/nanoMODBUS \
 leather_gauge_controller/middlewares/stm32_log \
+leather_gauge_controller/modules/di \
 leather_gauge_controller/modules/eeprom \
+leather_gauge_controller/modules/encoder \
 leather_gauge_controller/modules/modbus \
 leather_gauge_controller/modules/printer \
 leather_gauge_controller/osal/common \

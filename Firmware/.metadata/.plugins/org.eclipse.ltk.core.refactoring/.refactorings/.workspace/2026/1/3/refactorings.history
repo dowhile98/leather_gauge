@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete 2 resources" deleteContents="false" description="Delete 2 resources" element1="/leather_gauge_controller/leather_gauge_controller/middlewares/lwbtn/CMakeLists.txt" element2="/leather_gauge_controller/leather_gauge_controller/middlewares/lwbtn/library.cmake" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="2" stamp="1768386145164"/>
+</session>

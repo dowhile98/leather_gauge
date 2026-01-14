@@ -2,7 +2,6 @@ leather_gauge_controller/app/src/lgc.o: \
  ../leather_gauge_controller/app/src/lgc.c \
  /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/app/inc/lgc.h \
  /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/app/inc/lgc_typedefs.h \
- /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/osal/common/error.h \
  /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/osal/include/os_port.h \
  /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/config/os_port_config.h \
  /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwprintf/src/include/lwprintf/lwprintf.h \
@@ -16,10 +15,12 @@ leather_gauge_controller/app/src/lgc.o: \
  ../Middlewares/ST/threadx/common/inc/tx_semaphore.h \
  ../Middlewares/ST/threadx/common/inc/tx_event_flags.h \
  ../Middlewares/ST/threadx/common/inc/tx_mutex.h \
- ../Middlewares/ST/threadx/common/inc/tx_initialize.h
+ ../Middlewares/ST/threadx/common/inc/tx_initialize.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/osal/common/error.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/modules/di/lgc_module_input.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/app/inc/lgc_typedefs.h
 /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/app/inc/lgc.h:
 /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/app/inc/lgc_typedefs.h:
-/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/osal/common/error.h:
 /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/osal/include/os_port.h:
 /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/config/os_port_config.h:
 /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwprintf/src/include/lwprintf/lwprintf.h:
@@ -35,3 +36,6 @@ leather_gauge_controller/app/src/lgc.o: \
 ../Middlewares/ST/threadx/common/inc/tx_event_flags.h:
 ../Middlewares/ST/threadx/common/inc/tx_mutex.h:
 ../Middlewares/ST/threadx/common/inc/tx_initialize.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/osal/common/error.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/modules/di/lgc_module_input.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/app/inc/lgc_typedefs.h:
