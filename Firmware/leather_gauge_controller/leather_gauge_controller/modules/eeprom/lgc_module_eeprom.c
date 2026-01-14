@@ -7,9 +7,47 @@
 
 #include "lgc_module_eeprom.h"
 #include "os_port.h"
+#include <stdint.h>
+#include <stddef.h>
+#include <string.h>
+
+#define CRC32_POLYNOMIAL 0x04C11DB7UL
 /*global variables*/
 static OsMutex mutex;
 static at24cxx_handle_t eeprom;
+static LGC_CONF_TypeDef_t lgc_conf = {0};
+
+/* static CRC32 (IEEE 802.3) implementation - table driven */
+static uint32_t lgc_crc32_compute(const uint8_t *data, size_t length)
+{
+    uint32_t crc = 0xFFFFFFFFUL;
+    size_t i, j;
+
+    if (data == NULL || length == 0)
+    {
+        return 0;
+    }
+
+    for (i = 0; i < length; ++i)
+    {
+        crc ^= data[i];
+        for (j = 0; j < 8; ++j)
+        {
+            if (crc & 1)
+            {
+                crc = (crc >> 1) ^ CRC32_POLYNOMIAL;
+            }
+            else
+            {
+                crc >>= 1;
+            }
+        }
+    }
+
+    crc = crc ^ 0xFFFFFFFFUL;
+    return crc;
+}
+
 /*public functions*/
 error_t lgc_module_eeprom_init(void)
 {
@@ -30,16 +68,88 @@ error_t lgc_module_eeprom_init(void)
     /* set addr pin */
     at24cxx_set_addr_pin(&eeprom, AT24CXX_ADDRESS_A000);
 
-
-    if(at24cxx_init(&eeprom) != NO_ERROR)
+    if (at24cxx_init(&eeprom) != NO_ERROR)
     {
         return ERROR_FAILURE;
     }
     /*create mutex*/
-    if(osCreateMutex(&mutex) != TRUE)
+    if (osCreateMutex(&mutex) != TRUE)
     {
         return ERROR_FAILURE;
     }
+
+    return NO_ERROR;
+}
+
+error_t lgc_module_conf_get(LGC_CONF_TypeDef_t *obj)
+{
+    /*lock mutex*/
+    osAcquireMutex(&mutex);
+    /*copy conf*/
+    memcpy(obj, &lgc_conf, sizeof(LGC_CONF_TypeDef_t));
+    /*release mutex*/
+    osReleaseMutex(&mutex);
+
+    return NO_ERROR;
+}
+
+error_t lgc_module_conf_set(LGC_CONF_TypeDef_t *obj)
+{
+    uint32_t crc = 0;
+    /*lock mutex*/
+    osAcquireMutex(&mutex);
+    /*calculate crc*/
+    crc = lgc_crc32_compute((uint8_t *)obj, sizeof(LGC_CONF_TypeDef_t) - sizeof(uint32_t));
+    obj->crc = crc;
+    /*copy conf*/
+    memcpy(&lgc_conf, obj, sizeof(LGC_CONF_TypeDef_t));
+    /*write to eeprom*/
+    if (at24cxx_write(&eeprom, 0x0000, (uint8_t *)&lgc_conf, sizeof(LGC_CONF_TypeDef_t)) != NO_ERROR)
+    {
+        /*release mutex*/
+        osReleaseMutex(&mutex);
+        return ERROR_FAILURE;
+    }
+    /*release mutex*/
+    osReleaseMutex(&mutex);
+
+    return NO_ERROR;
+}
+
+error_t lgc_module_conf_load(void)
+{
+    uint32_t crc = 0;
+    /*lock mutex*/
+    osAcquireMutex(&mutex);
+    /*read from eeprom*/
+    if (at24cxx_read(&eeprom, 0x0000, (uint8_t *)&lgc_conf, sizeof(LGC_CONF_TypeDef_t)) != NO_ERROR)
+    {
+        /*release mutex*/
+        osReleaseMutex(&mutex);
+        return ERROR_FAILURE;
+    }
+    /*calculate crc*/
+    crc = lgc_crc32_compute((uint8_t *)&lgc_conf, sizeof(LGC_CONF_TypeDef_t) - sizeof(uint32_t));
+    /*verify crc*/
+    if (crc != lgc_conf.crc)
+    {
+        /*restore default*/
+        memset(&lgc_conf, 0, sizeof(LGC_CONF_TypeDef_t));
+        lgc_conf.batch = 1;
+        lgc_conf.units = 0;
+        // todo: add
+
+        crc = lgc_crc32_compute((uint8_t *)&lgc_conf, sizeof(LGC_CONF_TypeDef_t) - sizeof(uint32_t));
+        lgc_conf.crc = crc;
+        /*write to eeprom*/
+        at24cxx_write(&eeprom, 0x0000, (uint8_t *)&lgc_conf, sizeof(LGC_CONF_TypeDef_t));
+        /*release mutex*/
+        osReleaseMutex(&mutex);
+
+        return NO_ERROR;
+    }
+    /*release mutex*/
+    osReleaseMutex(&mutex);
 
     return NO_ERROR;
 }

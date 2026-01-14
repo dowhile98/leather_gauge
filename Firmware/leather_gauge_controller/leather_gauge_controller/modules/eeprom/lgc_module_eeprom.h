@@ -12,8 +12,43 @@
 #include "driver_at24cxx.h"
 #include "driver_at24cxx_interface.h"
 
+typedef struct __attribute__((__packed__))
+{
+    uint8_t day;
+    uint8_t month;
+    uint16_t year;
+} LGC_DATE_TypeDef_t;
 
+typedef struct __attribute__((__packed__))
+{
+    uint8_t hours;
+    uint8_t minutes;
+    uint8_t seconds;
+} LGC_TIME_TypeDef_t;
 
+/*typedefs*/
+typedef struct __attribute__((__packed__)) LGC_CONF_TypeDef
+{
+    /*client*/
+    char client_name[12];
+    /*color*/
+    char color[10];
+    /*leather id*/
+    char leather_id[20];
+    /*batch*/
+    uint32_t batch;
+    /*units*/
+    uint8_t units;
+    /*date*/
+    LGC_DATE_TypeDef_t d;
+    /*time*/
+    LGC_TIME_TypeDef_t t;
+    /*crc*/
+    uint32_t crc;
+
+} LGC_CONF_TypeDef_t;
+
+/*public functions*/
 error_t lgc_module_eeprom_init(void);
 
 #endif /* MODULES_EEPROM_LGC_MODULE_EEPROM_H_ */
