@@ -39,10 +39,8 @@ typedef struct __attribute__((__packed__)) LGC_CONF_TypeDef
     uint32_t batch;
     /*units*/
     uint8_t units;
-    /*date*/
-    LGC_DATE_TypeDef_t d;
-    /*time*/
-    LGC_TIME_TypeDef_t t;
+    /*unit conversion*/
+    uint8_t conversion;
     /*crc*/
     uint32_t crc;
 
@@ -50,5 +48,11 @@ typedef struct __attribute__((__packed__)) LGC_CONF_TypeDef
 
 /*public functions*/
 error_t lgc_module_eeprom_init(void);
+
+error_t lgc_module_conf_get(LGC_CONF_TypeDef_t *obj);
+
+error_t lgc_module_conf_set(LGC_CONF_TypeDef_t *obj);
+
+error_t lgc_module_conf_load(void);
 
 #endif /* MODULES_EEPROM_LGC_MODULE_EEPROM_H_ */

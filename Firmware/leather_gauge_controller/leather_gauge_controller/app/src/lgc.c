@@ -86,6 +86,7 @@ error_t lgc_system_init(void *memory)
 	{
 		return ret;
 	}
+	
 	// main task init
 	params.priority = LGC_MAIN_TASK_PRI;
 	params.stackSize = LGC_MAIN_TASK_STACK;

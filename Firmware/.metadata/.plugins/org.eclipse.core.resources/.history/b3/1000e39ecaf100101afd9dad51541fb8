@@ -1,0 +1,163 @@
+/**
+ *
+ */
+
+//-------------------------------------------------------------------------------
+// includes
+//-------------------------------------------------------------------------------
+#include "lgc.h"
+#include "lgc_interface_printer.h"
+#include "os_port.h"
+#include "lgc_module_input.h"
+
+//-------------------------------------------------------------------------------
+// defines
+//-------------------------------------------------------------------------------
+#ifndef LGC_SENSOR_NUMBER
+#define LGC_SENSOR_NUMBER 11
+#endif
+
+#ifndef LGC_SENSOR_READ_RETRY
+#define LGC_SENSOR_READ_RETRY 4
+#endif
+
+typedef struct
+{
+	/*state machine*/
+	uint8_t state;
+	/*sensor data*/
+	uint16_t sensor_status;
+	uint16_t sensor[LGC_SENSOR_NUMBER];
+} lgc_t;
+
+typedef enum
+{
+	LGC_STOP = 0,
+	LGC_RUNNING,
+	LGC_FAIL,
+
+} LGC_State_t;
+//-------------------------------------------------------------------------------
+// global variables
+//-------------------------------------------------------------------------------
+lgc_t data;
+static OsSemaphore encoder_flag;
+static OsMutex mutex;
+//-------------------------------------------------------------------------------
+// private function prototype
+//-------------------------------------------------------------------------------
+static void lgc_encoder_callback(void);
+
+static uint8_t lgc_get_state(void);
+
+static uint8_t lgc_set_state(uint8_t state);
+//-------------------------------------------------------------------------------
+// task definition
+//-------------------------------------------------------------------------------
+void lgc_main_task_entry(void *param)
+{
+	error_t err = NO_ERROR;
+	uint8_t sensor_retry = 0;
+	/*create semaphore*/
+	osCreateSemaphore(&encoder_flag, 0);
+	/*Mutex*/
+	osCreateMutex(&mutex);
+	/*encoder init*/
+	lgc_module_encoder_init(lgc_encoder_callback);
+
+	for (;;)
+	{
+		// UML
+		switch (lgc_get_state())
+		{
+		case LGC_STOP:
+		{
+			// verify start condition
+
+			break;
+		}
+		case LGC_RUNNING:
+		{
+			// verify encoder flag
+			if (osWaitForSemaphore(&encoder_flag, 50) == TRUE)
+			{
+				// read sensor
+				for (uint8_t i = 0; i < LGC_SENSOR_NUMBER; i++)
+				{
+					/*sensor retry read*/
+					sensor_retry = 0;
+					do
+					{
+						// read sensor via modbus
+						err = lgc_modbus_read_holding_regs(i + 1, 45, &data.sensor[i], 1);
+						if (err != NO_ERROR)
+						{
+							sensor_retry++;
+							osDelayTask(20);
+						}
+						else
+						{
+							break;
+						}
+					} while (sensor_retry <= LGC_SENSOR_READ_RETRY);
+
+					//verify
+					if(err |= NO_ERROR)
+					{
+						data.sensor_status |= 1<<i;
+					}
+				}
+			}
+			// verify stop condition
+
+			break;
+		}
+		case LGC_FAIL:
+		{
+			// verify reset condition
+			break;
+		}
+		}
+		/*state machine*/
+
+		//    	for(uint8_t i = 0; i<LGC_SENSOR_NUMBER; i++)
+		//    	{
+		//    		err = lgc_modbus_read_holding_regs(i +1 , 45, &data.sensor[i], 1);
+		//
+		//    		if( err!= NO_ERROR)
+		//    		{
+		//    			osDelayTask(50);
+		//    		}
+		//    	}
+		//        /* code */
+		//        osDelayTask(1000);
+	}
+}
+//-------------------------------------------------------------------------------
+// callbacks
+//-------------------------------------------------------------------------------
+static void lgc_encoder_callback(void)
+{
+	// set flag
+	osReleaseSemaphore(&encoder_flag);
+}
+
+static uint8_t lgc_get_state(void)
+{
+	return data.state;
+}
+
+static uint8_t lgc_set_state(uint8_t state)
+{
+	/*Mutex protection*/
+	osAcquireMutex(&mutex);
+	/*set state*/
+	data.state = state;
+	/*return state*/
+	osReleaseMutex(&mutex);
+
+	return data.state;
+}
+//-------------------------------------------------------------------------------
+// private function definition
+//-------------------------------------------------------------------------------

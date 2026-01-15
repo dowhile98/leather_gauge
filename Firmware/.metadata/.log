@@ -2351,3 +2351,39 @@ Command-line arguments:  -os linux -ws gtk -arch x86_64
 
 !ENTRY org.eclipse.cdt.core 1 0 2026-01-14 07:01:15.912
 !MESSAGE Indexed 'leather_gauge_controller' (390 sources, 243 headers) in 17.2 sec: 25,018 declarations; 123,716 references; 6 unresolved inclusions; 130 syntax errors; 396 unresolved names (0.27%)
+!SESSION 2026-01-14 22:10:00.148 -----------------------------------------------
+eclipse.buildId=Version 1.18.1
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=es_ES
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -data /home/tecna-smart-lab/GitHub/leather_gauge/Firmware
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-14 22:10:09.728
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-14 22:10:09.729
+!MESSAGE Log4j2 initialized with config file /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/.metadata/.log4j2.xml
+
+!ENTRY org.eclipse.cdt.ui 4 0 2026-01-14 22:10:14.374
+!MESSAGE Error in CDT UI during reconcile
+!STACK 1
+C Model Exception: C Model Status [Element lgc.c does not exist.]
+	at org.eclipse.cdt.internal.core.model.CElement.newNotPresentException(CElement.java:485)
+	at org.eclipse.cdt.internal.core.model.TranslationUnit.makeConsistent(TranslationUnit.java:583)
+	at org.eclipse.cdt.internal.core.model.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:65)
+	at org.eclipse.cdt.internal.core.model.CModelOperation.execute(CModelOperation.java:346)
+	at org.eclipse.cdt.internal.core.model.CModelOperation.run(CModelOperation.java:613)
+	at org.eclipse.cdt.internal.core.model.CModelOperation.runOperation(CModelOperation.java:641)
+	at org.eclipse.cdt.internal.core.model.WorkingCopy.reconcile(WorkingCopy.java:365)
+	at org.eclipse.cdt.internal.ui.text.CReconcilingStrategy.reconcile(CReconcilingStrategy.java:79)
+	at org.eclipse.cdt.internal.ui.text.CReconcilingStrategy.reconcile(CReconcilingStrategy.java:64)
+	at org.eclipse.cdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:89)
+	at org.eclipse.cdt.internal.ui.text.CCompositeReconcilingStrategy.reconcile(CCompositeReconcilingStrategy.java:90)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:78)
+	at org.eclipse.cdt.internal.ui.text.CReconciler.process(CReconciler.java:346)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:207)
+!SUBENTRY 1 org.eclipse.cdt.core 4 969 2026-01-14 22:10:14.376
+!MESSAGE Element lgc.c does not exist.
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-14 22:10:16.263
+!MESSAGE Started RMI Server, listening on port 41337
