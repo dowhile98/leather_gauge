@@ -1,0 +1,5 @@
+../leather_gauge_controller/modules/eeprom/lgc_module_eeprom.c:21:17:lgc_crc32_compute	6
+../leather_gauge_controller/modules/eeprom/lgc_module_eeprom.c:52:9:lgc_module_eeprom_init	3
+../leather_gauge_controller/modules/eeprom/lgc_module_eeprom.c:84:9:lgc_module_conf_get	2
+../leather_gauge_controller/modules/eeprom/lgc_module_eeprom.c:96:9:lgc_module_conf_set	3
+../leather_gauge_controller/modules/eeprom/lgc_module_eeprom.c:119:9:lgc_module_conf_load	3

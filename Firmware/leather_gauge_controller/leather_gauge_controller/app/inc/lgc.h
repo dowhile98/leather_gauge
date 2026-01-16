@@ -14,6 +14,8 @@
 #include "os_port.h"
 #include "lgc_module_input.h"
 #include "lgc_module_eeprom.h"
+#include "main.h"
+
 //-------------------------------------------------------------------------------
 // defines
 //-------------------------------------------------------------------------------
@@ -33,7 +35,15 @@ extern error_t lgc_modbus_read_coils(uint8_t dev,uint16_t address, uint8_t *coil
 
 extern error_t lgc_modbus_write_holding_regs(uint8_t dev,uint16_t address, uint16_t *regs, size_t len);
 
+extern void lgc_buttons_callback(uint8_t di, uint32_t evt);
 
+extern void lgc_set_stop_condition(uint8_t stop);
+
+extern void lgc_get_measurements(lgc_measurements_t *out_measurements);
+
+extern void lgc_get_state_data(lgc_t *out_data);
+
+extern OsEvent events;
 //-------------------------------------------------------------------------------
 // public functions
 //-------------------------------------------------------------------------------

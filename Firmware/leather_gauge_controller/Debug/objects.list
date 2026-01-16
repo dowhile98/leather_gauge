@@ -370,6 +370,7 @@
 "./leather_gauge_controller/middlewares/stm32_log/stm32_log.o"
 "./leather_gauge_controller/modules/di/lgc_module_input.o"
 "./leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.o"
+"./leather_gauge_controller/modules/eeprom/lgc_module_eeprom.o"
 "./leather_gauge_controller/modules/encoder/lgc_module_encoder.o"
 "./leather_gauge_controller/modules/modbus/lgc_inteface_modbus.o"
 "./leather_gauge_controller/modules/printer/ESC_POS_Printer.o"

@@ -63,7 +63,7 @@ error_t lgc_module_eeprom_init(void)
     DRIVER_AT24CXX_LINK_DEBUG_PRINT(&eeprom, at24cxx_interface_debug_print);
 
     /* set chip type */
-    at24cxx_set_typex(&eeprom, AT24C256);
+    at24cxx_set_type(&eeprom, AT24C256);
 
     /* set addr pin */
     at24cxx_set_addr_pin(&eeprom, AT24CXX_ADDRESS_A000);
@@ -135,7 +135,7 @@ error_t lgc_module_conf_load(void)
     {
         /*restore default*/
         memset(&lgc_conf, 0, sizeof(LGC_CONF_TypeDef_t));
-        lgc_conf.batch = 1;
+        lgc_conf.batch = 10;
         lgc_conf.units = 0;
         // todo: add
 

@@ -2387,3 +2387,18 @@ C Model Exception: C Model Status [Element lgc.c does not exist.]
 
 !ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-14 22:10:16.263
 !MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2026-01-16 05:51:05.597 -----------------------------------------------
+eclipse.buildId=Version 1.18.1
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=es_ES
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-16 05:51:20.755
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-16 05:51:20.757
+!MESSAGE Log4j2 initialized with config file /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-16 05:51:27.546
+!MESSAGE Started RMI Server, listening on port 41337

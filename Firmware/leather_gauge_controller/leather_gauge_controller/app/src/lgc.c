@@ -19,28 +19,9 @@ extern uint8_t osPoolInit(void *pointer);
 
 static OsTaskId lgc_main_task = NULL;
 
+OsEvent events;
 /*private functions*/
-static void lgc_buttons_callback(uint8_t di, uint32_t evt)
-{
-	// Handle button events here
-	switch (di)
-	{
-	case LGC_DI_START_STOP:
-		// Handle START/STOP button event
-		break;
-	case LGC_DI_GUARD:
-		// Handle GUARD button event
-		break;
-	case LGC_DI_SPEEDS:
-		// Handle SPEEDS button event
-		break;
-	case LGC_DI_FEEDBACK:
-		// Handle FEEDBACK button event
-		break;
-	default:
-		break;
-	}
-}
+
 /*public functions*/
 error_t lgc_system_init(void *memory)
 {
@@ -66,6 +47,12 @@ error_t lgc_system_init(void *memory)
 		return ret;
 	}
 
+	/*event*/
+	ret = osCreateEvent(&events);
+	if (ret != TRUE)
+	{
+		return ret;
+	}
 	// modbus
 	ret = lgc_interface_modbus_init();
 

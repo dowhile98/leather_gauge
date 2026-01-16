@@ -39,48 +39,24 @@ typedef enum
 	HMI_PAGEMAX,
 } LGC_HMI_Page_t;
 
+/**
+ * @brief DWIN Variable Address Enumeration
+ *
+ * Defines all VP (Variable Pointer) addresses used in the DWIN display.
+ * Based on the variable list from Lista de variables.xlsx
+ *
+ * Format:
+ *   - Page(s): Indicates on which DWIN pages this variable appears
+ *   - Type: DWIN data type (Data Variable Display, Return Key Code, etc.)
+ *   - Values: Range or description of valid values for the variable
+ */
 typedef enum
 {
-	/* Dirección base / Sin acción o Solo cambio de página */
-	LGC_HMI_VAR_NONE = 0x0000,
+	LGC_HMI_VP_ICON_SPEEP = 0x1111,
+	LGC_HMI_VP_BATCH_COUNT = 0x1050,
+	LGC_HMI_VP_LEATHER_COUNT = 0x1051,
+	LGC_HMI_VP_CURRENT_LEATHER_AREA = 0x1060,
 
-	/* Rango 0x1000 - General Return Keys */
-	LGC_HMI_VAR_RET_KEY = 0x1001,
-	LGC_HMI_VAR_RET_KEY = 0x1002,
 
-	/* Rango 0x1100 - Ajustes y Teclas */
-	LGC_HMI_VAR_RET_KEY = 0x1100,
-	LGC_HMI_VAR_RET_KEY = 0x1101, // Aparece múltiples veces en la lista
-	LGC_HMI_VAR_RET_KEY = 0x1102,
-	LGC_HMI_VAR_INC_ADJ = 0x1104,	 // Incremental Adjustment
-	LGC_HMI_VAR_DRAG_ADJ = 0x1111,	 // Drag Adjustment
-	LGC_HMI_VAR_ICON_DRAG = 0x1112, // ICONDragManager
-
-	/* Rango 0x1200 - Drag y Teclas */
-	LGC_HMI_VAR_RET_KEY = 0x1200,
-	LGC_HMI_VAR_DRAG_ADJ = 0x1201,
-	LGC_HMI_VAR_DRAG_ADJ = 0x1203,
-	LGC_HMI_VAR_RET_KEY = 0x1204,
-	LGC_HMI_VAR_RET_KEY = 0x1205,
-
-	/* Rango 0x1300 - Inputs y Ajustes */
-	LGC_HMI_VAR_RET_KEY = 0x1300,
-	LGC_HMI_VAR_TEXT_IN = 0x1310, // ASCII Text Input
-	LGC_HMI_VAR_TEXT_IN = 0x1320, // ASCII Text Input
-	LGC_HMI_VAR_TEXT_IN = 0x1330, // ASCII Text Input
-	LGC_HMI_VAR_DATA_IN = 0x1340, // Data Input
-	LGC_HMI_VAR_INC_ADJ = 0x1341, // Incremental Adjustment
-	LGC_HMI_VAR_INC_ADJ = 0x1342,
-	LGC_HMI_VAR_INC_ADJ = 0x1343,
-	LGC_HMI_VAR_RET_KEY = 0x1344,
-	LGC_HMI_VAR_RET_KEY = 0x1345,
-	LGC_HMI_VAR_INC_ADJ = 0x1346,
-	LGC_HMI_VAR_INC_ADJ = 0x1347,
-	LGC_HMI_VAR_INC_ADJ = 0x1348,
-
-	/* Rango 0x1400 - 0 */
-	LGC_HMI_VAR_RET_KEY = 0x1400,
-	LGC_HMI_VAR_RET_KEY = 0x1500
-
-} LGC_HMI_TOUCH_Vars_t;
+} LGC_HMI_VAR_ADDR_TypeDef_t;
 #endif /* APP_SRC_HMI_LGC_HMI_H_ */

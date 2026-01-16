@@ -10,23 +10,15 @@
 #include "os_port.h"
 #include "lgc_module_input.h"
 #include "lgc_module_eeprom.h"
+#include "lwbtn.h"
+#include "lgc_module_encoder.h"
+
 //-------------------------------------------------------------------------------
 // defines
 //-------------------------------------------------------------------------------
-#ifndef LGC_SENSOR_NUMBER
-#define LGC_SENSOR_NUMBER 11
-#endif
 
 #ifndef LGC_SENSOR_READ_RETRY
 #define LGC_SENSOR_READ_RETRY 4
-#endif
-
-#ifndef LGC_LEATHER_COUNT_MAX
-#define LGC_LEATHER_COUNT_MAX 300
-#endif
-
-#ifndef LGC_LEATHER_BATCH_COUNT_MAX
-#define LGC_LEATHER_BATCH_COUNT_MAX 200
 #endif
 
 /* Pixel width in mm (single sensor pixel) */
@@ -43,35 +35,10 @@
 #define LGC_PHOTORECEPTORS_PER_SENSOR 10
 
 /* Hysteresis for leather detection (consecutive steps with no detection) */
+#ifndef LGC_LEATHER_END_HYSTERESIS
 #define LGC_LEATHER_END_HYSTERESIS 3
+#endif
 
-typedef struct
-{
-	/*state machine*/
-	uint8_t state;
-	/*sensor data*/
-	uint16_t sensor_status;
-	uint16_t sensor[LGC_SENSOR_NUMBER];
-} lgc_t;
-
-typedef struct
-{
-	uint16_t current_batch_index;						  /* Current batch index */
-	uint16_t current_leather_index;						  /* Current leather index within batch */
-	float current_leather_area;							  /* Accumulator for current leather area */
-	float leather_measurement[LGC_LEATHER_COUNT_MAX];	  /* Individual leather areas */
-	float batch_measurement[LGC_LEATHER_BATCH_COUNT_MAX]; /* Batch sums */
-	uint8_t is_measuring;								  /* Measuring state flag */
-	uint8_t no_detection_count;							  /* Consecutive steps with no detection */
-} lgc_measurements_t;
-
-typedef enum
-{
-	LGC_STOP = 0,
-	LGC_RUNNING,
-	LGC_FAIL,
-
-} LGC_State_t;
 //-------------------------------------------------------------------------------
 // global variables
 //-------------------------------------------------------------------------------
@@ -79,6 +46,7 @@ lgc_t data;
 static lgc_measurements_t measurements;
 static OsSemaphore encoder_flag;
 static OsMutex mutex;
+
 //-------------------------------------------------------------------------------
 // private function prototype
 //-------------------------------------------------------------------------------
@@ -88,11 +56,25 @@ static uint8_t lgc_get_state(void);
 
 static uint8_t lgc_set_state(uint8_t state);
 
-static void lgc_process_measurement(LGC_CONF_TypeDef_t *config);
+static void lgc_set_leds(uint8_t led, uint8_t state);
+/**
+ * @brief Process measurement data when encoder pulse is received
+ *
+ * Implements the leather detection and measurement algorithm with state machine.
+ * Returns status code indicating measurement event.
+ *
+ * @param config Pointer to configuration structure with batch limit
+ * @return uint8_t Status code:
+ *         - 0: No leather detected (idle state)
+ *         - 1: Leather measurement completed (end of leather)
+ *         - 2: Batch measurement completed (batch full)
+ */
+static uint8_t lgc_process_measurement(LGC_CONF_TypeDef_t *config);
 
 static uint16_t lgc_count_active_bits(void);
 
 static float lgc_calculate_slice_area(uint16_t active_bits);
+
 //-------------------------------------------------------------------------------
 // task definition
 //-------------------------------------------------------------------------------
@@ -101,31 +83,79 @@ void lgc_main_task_entry(void *param)
 	error_t err = NO_ERROR;
 	uint8_t sensor_retry = 0;
 	LGC_CONF_TypeDef_t config;
+	uint8_t measurement_event; /* Event status from measurement processing */
 	/*create semaphore*/
 	osCreateSemaphore(&encoder_flag, 0);
 	/*Mutex*/
 	osCreateMutex(&mutex);
+
 	/*encoder init*/
 	lgc_module_encoder_init(lgc_encoder_callback);
 
 	for (;;)
 	{
+		lgc_module_conf_get(&config); // load configuration
 		// UML
 		switch (lgc_get_state())
 		{
 		case LGC_STOP:
 		{
 			// verify start condition
-
-			lgc_module_conf_get(&config); // load configuration
-
+			if (osWaitForEventBits(&events, LGC_EVENT_START | LGC_FAILURE_DETECTED, FALSE, TRUE, 50) == TRUE)
+			{
+				// verify which event
+				if (data.start_stop_flag)
+				{
+					lgc_set_leds(LGC_RUNNING_LED, 1);
+					// go to running
+					lgc_set_state(LGC_RUNNING);
+					// clear encoder flag
+					osWaitForSemaphore(&encoder_flag, 0);
+				}
+				else if (data.guard_motor)
+				{
+					lgc_set_leds(LGC_RUNNING_LED, 0);
+					// go to fail
+					lgc_set_state(LGC_FAIL);
+				}
+				// set hmi update required
+				osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED);
+				// break
+				break;
+			}
 			break;
 		}
 		case LGC_RUNNING:
 		{
+			/* Verify stop condition and transition to LGC_STOP */
+			if (osWaitForEventBits(&events, LGC_EVENT_STOP | LGC_FAILURE_DETECTED, FALSE, TRUE, 0) == TRUE)
+			{
+				// verify which event
+				if (data.start_stop_flag == 0)
+				{
+					lgc_set_leds(LGC_RUNNING_LED, 0);
+					// go to stop
+					lgc_set_state(LGC_STOP);
+
+				}
+				else if (data.guard_motor)
+				{
+					lgc_set_leds(LGC_RUNNING_LED, 0);
+					// go to fail
+					lgc_set_state(LGC_FAIL);
+				}
+				// set hmi update required
+				osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED);
+				// break
+				break;
+			}
 			/* Verify encoder flag - proceed if pulse received */
 			if (osWaitForSemaphore(&encoder_flag, 50) == TRUE)
 			{
+				//clear before data sensor
+				memset(data.sensor, 0, sizeof(data.sensor));
+				data.sensor_status = 0;
+
 				/* Read all sensors with retry logic */
 				for (uint8_t i = 0; i < LGC_SENSOR_NUMBER; i++)
 				{
@@ -161,32 +191,45 @@ void lgc_main_task_entry(void *param)
 				/* Process measurement only if all sensors are healthy */
 				if (data.sensor_status == NO_ERROR)
 				{
-					lgc_process_measurement(&config);
+					measurement_event = lgc_process_measurement(&config);
+
+					/* Handle measurement events
+					 * 0: No event (still measuring or idle)
+					 * 1: Leather measurement completed
+					 * 2: Batch measurement completed
+					 */
+					if (measurement_event == 1)
+					{
+						/* TODO: Signal leather completion (e.g., update UI, log event) */
+
+						// set hmi flag
+						osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED);
+					}
+					else if (measurement_event == 2)
+					{
+						/* TODO: Signal batch completion (e.g., save to EEPROM, print results) */
+
+						// set hmi flag and printer event
+						osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED | LGC_EVENT_PRINT_BATCH);
+					}
 				}
 			}
 
-			/* TODO: Verify stop condition and transition to LGC_STOP */
 			break;
 		}
 		case LGC_FAIL:
 		{
 			// verify reset condition
+			if (osWaitForEventBits(&events, LGC_FAILURE_CLEARED, FALSE, TRUE, 50) == TRUE)
+			{
+				// go to stop
+				lgc_set_state(LGC_STOP);
+				// set hmi update required
+				osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED);
+			}
 			break;
 		}
 		}
-		/*state machine*/
-
-		//    	for(uint8_t i = 0; i<LGC_SENSOR_NUMBER; i++)
-		//    	{
-		//    		err = lgc_modbus_read_holding_regs(i +1 , 45, &data.sensor[i], 1);
-		//
-		//    		if( err!= NO_ERROR)
-		//    		{
-		//    			osDelayTask(50);
-		//    		}
-		//    	}
-		//        /* code */
-		//        osDelayTask(1000);
 	}
 }
 //-------------------------------------------------------------------------------
@@ -215,6 +258,30 @@ static uint8_t lgc_set_state(uint8_t state)
 	return data.state;
 }
 
+static void lgc_set_leds(uint8_t led, uint8_t state)
+{
+	switch (led)
+	{
+	case LGC_RUNNING_LED:
+		/* code */
+		HAL_GPIO_WritePin(DO_1_GPIO_Port, DO_1_Pin, (GPIO_PinState)state);
+		HAL_GPIO_WritePin(D0_2_GPIO_Port, D0_2_Pin, (GPIO_PinState)state == GPIO_PIN_SET ? GPIO_PIN_RESET : GPIO_PIN_SET);
+		//output control
+		HAL_GPIO_WritePin(DO_0_GPIO_Port, DO_0_Pin, (GPIO_PinState)state);
+		break;
+	case LGC_SPEED_LOW_LED:
+		/* code */
+		HAL_GPIO_WritePin(D0_6_GPIO_Port, D0_6_Pin, (GPIO_PinState)state);
+		break;
+	case LGC_SPEED_HIGH_LED:
+		HAL_GPIO_WritePin(D0_7_GPIO_Port, D0_7_Pin, (GPIO_PinState)state);
+		/* code */
+		break;
+
+	default:
+		break;
+	}
+}
 //-------------------------------------------------------------------------------
 // private function definition
 //-------------------------------------------------------------------------------
@@ -262,82 +329,258 @@ static float lgc_calculate_slice_area(uint16_t active_bits)
 /**
  * @brief Process measurement data when encoder pulse is received
  *
- * This function implements the leather detection and measurement algorithm:
- * - Detects the start of a new piece of leather
- * - Accumulates area as the leather passes through the sensors
- * - Detects the end of the leather with hysteresis
- * - Saves measurements and manages batch accumulation
+ * Implements the leather detection and measurement algorithm with state machine.
+ * Returns status code indicating measurement event.
  *
  * @param config Pointer to configuration structure with batch limit
+ * @return uint8_t Status code:
+ *         - 0: No leather detected (idle state)
+ *         - 1: Leather measurement completed (end of leather)
+ *         - 2: Batch measurement completed (batch full)
  */
-static void lgc_process_measurement(LGC_CONF_TypeDef_t *config)
+static uint8_t lgc_process_measurement(LGC_CONF_TypeDef_t *config)
 {
 	uint16_t active_bits;
 	float slice_area;
+	uint8_t event_status = 0; /* Default: no event */
 
-	/* Count active photoreceptors in current slice */
+	/* ============================================================================
+	 * STEP 1: COUNT ACTIVE PHOTORECEPTORS AND CALCULATE AREA
+	 * ============================================================================ */
 	active_bits = lgc_count_active_bits();
 	slice_area = lgc_calculate_slice_area(active_bits);
 
-	/* ===== LEATHER DETECTION STATE MACHINE ===== */
+	/* ============================================================================
+	 * STEP 2: LEATHER DETECTION STATE MACHINE
+	 * ============================================================================ */
 
 	if (active_bits > 0)
 	{
+		/* -------- STATE: LEATHER DETECTED -------- */
 		/* Leather is currently passing through sensors */
 
 		if (!measurements.is_measuring)
 		{
-			/* START OF NEW LEATHER DETECTION */
+			/* TRANSITION: Idle → Measuring
+			 * Start of new leather piece detection
+			 */
 			measurements.is_measuring = 1;
 			measurements.current_leather_area = 0.0f;
 			measurements.no_detection_count = 0;
 		}
 
-		/* ACCUMULATE AREA */
+		/* ACTION: Accumulate area while leather is detected */
 		measurements.current_leather_area += slice_area;
 		measurements.no_detection_count = 0; /* Reset hysteresis counter */
+
+		event_status = 0; /* No event - still measuring */
 	}
 	else
 	{
+		/* -------- STATE: NO LEATHER DETECTED -------- */
 		/* No photoreceptors active (leather has passed or not yet arrived) */
 
 		if (measurements.is_measuring)
 		{
-			/* Currently measuring - increment no-detection counter for hysteresis */
+			/* Currently measuring - apply hysteresis
+			 * Increment counter to detect leather end
+			 */
 			measurements.no_detection_count++;
 
 			if (measurements.no_detection_count >= LGC_LEATHER_END_HYSTERESIS)
 			{
-				/* END OF LEATHER - Hysteresis threshold reached */
+				/* ====== EVENT: END OF LEATHER DETECTED ====== */
 				measurements.is_measuring = 0;
 				measurements.no_detection_count = 0;
+				event_status = 1; /* Leather measurement completed */
 
-				/* ===== SAVE LEATHER MEASUREMENT ===== */
+				/* ==================================================
+				 * SECTION A: SAVE INDIVIDUAL LEATHER MEASUREMENT
+				 * ================================================== */
 				if (measurements.current_leather_index < LGC_LEATHER_COUNT_MAX)
 				{
 					measurements.leather_measurement[measurements.current_leather_index] =
 						measurements.current_leather_area;
 				}
 
-				/* ===== BATCH ACCUMULATION ===== */
+				/* ==================================================
+				 * SECTION B: ACCUMULATE AREA TO CURRENT BATCH
+				 * ================================================== */
 				if (measurements.current_batch_index < LGC_LEATHER_BATCH_COUNT_MAX)
 				{
 					measurements.batch_measurement[measurements.current_batch_index] +=
 						measurements.current_leather_area;
 				}
 
-				/* ===== INCREMENT LEATHER INDEX ===== */
+				/* ==================================================
+				 * SECTION C: INCREMENT LEATHER INDEX
+				 * ================================================== */
 				measurements.current_leather_index++;
 
-				/* ===== BATCH MANAGEMENT ===== */
+				/* ==================================================
+				 * SECTION D: BATCH MANAGEMENT AND TRANSITIONS
+				 * ================================================== */
 				if (measurements.current_leather_index >= config->batch)
-					measurements.current_batch_index = LGC_LEATHER_BATCH_COUNT_MAX - 1;
-				/* TODO: Signal error condition (e.g., stop measurement, print warning) */
+				{
+					/* ====== EVENT: END OF BATCH DETECTED ====== */
+					/* Batch is full - transition to next batch */
+					measurements.current_leather_index = 0;
+					measurements.current_batch_index++;
+					event_status = 2; /* Batch measurement completed */
+
+					/* Prevent batch array overflow */
+					if (measurements.current_batch_index >= LGC_LEATHER_BATCH_COUNT_MAX)
+					{
+						/* Stay at maximum valid index to prevent array access overflow */
+						measurements.current_batch_index = LGC_LEATHER_BATCH_COUNT_MAX - 1;
+						/* TODO: Signal critical error - batch storage full */
+					}
+				}
+
+				/* Clear accumulator for next leather piece */
+				measurements.current_leather_area = 0.0f;
 			}
 		}
 
-		/* Clear accumulator for next leather piece */
-		measurements.current_leather_area = 0.0f;
+		/* Default state when no leather: clear accumulator */
+		if (!measurements.is_measuring)
+		{
+			measurements.current_leather_area = 0.0f;
+		}
+	}
+
+	return event_status;
+}
+
+void lgc_buttons_callback(uint8_t di, uint32_t evt)
+{
+	// Handle button events here
+	switch (di)
+	{
+	case LGC_DI_START_STOP:
+	{
+		// Handle START/STOP button event
+		if (evt == LWBTN_EVT_ONPRESS)
+		{
+			// lock
+			osAcquireMutex(&mutex);
+			data.start_stop_flag ^= 1 & 0x1; // toggle flag
+			// unlock
+			osReleaseMutex(&mutex);
+			// set event
+			osSetEventBits(&events, data.start_stop_flag ? LGC_EVENT_START : LGC_EVENT_STOP);
+		}
+		break;
+	}
+	case LGC_DI_GUARD:
+	{
+
+		// Handle GUARD button event
+		if (evt == LWBTN_EVT_ONPRESS)
+		{
+			// lock
+			osAcquireMutex(&mutex);
+			data.guard_motor = 1;
+			// unlock
+			osReleaseMutex(&mutex);
+			// set fail flag
+			osSetEventBits(&events, LGC_FAILURE_DETECTED);
+
+		}
+		else if (evt == LWBTN_EVT_ONRELEASE)
+		{
+			// lock
+			osAcquireMutex(&mutex);
+			data.guard_motor = 0;
+			// unlock
+			osReleaseMutex(&mutex);
+			//clear fail flag
+			osSetEventBits(&events, LGC_FAILURE_CLEARED);
+		}
+		break;
+	}
+	case LGC_DI_SPEEDS:
+	{
+		// Handle SPEEDS button event
+		if (evt == LWBTN_EVT_ONPRESS)
+		{
+			// lock
+			osAcquireMutex(&mutex);
+			data.speed_motor = 1;
+			// unlock
+			osReleaseMutex(&mutex);
+			//set led
+			lgc_set_leds(LGC_SPEED_HIGH_LED, 1);
+			lgc_set_leds(LGC_SPEED_LOW_LED, 0);
+		}
+		else if (evt == LWBTN_EVT_ONRELEASE)
+		{
+			// lock
+			osAcquireMutex(&mutex);
+			data.speed_motor = 0;
+			// unlock
+			osReleaseMutex(&mutex);
+			//set led
+			lgc_set_leds(LGC_SPEED_HIGH_LED, 0);
+			lgc_set_leds(LGC_SPEED_LOW_LED, 1);
+		}
+		break;
+	}
+	case LGC_DI_FEEDBACK:
+	{
+		// Handle FEEDBACK button event
+		if (evt == LWBTN_EVT_ONPRESS)
+		{
+			// lock
+			osAcquireMutex(&mutex);
+			data.feedback_motor = 1;
+			// unlock
+			osReleaseMutex(&mutex);
+		}
+		else if (evt == LWBTN_EVT_ONRELEASE)
+		{
+			// lock
+			osAcquireMutex(&mutex);
+			data.feedback_motor = 0;
+			// unlock
+			osReleaseMutex(&mutex);
+		}
+		break;
+	}
+	default:
+		break;
 	}
 }
 
+
+void lgc_set_stop_condition(uint8_t stop)
+{
+	// lock
+	osAcquireMutex(&mutex);
+	data.start_stop_flag = stop & 0x1;
+	// unlock
+	osReleaseMutex(&mutex);
+
+	// set event
+	osSetEventBits(&events, data.start_stop_flag ? LGC_EVENT_START : LGC_EVENT_STOP);
+}
+
+void lgc_get_measurements(lgc_measurements_t *out_measurements)
+{
+	// lock
+	osAcquireMutex(&mutex);
+	// copy measurements
+	memcpy(out_measurements, &measurements, sizeof(lgc_measurements_t));
+	// unlock
+	osReleaseMutex(&mutex);
+}
+
+void lgc_get_state_data(lgc_t *out_data)
+{
+	// lock
+	osAcquireMutex(&mutex);
+	// copy data
+	memcpy(out_data, &data, sizeof(lgc_t));
+	// unlock
+	osReleaseMutex(&mutex);
+}

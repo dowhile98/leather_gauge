@@ -5,13 +5,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.c 
+../leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.c \
+../leather_gauge_controller/modules/eeprom/lgc_module_eeprom.c 
 
 OBJS += \
-./leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.o 
+./leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.o \
+./leather_gauge_controller/modules/eeprom/lgc_module_eeprom.o 
 
 C_DEPS += \
-./leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.d 
+./leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.d \
+./leather_gauge_controller/modules/eeprom/lgc_module_eeprom.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -21,7 +24,7 @@ leather_gauge_controller/modules/eeprom/%.o leather_gauge_controller/modules/eep
 clean: clean-leather_gauge_controller-2f-modules-2f-eeprom
 
 clean-leather_gauge_controller-2f-modules-2f-eeprom:
-	-$(RM) ./leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.cyclo ./leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.d ./leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.o ./leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.su
+	-$(RM) ./leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.cyclo ./leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.d ./leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.o ./leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.su ./leather_gauge_controller/modules/eeprom/lgc_module_eeprom.cyclo ./leather_gauge_controller/modules/eeprom/lgc_module_eeprom.d ./leather_gauge_controller/modules/eeprom/lgc_module_eeprom.o ./leather_gauge_controller/modules/eeprom/lgc_module_eeprom.su
 
 .PHONY: clean-leather_gauge_controller-2f-modules-2f-eeprom
 
