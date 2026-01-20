@@ -187,12 +187,17 @@ static int32_t lgc_modbus_uart_read(uint8_t *buffer, uint16_t count, int32_t tim
 	/* Set direction for RS485 transceiver to RX mode */
 	HAL_GPIO_WritePin(DIR_SENSORES_GPIO_Port, DIR_SENSORES_Pin, GPIO_PIN_RESET);
 
+	if(HAL_UART_Receive(&huart3, buffer, count, NMBS_READ_TIMEOUT) == HAL_OK)
+	{
+		return count;
+	}
+
 	if (lwrb_get_full(&modbus_rx_rb) >= count)
 	{
 		lwrb_read(&modbus_rx_rb, buffer, count);
 		return (int32_t)count;
 	}
-	else if (osWaitForSemaphore(&modbus_rx_semaphore, timeout) == TRUE)
+	else if (osWaitForSemaphore(&modbus_rx_semaphore, NMBS_READ_TIMEOUT) == TRUE)
 	{
 		if (lwrb_get_full(&modbus_rx_rb) >= count)
 		{

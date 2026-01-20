@@ -153,11 +153,12 @@ void lgc_main_task_entry(void *param)
 			if (osWaitForSemaphore(&encoder_flag, 50) == TRUE)
 			{
 				//clear before data sensor
-				memset(data.sensor, 0, sizeof(data.sensor));
-				data.sensor_status = 0;
+				//memset(data.sensor, 0, sizeof(data.sensor));
+				//data.sensor_status = 0;
 
-				/* Read all sensors with retry logic */
-				for (uint8_t i = 0; i < LGC_SENSOR_NUMBER; i++)
+//				/* Read all sensors with retry logic */
+//				uint8_t i = 1;
+				for (uint8_t i = 0; i < 11; i++)
 				{
 					sensor_retry = 0;
 					err = NO_ERROR;
@@ -165,7 +166,7 @@ void lgc_main_task_entry(void *param)
 					/* Retry loop for Modbus read */
 					do
 					{
-						err = lgc_modbus_read_holding_regs(i + 1, 45, &data.sensor[i], 1);
+						err = lgc_modbus_read_holding_regs( i + 1, 45, &data.sensor[i], 1);
 						if (err != NO_ERROR)
 						{
 							sensor_retry++;
