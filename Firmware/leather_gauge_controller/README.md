@@ -138,7 +138,7 @@ leather_gauge_controller/
          │          │          │          │          │
          ▼          ▼          ▼          ▼          ▼
     Encoder    Modbus     DWIN      Printer    EEPROM
-    (EXTI)    (UART+DMA)  (UART)    (UART)     (I2C)
+    (EXTI)    (UART+DMA)  (UART)    (USB)     (I2C)
 ```
 
 ### Tareas RTOS
