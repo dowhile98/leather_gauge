@@ -52,7 +52,6 @@ error_t lgc_module_input_init(lgc_module_input_callback_cb_t callback)
     /*init lwbtn*/
     lwbtn_init(inputs, LGC_INPUT_MAX, lwbtn_get_state, lwbtn_evt);
 
-
     /*create task*/
     params.priority = LGC_INPUT_TASK_PRI;
     params.stackSize = LGC_INPUT_TASK_STACK;
@@ -73,7 +72,7 @@ static uint8_t lwbtn_get_state(struct lwbtn *lwobj, struct lwbtn_btn *btn)
     static uint32_t ticks = 0;
 
     /*initial ticks*/
-    if ((HAL_GetTick() - ticks) < 1000)
+    if ((HAL_GetTick() - ticks) < 100)
     {
         return 0;
     }
