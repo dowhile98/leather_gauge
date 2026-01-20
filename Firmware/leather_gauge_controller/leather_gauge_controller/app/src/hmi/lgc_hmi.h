@@ -52,6 +52,7 @@ typedef enum
  */
 typedef enum
 {
+	LGC_HMI_VP_STATE = 0x1110,				//Estado del sistema
 	LGC_HMI_VP_ICON_SPEEP = 0x1111, 			//Icon indicador de velocidad
 	LGC_HMI_VP_BATCH_COUNT = 0x1050, 			//Contador de lotes
 	LGC_HMI_VP_LEATHER_COUNT = 0x1051, 			//Contador de cueros
@@ -95,4 +96,9 @@ typedef enum
 	LGC_HMI_VP_LIST_ADDRESS_LEATHER_BASE = 0x1601	//Dirección base del primer cuero guardado.
 
 } LGC_HMI_VAR_ADDR_TypeDef_t;
+
+typedef enum
+{
+	LGC_HMI_TOUCH_PAGE_ADDR = 0x1005,			//Dirección de la página actual
+}LGC_HMI_TOUCH_ADDR_TypeDef_t;
 #endif /* APP_SRC_HMI_LGC_HMI_H_ */

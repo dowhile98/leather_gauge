@@ -2450,3 +2450,6 @@ Command-line arguments:  -os linux -ws gtk -arch x86_64
 
 !ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-19 20:09:09.361
 !MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-01-19 23:25:51.568
+!MESSAGE Indexed 'leather_gauge_controller' (395 sources, 248 headers) in 12.1 sec: 26,146 declarations; 131,961 references; 6 unresolved inclusions; 130 syntax errors; 396 unresolved names (0.25%)

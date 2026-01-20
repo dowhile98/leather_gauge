@@ -12,7 +12,7 @@
 #include "lgc_module_eeprom.h"
 #include "lwbtn.h"
 #include "lgc_module_encoder.h"
-
+#include "lgc_module_rtc.h"
 //-------------------------------------------------------------------------------
 // defines
 //-------------------------------------------------------------------------------
@@ -84,6 +84,18 @@ void lgc_main_task_entry(void *param)
 	uint8_t sensor_retry = 0;
 	LGC_CONF_TypeDef_t config;
 	uint8_t measurement_event; /* Event status from measurement processing */
+	RTC_Config_t config = {
+	    .initial_datetime = {
+	        .year = 2026,
+	        .month = 1,
+	        .day = 19,
+	        .weekday = 7,  // Domingo
+	        .hours = 14,
+	        .minutes = 30,
+	        .seconds = 0
+	    },
+	    .use_initial_datetime = false
+	};
 	/*create semaphore*/
 	osCreateSemaphore(&encoder_flag, 0);
 	/*Mutex*/
@@ -92,6 +104,11 @@ void lgc_main_task_entry(void *param)
 	/*encoder init*/
 	lgc_module_encoder_init(lgc_encoder_callback);
 
+	/*init rtc*/
+	if(lgc_module_rtc_init(&config) != NO_ERROR)
+	{
+		// handle error
+	}
 	for (;;)
 	{
 		lgc_module_conf_get(&config); // load configuration
@@ -154,10 +171,8 @@ void lgc_main_task_entry(void *param)
 			{
 				//clear before data sensor
 				//memset(data.sensor, 0, sizeof(data.sensor));
-				//data.sensor_status = 0;
 
-//				/* Read all sensors with retry logic */
-//				uint8_t i = 1;
+				/* Read all sensors with retry logic */
 				for (uint8_t i = 0; i < 11; i++)
 				{
 					sensor_retry = 0;

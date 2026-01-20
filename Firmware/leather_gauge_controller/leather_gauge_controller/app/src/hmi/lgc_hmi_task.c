@@ -12,6 +12,7 @@
 #include "dwin_core.h"
 #include "usart.h"
 #include "lgc_hmi.h"
+#include "lgc_module_rtc.h"
 //-------------------------------------------------------------------------------
 // defines
 //-------------------------------------------------------------------------------
@@ -80,8 +81,12 @@ static void hmi_set_current_page(uint8_t page);
 //-------------------------------------------------------------------------------
 void lgc_hmi_update_task_entry(void *param)
 {
+    /*local variables*/
     lgc_measurements_t *measurements;
     lgc_t state_data;
+    RTC_DateTime_t datetime;
+    LGC_CONF_TypeDef_t conf = {0};
+    /*alloc memory for measurements*/
     measurements = osAllocMem(sizeof(lgc_measurements_t));
     if (measurements == NULL)
     {
@@ -90,7 +95,11 @@ void lgc_hmi_update_task_entry(void *param)
             osDelayTask(1000);
         }
     }
-    // TO-DO: Implement periodic updates to HMI if needed
+    osDelayTask(500); // wait for system to stabilize
+
+    // set initial page
+    hmi_set_current_page(HMI_PAGE1);
+
     for (;;)
     {
         // wait for update event
@@ -104,14 +113,49 @@ void lgc_hmi_update_task_entry(void *param)
             lgc_get_measurements(measurements);
             // get state data
             lgc_get_state_data(&state_data);
-            // send to HMI
+            /*get rtc data*/
+            lgc_module_rtc_get_datetime(&datetime);
+            /*get current configuration*/
+            lgc_module_conf_get(&conf);
+            // update HMI variables
+            //->state: todo
+            dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_STATE, state_data.state);
+            //->speed
             dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_ICON_SPEEP, state_data.speed_motor);
+            // set date
+            dwin_write_vp_u16(&dwin_hmi, 0x1343, datetime.year);
+            dwin_write_vp_u16(&dwin_hmi, 0x1342, datetime.month);
+            dwin_write_vp_u16(&dwin_hmi, 0x1341, datetime.day);
+            // batch count
             dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_BATCH_COUNT, measurements->current_batch_index);
+            // leather count
             dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_LEATHER_COUNT, measurements->current_leather_index);
+            //->current leather area
             dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CURRENT_LEATHER_AREA, (uint16_t)(measurements->current_leather_area * 100)); // assuming area in cm², sending as integer
+            //->motor feedback
+            dwin_write_vp_u16(&dwin_hmi, 0x1112, state_data.feedback_motor);
+            // ->total area count (accumulated area of current batch in progress)
+            //  Note: current_batch_index is the batch currently being measured (0-based)
+            //  Display the current batch's accumulated area, not the previous one
+            dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_ACUMULATED_LEATHER_AREA, (uint16_t)(measurements->batch_measurement[measurements->current_batch_index] * 100)); // assuming area in cm², sending as integer
+            /*Current configuration*/
+            //->client name
+            dwin_write_text(&dwin_hmi, 0x1310, conf.client_name);
+            // leather color
+            dwin_write_text(&dwin_hmi, 0x1320, conf.color);
+            // leather id
+            dwin_write_text(&dwin_hmi, 0x1330, conf.leather_id);
+            // batch number
+            dwin_write_vp_u16(&dwin_hmi, 0x1340, conf.batch);
+            // units
+            dwin_write_vp_u16(&dwin_hmi, 0x1350, conf.units);
+            break;
         }
-        break;
+        case HMI_PAGE3:
+        {
 
+            break;
+        }
         default:
             break;
         }
@@ -119,8 +163,11 @@ void lgc_hmi_update_task_entry(void *param)
 }
 void lgc_hmi_task_entry(void *param)
 {
+    /*local variables*/
     dwin_evt_t msg = {0};
+    uint16_t value = 0;
 
+    /*main loop*/
     for (;;)
     {
         if (osReceiveFromQueue(&hmi_msg, &msg, INFINITE_DELAY) != TRUE)
@@ -130,8 +177,12 @@ void lgc_hmi_task_entry(void *param)
 
         switch (msg.addr)
         {
-        case 0x1000:
+        case LGC_HMI_TOUCH_PAGE_ADDR:
         {
+            /*get value*/
+            value = (msg.data[0] << 8) | msg.data[1];
+            /*set current page*/
+            hmi_set_current_page((uint8_t)value);
             break;
         }
         }
