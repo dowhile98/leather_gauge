@@ -49,6 +49,8 @@ leather_gauge_controller/app/src/hmi/lgc_hmi_task.o: \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc.h \
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
@@ -61,7 +63,8 @@ leather_gauge_controller/app/src/hmi/lgc_hmi_task.o: \
  ../Middlewares/ST/usbx/common/core/inc/ux_system.h \
  /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/dwin/dwin_core.h \
  ../Core/Inc/usart.h ../Core/Inc/main.h \
- ../leather_gauge_controller/app/src/hmi/lgc_hmi.h
+ ../leather_gauge_controller/app/src/hmi/lgc_hmi.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/modules/rtc/lgc_module_rtc.h
 /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/app/inc/lgc.h:
 /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/app/inc/lgc_typedefs.h:
 /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/osal/include/os_port.h:
@@ -113,6 +116,8 @@ leather_gauge_controller/app/src/hmi/lgc_hmi_task.o: \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc.h:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
@@ -128,3 +133,4 @@ leather_gauge_controller/app/src/hmi/lgc_hmi_task.o: \
 ../Core/Inc/usart.h:
 ../Core/Inc/main.h:
 ../leather_gauge_controller/app/src/hmi/lgc_hmi.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/modules/rtc/lgc_module_rtc.h:

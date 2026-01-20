@@ -48,6 +48,7 @@ leather_gauge_controller/modules/eeprom \
 leather_gauge_controller/modules/encoder \
 leather_gauge_controller/modules/modbus \
 leather_gauge_controller/modules/printer \
+leather_gauge_controller/modules/rtc \
 leather_gauge_controller/osal/common \
 leather_gauge_controller/osal/portable/chibios \
 leather_gauge_controller/osal/portable/cmsis_rtos \

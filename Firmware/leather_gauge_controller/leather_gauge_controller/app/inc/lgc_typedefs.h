@@ -85,6 +85,7 @@ typedef enum
     LGC_FAILURE_CLEARED = 1 << 4,
     LGC_HMI_UPDATE_REQUIRED = 1 << 5,
     LGC_EVENT_PRINT_BATCH = 1 << 6,
+    LGC_HMI_SENSOR_TEST_UPDATE = 1 << 7,
 } LGC_Events_t;
 
 typedef enum

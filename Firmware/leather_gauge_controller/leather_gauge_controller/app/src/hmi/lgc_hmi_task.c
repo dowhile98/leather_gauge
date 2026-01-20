@@ -13,6 +13,7 @@
 #include "usart.h"
 #include "lgc_hmi.h"
 #include "lgc_module_rtc.h"
+
 //-------------------------------------------------------------------------------
 // defines
 //-------------------------------------------------------------------------------
@@ -44,6 +45,23 @@
 #define LGC_HMI_UPDATE_TASK_STACK 256
 #endif
 //-------------------------------------------------------------------------------
+// typedefs
+//-------------------------------------------------------------------------------
+typedef struct
+{
+    // sensor test flag
+    bool sensor_test_active;
+    // sensor test id
+    uint8_t sensor_test_id;
+    // sensor test value
+    uint16_t sensor_test_value;
+    // mutex
+    OsMutex mutex;
+    // page
+    uint8_t current_page;
+} lgc_hmi_data_t;
+
+//-------------------------------------------------------------------------------
 // global variables
 //-------------------------------------------------------------------------------
 static OsQueue hmi_msg;
@@ -59,7 +77,7 @@ static dwin_interface_t dwin_hal = {0};
 static OsTaskId dwin_process_task;
 static OsTaskId lgc_hmi_task = {0};
 static OsTaskId lgc_hmi_update_task = {0};
-static uint8_t hmi_page = 0;
+static lgc_hmi_data_t hmi_data;
 //-------------------------------------------------------------------------------
 // private function prototype
 //-------------------------------------------------------------------------------
@@ -86,6 +104,7 @@ void lgc_hmi_update_task_entry(void *param)
     lgc_t state_data;
     RTC_DateTime_t datetime;
     LGC_CONF_TypeDef_t conf = {0};
+    uint16_t value = 0;
     /*alloc memory for measurements*/
     measurements = osAllocMem(sizeof(lgc_measurements_t));
     if (measurements == NULL)
@@ -103,9 +122,9 @@ void lgc_hmi_update_task_entry(void *param)
     for (;;)
     {
         // wait for update event
-        osWaitForEventBits(&events, LGC_HMI_UPDATE_REQUIRED, TRUE, TRUE, INFINITE_DELAY);
+        osWaitForEventBits(&events, LGC_HMI_UPDATE_REQUIRED | LGC_HMI_SENSOR_TEST_UPDATE, FALSE, TRUE, INFINITE_DELAY);
         // state machine
-        switch (hmi_page)
+        switch (hmi_data.current_page)
         {
         case HMI_PAGE1:
         {
@@ -114,7 +133,7 @@ void lgc_hmi_update_task_entry(void *param)
             // get state data
             lgc_get_state_data(&state_data);
             /*get rtc data*/
-            lgc_module_rtc_get_datetime(&datetime);
+            lgc_module_rtc_get(&datetime);
             /*get current configuration*/
             lgc_module_conf_get(&conf);
             // update HMI variables
@@ -122,10 +141,10 @@ void lgc_hmi_update_task_entry(void *param)
             dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_STATE, state_data.state);
             //->speed
             dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_ICON_SPEEP, state_data.speed_motor);
-            // set date
-            dwin_write_vp_u16(&dwin_hmi, 0x1343, datetime.year);
-            dwin_write_vp_u16(&dwin_hmi, 0x1342, datetime.month);
-            dwin_write_vp_u16(&dwin_hmi, 0x1341, datetime.day);
+            // set date (YYYY / MM / DD)
+            dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_YEAR, datetime.year);
+            dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_MONTH, datetime.month);
+            dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_DAY, datetime.day);
             // batch count
             dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_BATCH_COUNT, measurements->current_batch_index);
             // leather count
@@ -133,27 +152,39 @@ void lgc_hmi_update_task_entry(void *param)
             //->current leather area
             dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CURRENT_LEATHER_AREA, (uint16_t)(measurements->current_leather_area * 100)); // assuming area in cm², sending as integer
             //->motor feedback
-            dwin_write_vp_u16(&dwin_hmi, 0x1112, state_data.feedback_motor);
+            dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_FEEDBACK_MOTOR, state_data.feedback_motor);
             // ->total area count (accumulated area of current batch in progress)
             //  Note: current_batch_index is the batch currently being measured (0-based)
             //  Display the current batch's accumulated area, not the previous one
             dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_ACUMULATED_LEATHER_AREA, (uint16_t)(measurements->batch_measurement[measurements->current_batch_index] * 100)); // assuming area in cm², sending as integer
             /*Current configuration*/
             //->client name
-            dwin_write_text(&dwin_hmi, 0x1310, conf.client_name);
+            dwin_write_text(&dwin_hmi, LGC_HMI_VP_CONFIG_TEXT_NAME_CLIENT, conf.client_name);
             // leather color
-            dwin_write_text(&dwin_hmi, 0x1320, conf.color);
+            dwin_write_text(&dwin_hmi, LGC_HMI_VP_CONFIG_TEXT_NAME_COLOR, conf.color);
             // leather id
-            dwin_write_text(&dwin_hmi, 0x1330, conf.leather_id);
+            dwin_write_text(&dwin_hmi, LGC_HMI_VP_CONFIG_TEXT_NAME_LEATHER, conf.leather_id);
             // batch number
-            dwin_write_vp_u16(&dwin_hmi, 0x1340, conf.batch);
+            dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_NUMBER_NAME_LEATHER, conf.batch);
             // units
-            dwin_write_vp_u16(&dwin_hmi, 0x1350, conf.units);
+            dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_UNITS, conf.units);
             break;
         }
         case HMI_PAGE3:
         {
-
+            // sensor test update
+            lgc_modbus_read_holding_regs(hmi_data.sensor_test_id % 12, 45, &value, 1);
+            osAcquireMutex(&hmi_data.mutex);
+            hmi_data.sensor_test_value = value;
+            osReleaseMutex(&hmi_data.mutex);
+            // write to HMI
+            dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_TEST_BIT_SENSOR, hmi_data.sensor_test_value);
+            // wait some time to avoid flooding
+            if (osWaitForEventBits(&events, LGC_HMI_UPDATE_REQUIRED, FALSE, FALSE, 400) != TRUE)
+            {
+                // set another sensor test update
+                osSetEventBits(&events, LGC_HMI_SENSOR_TEST_UPDATE);
+            }
             break;
         }
         default:
@@ -166,7 +197,7 @@ void lgc_hmi_task_entry(void *param)
     /*local variables*/
     dwin_evt_t msg = {0};
     uint16_t value = 0;
-
+    LGC_CONF_TypeDef_t conf = {0};
     /*main loop*/
     for (;;)
     {
@@ -183,14 +214,80 @@ void lgc_hmi_task_entry(void *param)
             value = (msg.data[0] << 8) | msg.data[1];
             /*set current page*/
             hmi_set_current_page((uint8_t)value);
+            // verify page
+            if (value == HMI_PAGE20 || value == HMI_PAGE6)
+            {
+                // set stop event
+                osSetEventBits(&events, LGC_EVENT_STOP);
+            }
+            // update conf
+            lgc_module_conf_get(&conf);
+            break;
+        }
+        // print report
+        case LGC_HMI_VP_PRINT:
+        {
+            // send print command
+            osSetEventBits(&events, LGC_EVENT_PRINT_BATCH);
+            break;
+        }
+        // Sensor test
+        case LGC_HMI_VP_TEST_CHOICED_SENSOR:
+        {
+            /*get value*/
+            value = (msg.data[0] << 8) | msg.data[1];
+            /*store value*/
+            osAcquireMutex(&hmi_data.mutex);
+            hmi_data.sensor_test_id = value;
+            hmi_data.sensor_test_active = true;
+            osReleaseMutex(&hmi_data.mutex);
+            // update sensor threadhold
+            lgc_modbus_read_holding_regs(hmi_data.sensor_test_id % 12, 12, &value, 1);
+            // update offset value
+            dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_TEST_SLIDER_THRESHOLD_SENSOR, value);
+            // set update event
+            osSetEventBits(&events, LGC_HMI_SENSOR_TEST_UPDATE);
+            break;
+        }
+        // save data
+        case LGC_HMI_VP_CONFIG_SAVE_CMD:
+        {
+            if (hmi_data.sensor_test_active)
+            {
+                /*get value*/
+                value = (msg.data[0] << 8) | msg.data[1];
+                /*store value*/
+                if (lgc_modbus_write_holding_regs(hmi_data.sensor_test_id % 12, 12, &value, 1) != NO_ERROR)
+                {
+                    value = 2;
+                }
+                else
+                {
+                    value = 1;
+                }
+            }
+            // another save data
+            else
+            {
+                lgc_module_conf_set(&conf);
+                value = 1;
+            }
+            // update result
+            dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_SAVE_RESULT, value);
+            osDelayTask(1000);
+            dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_SAVE_RESULT, 0);
+            break;
+        }
+        case LGC_HMI_VP_CONFIG_UNITS:
+        {
+            value = (msg.data[0] << 8) | msg.data[1];
+            conf.units = (uint8_t)value;
             break;
         }
         }
 
         /*release memory*/
         osFreeMem(&msg.data);
-        /* code */
-        osDelayTask(1000);
     }
 }
 //-------------------------------------------------------------------------------
@@ -325,7 +422,10 @@ error_t lgc_hmi_init(void)
     {
         return ERROR_FAILURE;
     }
-
+    if (osCreateMutex(&hmi_data.mutex) != TRUE)
+    {
+        return ERROR_FAILURE;
+    }
     if (osCreateQueue(&hmi_msg, "hmi msg", sizeof(dwin_evt_t), 5) != TRUE)
     {
         return ERROR_FAILURE;
@@ -396,5 +496,12 @@ error_t lgc_hmi_send_msg(dwin_evt_t *evt)
 
 static void hmi_set_current_page(uint8_t page)
 {
-    hmi_page = page;
+    osAcquireMutex(&hmi_data.mutex);
+    hmi_data.current_page = page;
+    if (page != HMI_PAGE3)
+    {
+        hmi_data.sensor_test_active = false;
+    }
+    osReleaseMutex(&hmi_data.mutex);
+    return;
 }

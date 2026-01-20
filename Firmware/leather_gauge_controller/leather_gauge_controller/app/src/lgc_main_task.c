@@ -84,18 +84,16 @@ void lgc_main_task_entry(void *param)
 	uint8_t sensor_retry = 0;
 	LGC_CONF_TypeDef_t config;
 	uint8_t measurement_event; /* Event status from measurement processing */
-	RTC_Config_t config = {
-	    .initial_datetime = {
-	        .year = 2026,
-	        .month = 1,
-	        .day = 19,
-	        .weekday = 7,  // Domingo
-	        .hours = 14,
-	        .minutes = 30,
-	        .seconds = 0
-	    },
-	    .use_initial_datetime = false
-	};
+	RTC_Config_t rtc_config = {
+		.initial_datetime = {
+			.year = 2026,
+			.month = 1,
+			.day = 19,
+			.weekday = 7, // Domingo
+			.hours = 14,
+			.minutes = 30,
+			.seconds = 0},
+		.use_initial_datetime = false};
 	/*create semaphore*/
 	osCreateSemaphore(&encoder_flag, 0);
 	/*Mutex*/
@@ -105,7 +103,7 @@ void lgc_main_task_entry(void *param)
 	lgc_module_encoder_init(lgc_encoder_callback);
 
 	/*init rtc*/
-	if(lgc_module_rtc_init(&config) != NO_ERROR)
+	if (lgc_module_rtc_init(&rtc_config) != NO_ERROR)
 	{
 		// handle error
 	}
@@ -120,6 +118,10 @@ void lgc_main_task_entry(void *param)
 			// verify start condition
 			if (osWaitForEventBits(&events, LGC_EVENT_START | LGC_FAILURE_DETECTED, FALSE, TRUE, 50) == TRUE)
 			{
+				// set running
+				osAcquireMutex(&mutex);
+				data.start_stop_flag = 1;
+				osReleaseMutex(&mutex);
 				// verify which event
 				if (data.start_stop_flag)
 				{
@@ -147,13 +149,16 @@ void lgc_main_task_entry(void *param)
 			/* Verify stop condition and transition to LGC_STOP */
 			if (osWaitForEventBits(&events, LGC_EVENT_STOP | LGC_FAILURE_DETECTED, FALSE, TRUE, 0) == TRUE)
 			{
+				// set cero
+				osAcquireMutex(&mutex);
+				data.start_stop_flag = 0;
+				osReleaseMutex(&mutex);
 				// verify which event
 				if (data.start_stop_flag == 0)
 				{
 					lgc_set_leds(LGC_RUNNING_LED, 0);
 					// go to stop
 					lgc_set_state(LGC_STOP);
-
 				}
 				else if (data.guard_motor)
 				{
@@ -169,8 +174,8 @@ void lgc_main_task_entry(void *param)
 			/* Verify encoder flag - proceed if pulse received */
 			if (osWaitForSemaphore(&encoder_flag, 50) == TRUE)
 			{
-				//clear before data sensor
-				//memset(data.sensor, 0, sizeof(data.sensor));
+				// clear before data sensor
+				// memset(data.sensor, 0, sizeof(data.sensor));
 
 				/* Read all sensors with retry logic */
 				for (uint8_t i = 0; i < 11; i++)
@@ -181,7 +186,7 @@ void lgc_main_task_entry(void *param)
 					/* Retry loop for Modbus read */
 					do
 					{
-						err = lgc_modbus_read_holding_regs( i + 1, 45, &data.sensor[i], 1);
+						err = lgc_modbus_read_holding_regs(i + 1, 45, &data.sensor[i], 1);
 						if (err != NO_ERROR)
 						{
 							sensor_retry++;
@@ -282,7 +287,7 @@ static void lgc_set_leds(uint8_t led, uint8_t state)
 		/* code */
 		HAL_GPIO_WritePin(DO_1_GPIO_Port, DO_1_Pin, (GPIO_PinState)state);
 		HAL_GPIO_WritePin(D0_2_GPIO_Port, D0_2_Pin, (GPIO_PinState)state == GPIO_PIN_SET ? GPIO_PIN_RESET : GPIO_PIN_SET);
-		//output control
+		// output control
 		HAL_GPIO_WritePin(DO_0_GPIO_Port, DO_0_Pin, (GPIO_PinState)state);
 		break;
 	case LGC_SPEED_LOW_LED:
@@ -501,7 +506,6 @@ void lgc_buttons_callback(uint8_t di, uint32_t evt)
 			osReleaseMutex(&mutex);
 			// set fail flag
 			osSetEventBits(&events, LGC_FAILURE_DETECTED);
-
 		}
 		else if (evt == LWBTN_EVT_ONRELEASE)
 		{
@@ -510,7 +514,7 @@ void lgc_buttons_callback(uint8_t di, uint32_t evt)
 			data.guard_motor = 0;
 			// unlock
 			osReleaseMutex(&mutex);
-			//clear fail flag
+			// clear fail flag
 			osSetEventBits(&events, LGC_FAILURE_CLEARED);
 		}
 		break;
@@ -525,7 +529,7 @@ void lgc_buttons_callback(uint8_t di, uint32_t evt)
 			data.speed_motor = 1;
 			// unlock
 			osReleaseMutex(&mutex);
-			//set led
+			// set led
 			lgc_set_leds(LGC_SPEED_HIGH_LED, 1);
 			lgc_set_leds(LGC_SPEED_LOW_LED, 0);
 		}
@@ -536,7 +540,7 @@ void lgc_buttons_callback(uint8_t di, uint32_t evt)
 			data.speed_motor = 0;
 			// unlock
 			osReleaseMutex(&mutex);
-			//set led
+			// set led
 			lgc_set_leds(LGC_SPEED_HIGH_LED, 0);
 			lgc_set_leds(LGC_SPEED_LOW_LED, 1);
 		}
@@ -567,7 +571,6 @@ void lgc_buttons_callback(uint8_t di, uint32_t evt)
 		break;
 	}
 }
-
 
 void lgc_set_stop_condition(uint8_t stop)
 {

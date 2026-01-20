@@ -27,6 +27,7 @@ RM := rm -rf
 -include leather_gauge_controller/osal/portable/cmsis_rtos/subdir.mk
 -include leather_gauge_controller/osal/portable/chibios/subdir.mk
 -include leather_gauge_controller/osal/common/subdir.mk
+-include leather_gauge_controller/modules/rtc/subdir.mk
 -include leather_gauge_controller/modules/printer/subdir.mk
 -include leather_gauge_controller/modules/modbus/subdir.mk
 -include leather_gauge_controller/modules/encoder/subdir.mk
