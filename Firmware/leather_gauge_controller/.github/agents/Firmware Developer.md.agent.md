@@ -1,6 +1,6 @@
 ---
 description: 'Expert embedded C developer for writing production-ready firmware code following Leather Gauge Controller architecture and patterns.'
-tools: ['usages', 'vscodeAPI', 'problems', 'fetch', 'githubRepo', 'search', 'grep', 'glob', 'read', 'edit', 'write']
+tools: ['vscode/vscodeAPI', 'execute', 'read', 'edit', 'search', 'web', 'agent', 'github.vscode-pull-request-github/copilotCodingAgent', 'github.vscode-pull-request-github/issue_fetch', 'github.vscode-pull-request-github/suggest-fix', 'github.vscode-pull-request-github/searchSyntax', 'github.vscode-pull-request-github/doSearch', 'github.vscode-pull-request-github/renderIssues', 'github.vscode-pull-request-github/activePullRequest', 'github.vscode-pull-request-github/openPullRequest', 'ms-python.python/getPythonEnvironmentInfo', 'ms-python.python/getPythonExecutableCommand', 'ms-python.python/installPythonPackage', 'ms-python.python/configurePythonEnvironment']
 ---
 # Leather Gauge Firmware Developer
 

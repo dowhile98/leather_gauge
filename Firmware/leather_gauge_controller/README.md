@@ -22,6 +22,30 @@ El **Leather Gauge Controller** es un firmware profesional basado en STM32F446RC
 - **Almacenamiento persistente**: EEPROM I2C para configuración
 - **Arquitectura robusta**: Thread-safe con mutexes y semáforos
 - **Abstracción de hardware**: Capa modular para fácil portabilidad
+- **RTC integrado**: Módulo RTC con mutex para fecha/hora thread-safe
+
+---
+
+## Estado Actual del Proyecto (Enero 2026)
+
+### Validación de Módulos
+
+| Módulo         | Estado          | Observaciones                                    |
+| -------------- | --------------- | ------------------------------------------------ |
+| **Modbus RTU** | ✅ Validado     | Comunicación con 11 sensores probada y funcional |
+| **Encoder**    | ✅ Validado     | Interrupciones EXTI funcionando correctamente    |
+| **EEPROM**     | ✅ Validado     | Lectura/escritura de configuración operativa     |
+| **RTC**        | ✅ Implementado | Módulo con mutex para acceso thread-safe         |
+| **HMI (DWIN)** | 🔄 En Pruebas   | Requiere validación de escritura/lectura VP      |
+| **Impresora**  | 🔄 Pendiente    | Pendiente integración con hardware               |
+| **Main Task**  | ✅ Funcional    | Algoritmo de medición operativo                  |
+
+### Cambios Recientes
+
+- **lgc_module_rtc**: Nuevo módulo RTC con funciones `init/set/get/deinit` y mutex
+- **lgc_hmi.h**: Centralización de direcciones VP en enumeración
+- **lgc_hmi_task.c**: Corrección de índice `current_batch_index` (evita índice -1)
+- **.gitignore**: Agregado para excluir carpeta Debug/
 
 ---
 
@@ -29,18 +53,18 @@ El **Leather Gauge Controller** es un firmware profesional basado en STM32F446RC
 
 ### Hardware
 
-| Componente | Especificación |
-|------------|----------------|
-| **MCU** | STM32F446RCTx (ARM Cortex-M4F) |
-| **Flash** | 256 KB |
-| **RAM** | 128 KB |
-| **Frecuencia** | 180 MHz |
-| **FPU** | FPv4-SP-D16 (hardware single-precision) |
-| **Sensores** | 11 módulos Modbus RTU (110 fotocélulas) |
-| **Display** | DWIN LCD UART |
-| **Encoder** | Rotativo incremental (EXTI) |
-| **Almacenamiento** | AT24Cxx EEPROM I2C |
-| **Impresora** | Térmica ESC/POS (UART) |
+| Componente         | Especificación                          |
+| ------------------ | --------------------------------------- |
+| **MCU**            | STM32F446RCTx (ARM Cortex-M4F)          |
+| **Flash**          | 256 KB                                  |
+| **RAM**            | 128 KB                                  |
+| **Frecuencia**     | 180 MHz                                 |
+| **FPU**            | FPv4-SP-D16 (hardware single-precision) |
+| **Sensores**       | 11 módulos Modbus RTU (110 fotocélulas) |
+| **Display**        | DWIN LCD UART                           |
+| **Encoder**        | Rotativo incremental (EXTI)             |
+| **Almacenamiento** | AT24Cxx EEPROM I2C                      |
+| **Impresora**      | Térmica ESC/POS (UART)                  |
 
 ### Software
 
@@ -81,6 +105,7 @@ leather_gauge_controller/
 │   │   ├── encoder/                       # Rotary encoder interface
 │   │   ├── modbus/                        # Modbus RTU client
 │   │   ├── eeprom/                        # EEPROM storage
+│   │   ├── rtc/                           # RTC (Real-Time Clock)
 │   │   └── printer/                       # ESC/POS printer driver
 │   │
 │   ├── osal/                              # OS Abstraction Layer
@@ -143,13 +168,13 @@ leather_gauge_controller/
 
 ### Tareas RTOS
 
-| Tarea | Prioridad | Stack | Función |
-|-------|-----------|-------|---------|
-| **Main Task** | 10 | 256 words | Medición, encoder, sensores Modbus |
-| **HMI Task** | 11 | 512 words | Actualización display DWIN |
-| **HMI Update** | 12 | 256 words | Procesamiento eventos UI |
-| **DWIN Process** | 13 | 512 words | Protocolo DWIN |
-| **Printer Task** | 14 | 512 words | Impresión reportes |
+| Tarea            | Prioridad | Stack     | Función                            |
+| ---------------- | --------- | --------- | ---------------------------------- |
+| **Main Task**    | 10        | 256 words | Medición, encoder, sensores Modbus |
+| **HMI Task**     | 11        | 512 words | Actualización display DWIN         |
+| **HMI Update**   | 12        | 256 words | Procesamiento eventos UI           |
+| **DWIN Process** | 13        | 512 words | Protocolo DWIN                     |
+| **Printer Task** | 14        | 512 words | Impresión reportes                 |
 
 ### Algoritmo de Medición
 
@@ -172,7 +197,7 @@ Leather piece:
 │███░░░░░░░░░░░░░░░░░░░███│
 └─────────────────────────┘
    110 photocells (11×10)
-   
+
 Total Area = Σ(active_bits × pixel_area)
 ```
 
@@ -218,10 +243,10 @@ make -C Release all -j$(nproc)
 
 ### Configuraciones de Build
 
-| Configuración | Optimización | Tamaño | Uso |
-|---------------|--------------|---------|-----|
-| **Debug** | -Og | ~150 KB | Desarrollo, depuración |
-| **Release** | -O2 / -Os | ~100 KB | Producción |
+| Configuración | Optimización | Tamaño  | Uso                    |
+| ------------- | ------------ | ------- | ---------------------- |
+| **Debug**     | -Og          | ~150 KB | Desarrollo, depuración |
+| **Release**   | -O2 / -Os    | ~100 KB | Producción             |
 
 ---
 
@@ -251,38 +276,41 @@ openocd -f interface/stlink.cfg -f target/stm32f4x.cfg \
 ### Pinout Principal
 
 #### Entradas Digitales
-| Pin | Función | Descripción |
-|-----|---------|-------------|
+
+| Pin | Función  | Descripción                    |
+| --- | -------- | ------------------------------ |
 | PA0 | DI_0_INT | Encoder pulse (EXTI interrupt) |
-| PC0 | DI_2 | Botón START/STOP |
-| PC1 | DI_3 | Botón GUARD (protección) |
-| PC2 | DI_4 | Botón SPEEDS (velocidades) |
-| PC3 | DI_5 | Botón FEEDBACK |
+| PC0 | DI_2     | Botón START/STOP               |
+| PC1 | DI_3     | Botón GUARD (protección)       |
+| PC2 | DI_4     | Botón SPEEDS (velocidades)     |
+| PC3 | DI_5     | Botón FEEDBACK                 |
 
 #### Salidas Digitales
-| Pin | Función | Descripción |
-|-----|---------|-------------|
-| PB0 | DO_0 | LED Running 1 |
-| PB1 | DO_1 | LED Running 2 |
-| PB3 | DO_2 | LED Running 3 (invertido) |
-| PB9 | DO_6 | LED Speed Low |
-| PB15 | DO_7 | LED Speed High |
-| PC13 | DIR_DISPLAY | RS-485 direction control (DWIN) |
+
+| Pin  | Función      | Descripción                       |
+| ---- | ------------ | --------------------------------- |
+| PB0  | DO_0         | LED Running 1                     |
+| PB1  | DO_1         | LED Running 2                     |
+| PB3  | DO_2         | LED Running 3 (invertido)         |
+| PB9  | DO_6         | LED Speed Low                     |
+| PB15 | DO_7         | LED Speed High                    |
+| PC13 | DIR_DISPLAY  | RS-485 direction control (DWIN)   |
 | PB14 | DIR_SENSORES | RS-485 direction control (Modbus) |
 
 #### Comunicación
-| Periférico | Pines | Función | Baudrate |
-|------------|-------|---------|----------|
-| USART3 | PB10/PB11 | Modbus RTU (sensores) | 9600 bps |
-| USART6 | PC6/PC7 | DWIN display | 115200 bps |
-| UART (TBD) | - | Printer ESC/POS | 9600 bps |
-| I2C1 | PB8/PB9 | EEPROM AT24Cxx | 100 kHz |
+
+| Periférico | Pines     | Función               | Baudrate   |
+| ---------- | --------- | --------------------- | ---------- |
+| USART3     | PB10/PB11 | Modbus RTU (sensores) | 9600 bps   |
+| USART6     | PC6/PC7   | DWIN display          | 115200 bps |
+| UART (TBD) | -         | Printer ESC/POS       | 9600 bps   |
+| I2C1       | PB8/PB9   | EEPROM AT24Cxx        | 100 kHz    |
 
 ### Configuración Modbus
 
-| Sensor ID | Dirección | Registro | Función |
-|-----------|-----------|----------|---------|
-| 1-11 | 0x01-0x0B | 0x2D (45) | Lectura 10 fotocélulas (holding registers) |
+| Sensor ID | Dirección | Registro  | Función                                    |
+| --------- | --------- | --------- | ------------------------------------------ |
+| 1-11      | 0x01-0x0B | 0x2D (45) | Lectura 10 fotocélulas (holding registers) |
 
 ---
 
@@ -321,12 +349,12 @@ openocd -f interface/stlink.cfg -f target/stm32f4x.cfg \
 
 ### Capacidades
 
-| Parámetro | Límite |
-|-----------|--------|
-| Piezas por lote | 300 |
-| Lotes totales | 200 |
-| Resolución espacial | 10mm × 5mm (pixel × encoder) |
-| Ancho máximo medición | 1100mm (110 fotocélulas) |
+| Parámetro             | Límite                       |
+| --------------------- | ---------------------------- |
+| Piezas por lote       | 300                          |
+| Lotes totales         | 200                          |
+| Resolución espacial   | 10mm × 5mm (pixel × encoder) |
+| Ancho máximo medición | 1100mm (110 fotocélulas)     |
 
 ---
 
@@ -354,6 +382,7 @@ Editar constantes en los archivos fuente:
 El proyecto soporta 14 diferentes RTOS mediante OSAL. Para cambiar:
 
 1. Editar `os_port_config.h`:
+
    ```c
    // Descomentar el RTOS deseado
    #define USE_THREADX           // ThreadX (actual)
@@ -365,6 +394,128 @@ El proyecto soporta 14 diferentes RTOS mediante OSAL. Para cambiar:
 2. Recompilar proyecto
 
 RTOS soportados: ThreadX, FreeRTOS, µC/OS-II, µC/OS-III, CMSIS-RTOS, CMSIS-RTOS2, RTX, SafeRTOS, Zephyr, ChibiOS, embOS, PX5, Windows, POSIX, None.
+
+---
+
+## Guía de Pruebas HMI (DWIN Display)
+
+### Prerequisitos
+
+1. Display DWIN conectado a USART6 (PC6/PC7)
+2. Control de dirección RS-485 en PC13 (DIR_DISPLAY)
+3. Firmware cargado en el STM32
+4. ST-LINK conectado para depuración
+
+### Direcciones VP Principales
+
+Las direcciones VP están centralizadas en `lgc_hmi.h`:
+
+| Variable                             | Dirección VP | Descripción            |
+| ------------------------------------ | ------------ | ---------------------- |
+| `LGC_HMI_VP_STATE`                   | 0x1110       | Estado del sistema     |
+| `LGC_HMI_VP_ICON_SPEEP`              | 0x1111       | Indicador de velocidad |
+| `LGC_HMI_VP_FEEDBACK_MOTOR`          | 0x1112       | Feedback motor ON/OFF  |
+| `LGC_HMI_VP_BATCH_COUNT`             | 0x1050       | Contador de lotes      |
+| `LGC_HMI_VP_LEATHER_COUNT`           | 0x1051       | Contador de cueros     |
+| `LGC_HMI_VP_CURRENT_LEATHER_AREA`    | 0x1060       | Área actual (×100)     |
+| `LGC_HMI_VP_ACUMULATED_LEATHER_AREA` | 0x1080       | Área acumulada lote    |
+| `LGC_HMI_VP_CONFIG_DAY`              | 0x1341       | Configuración día      |
+| `LGC_HMI_VP_CONFIG_MONTH`            | 0x1342       | Configuración mes      |
+| `LGC_HMI_VP_CONFIG_YEAR`             | 0x1343       | Configuración año      |
+| `LGC_HMI_VP_CONFIG_HOUR`             | 0x1346       | Configuración hora     |
+| `LGC_HMI_VP_CONFIG_MINUTE`           | 0x1347       | Configuración minuto   |
+| `LGC_HMI_VP_CONFIG_SECOND`           | 0x1348       | Configuración segundo  |
+
+### Casos de Prueba
+
+#### Prueba 1: Verificar Escritura de Variables
+
+```c
+// Breakpoint en lgc_hmi_update_task_entry()
+// Verificar que dwin_var_write() se ejecute correctamente
+
+// Pasos:
+1. Colocar breakpoint en lgc_hmi_task.c línea de dwin_var_write()
+2. Verificar que LGC_HMI_UPDATE_REQUIRED event se dispare
+3. Confirmar que los valores escritos coincidan con measurements
+4. Observar display para cambio visual
+```
+
+#### Prueba 2: Validar Contadores en Pantalla
+
+```
+1. Estado inicial: Verificar leather_count = 0, batch_count = 0
+2. Simular medición:
+   - Generar pulsos de encoder (manualmente o con generador)
+   - Activar sensores simulados
+3. Verificar incremento en:
+   - LGC_HMI_VP_LEATHER_COUNT (0x1051)
+   - LGC_HMI_VP_CURRENT_LEATHER_AREA (0x1060)
+4. Completar pieza (histéresis de 3 pasos vacíos)
+5. Verificar nuevo leather_count
+```
+
+#### Prueba 3: Validar Fecha/Hora (RTC → HMI)
+
+```c
+// Verificar lectura de RTC y escritura a display
+
+1. Establecer fecha/hora con lgc_module_rtc_set()
+2. Verificar escritura a VPs:
+   - LGC_HMI_VP_CONFIG_DAY (0x1341)
+   - LGC_HMI_VP_CONFIG_MONTH (0x1342)
+   - LGC_HMI_VP_CONFIG_YEAR (0x1343)
+   - LGC_HMI_VP_CONFIG_HOUR (0x1346)
+   - LGC_HMI_VP_CONFIG_MINUTE (0x1347)
+   - LGC_HMI_VP_CONFIG_SECOND (0x1348)
+3. Confirmar visualización correcta en pantalla DWIN
+```
+
+#### Prueba 4: Respuesta a Botones de Usuario
+
+```
+1. Presionar START/STOP:
+   - Verificar cambio de estado LGC_STOP ↔ LGC_RUNNING
+   - Observar LEDs de estado
+   - Confirmar actualización en display
+
+2. Activar GUARD:
+   - Verificar transición a LGC_FAIL
+   - Confirmar indicador visual en HMI
+
+3. Cambiar velocidad (SPEEDS):
+   - Verificar LGC_HMI_VP_ICON_SPEEP actualiza
+```
+
+#### Prueba 5: Guardar Configuración
+
+```
+1. Modificar parámetros en pantalla de configuración
+2. Presionar botón guardar (VP 0x1002)
+3. Verificar:
+   - LGC_HMI_VP_CONFIG_SAVE_CMD recibe comando
+   - EEPROM escribe datos
+   - LGC_HMI_VP_CONFIG_SAVE_RESULT muestra resultado (1=OK, 2=FAIL)
+```
+
+### Herramientas de Depuración
+
+1. **STM32CubeIDE Debugger**: Breakpoints en funciones DWIN
+2. **Logic Analyzer**: Capturar tráfico UART DWIN (115200 bps)
+3. **DWIN Debugger Software**: Validar protocolo directamente
+4. **Live Expressions**: Monitorear variables `measurements` y `state_data`
+
+### Checklist de Validación HMI
+
+- [ ] Display enciende y muestra página inicial
+- [ ] Navegación entre páginas funciona
+- [ ] Contador de cueros actualiza en tiempo real
+- [ ] Contador de lotes incrementa al completar batch
+- [ ] Área actual muestra valor correcto (×100 para resolución)
+- [ ] Fecha/hora se muestra desde RTC
+- [ ] Botones tactiles responden
+- [ ] Configuración se guarda en EEPROM
+- [ ] Indicadores de estado (velocidad, motor) actualizan
 
 ---
 
@@ -387,16 +538,17 @@ LOG_ERROR("Modbus timeout on sensor %d", sensor_id);
 
 ### Breakpoints Útiles
 
-| Función | Archivo | Propósito |
-|---------|---------|-----------|
-| `lgc_encoder_callback` | lgc_main_task.c | Verificar interrupciones encoder |
-| `lgc_modbus_read_holding_regs` | lgc_inteface_modbus.c | Depurar comunicación Modbus |
-| `lgc_main_task_entry` | lgc_main_task.c | Lógica principal de medición |
-| `lgc_hmi_task` | lgc_hmi_task.c | Depurar interfaz HMI |
+| Función                        | Archivo               | Propósito                        |
+| ------------------------------ | --------------------- | -------------------------------- |
+| `lgc_encoder_callback`         | lgc_main_task.c       | Verificar interrupciones encoder |
+| `lgc_modbus_read_holding_regs` | lgc_inteface_modbus.c | Depurar comunicación Modbus      |
+| `lgc_main_task_entry`          | lgc_main_task.c       | Lógica principal de medición     |
+| `lgc_hmi_task`                 | lgc_hmi_task.c        | Depurar interfaz HMI             |
 
 ### Monitoreo en Tiempo Real
 
 Usar **STM32CubeMonitor** o **SWV (Serial Wire Viewer)** para:
+
 - Profiling de CPU
 - Uso de stack por tarea
 - Variables en tiempo real
@@ -430,6 +582,7 @@ Usar **STM32CubeMonitor** o **SWV (Serial Wire Viewer)** para:
 ### Errores Comunes
 
 #### Error: "Modbus timeout"
+
 ```
 Causa: Sensor Modbus no responde
 Solución:
@@ -440,6 +593,7 @@ Solución:
 ```
 
 #### Error: "No encoder pulses"
+
 ```
 Causa: Encoder no está generando interrupciones
 Solución:
@@ -450,6 +604,7 @@ Solución:
 ```
 
 #### Error: "DWIN display no actualiza"
+
 ```
 Causa: Comunicación UART con display fallando
 Solución:
@@ -460,6 +615,7 @@ Solución:
 ```
 
 #### Error: "Build failed: undefined reference"
+
 ```
 Causa: Bibliotecas o archivos faltantes
 Solución:
@@ -480,6 +636,7 @@ Solución:
    - PascalCase para tipos `typedef struct`
 
 2. **Commits**: Mensajes descriptivos
+
    ```bash
    git commit -m "fix: correct Modbus timeout handling"
    git commit -m "feat: add EEPROM configuration storage"
@@ -536,8 +693,10 @@ Para consultas técnicas o soporte, contactar al equipo de desarrollo.
 ## Historial de Versiones
 
 | Versión | Fecha | Cambios |
-|---------|-------|---------|
-| 1.0.0 | 2026-01-16 | Versión inicial estable |
+|---------|-------|---------|| 1.1.0 | 2026-01-20 | Módulo RTC con mutex thread-safe |
+| - | - | Centralización de direcciones VP en enum |
+| - | - | Corrección índice batch_measurement |
+| - | - | Guía de pruebas HMI || 1.0.0 | 2026-01-16 | Versión inicial estable |
 | - | - | Sistema de medición funcional |
 | - | - | Integración Modbus + DWIN + Printer |
 | - | - | Documentación completa |
@@ -545,4 +704,3 @@ Para consultas técnicas o soporte, contactar al equipo de desarrollo.
 ---
 
 **Desarrollado con STM32CubeIDE y Azure ThreadX**
-
