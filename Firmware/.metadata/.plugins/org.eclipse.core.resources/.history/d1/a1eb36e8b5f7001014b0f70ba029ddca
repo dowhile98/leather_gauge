@@ -1,0 +1,8 @@
+../leather_gauge_controller/modules/modbus/lgc_inteface_modbus.c:63:9:lgc_interface_modbus_init	16	static
+../leather_gauge_controller/modules/modbus/lgc_inteface_modbus.c:118:9:lgc_modbus_read_holding_regs	32	static
+../leather_gauge_controller/modules/modbus/lgc_inteface_modbus.c:139:9:lgc_modbus_read_coils	32	static
+../leather_gauge_controller/modules/modbus/lgc_inteface_modbus.c:160:9:lgc_modbus_write_holding_regs	32	static
+../leather_gauge_controller/modules/modbus/lgc_inteface_modbus.c:185:16:lgc_modbus_uart_read	24	static
+../leather_gauge_controller/modules/modbus/lgc_inteface_modbus.c:220:16:lgc_modbus_uart_write	24	static
+../leather_gauge_controller/modules/modbus/lgc_inteface_modbus.c:242:13:lgc_modbus_uart_error_callback	16	static
+../leather_gauge_controller/modules/modbus/lgc_inteface_modbus.c:252:13:lgc_modbus_rx_callback	16	static

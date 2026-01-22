@@ -360,6 +360,7 @@
 "./leather_gauge_controller/app/src/lgc_main_task.o"
 "./leather_gauge_controller/app/src/lgc_mem_pool.o"
 "./leather_gauge_controller/app/src/printer/lgc_printer_task.o"
+"./leather_gauge_controller/middlewares/DSP_Biquad/DSP_Biquad.o"
 "./leather_gauge_controller/middlewares/at24cxx/driver_at24cxx.o"
 "./leather_gauge_controller/middlewares/dwin/dwin_core.o"
 "./leather_gauge_controller/middlewares/lwbtn/src/lwbtn/lwbtn.o"

@@ -217,15 +217,15 @@ void lgc_hmi_update_task_entry(void *param)
 			// batch report pages
 			// get measurements
 			lgc_get_measurements(measurements);
-			//send data
+			// send data
 			for (uint8_t i = 0; i < 50; i++)
 			{
 				dwin_write_vp_u16(&dwin_hmi, vp_addr + i, (uint16_t)(measurements->leather_measurement[i + (hmi_data.current_page - HMI_PAGE12) * 50] * 100)); // assuming area in cm², sending as integer
 			}
-			
+
 			break;
 		}
-		
+
 		default:
 			break;
 		}
@@ -258,8 +258,50 @@ void lgc_hmi_task_entry(void *param)
 			// verify page
 			if (value == HMI_PAGE20 || value == HMI_PAGE6)
 			{
+				// get conf
+				lgc_module_conf_get(&conf);
 				// set stop event
 				osSetEventBits(&events, LGC_EVENT_STOP);
+
+				// update conf on hmi (write values)
+				if (value == HMI_PAGE6)
+				{
+					// update hmi
+					//->client name
+					dwin_write_text(&dwin_hmi, LGC_HMI_VP_CONFIG_TEXT_NAME_CLIENT, conf.client_name);
+					// leather color
+					dwin_write_text(&dwin_hmi, LGC_HMI_VP_CONFIG_TEXT_NAME_COLOR, conf.color);
+					// leather id
+					dwin_write_text(&dwin_hmi, LGC_HMI_VP_CONFIG_TEXT_NAME_LEATHER, conf.leather_id);
+					// batch number
+					dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_NUMBER_NAME_LEATHER, conf.batch);
+					// units
+					dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_UNITS, conf.units);
+				}
+				else
+				{
+					// update ft2 conversion
+					switch (conf.conversion)
+					{
+					case 0:
+						dwin_write_vp_u16(&dwin_hmi, 0x121A, 1);
+						dwin_write_vp_u16(&dwin_hmi, 0x122A, 0);
+						dwin_write_vp_u16(&dwin_hmi, 0x123A, 0);
+						break;
+					case 1:
+						dwin_write_vp_u16(&dwin_hmi, 0x121A, 0);
+						dwin_write_vp_u16(&dwin_hmi, 0x122A, 1);
+						dwin_write_vp_u16(&dwin_hmi, 0x123A, 0);
+						break;
+					case 2:
+						dwin_write_vp_u16(&dwin_hmi, 0x121A, 0);
+						dwin_write_vp_u16(&dwin_hmi, 0x122A, 0);
+						dwin_write_vp_u16(&dwin_hmi, 0x123A, 1);
+						break;
+					default:
+						break;
+					}
+				}
 			}
 
 			else if (value == HMI_PAGE3 && hmi_data.sensor_test_active == false)
@@ -271,16 +313,15 @@ void lgc_hmi_task_entry(void *param)
 				// set initial sensor test value
 				dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_TEST_CHOICED_SENSOR, hmi_data.sensor_test_id);
 			}
-			// update conf
-			lgc_module_conf_get(&conf);
+
 			break;
 		}
-		//clear one leather area
+		// clear one leather area
 		case 0x1501:
 		{
-			//clear index
-			
-			//set hmi update
+			// clear index
+			lgc_clear_measurement_last_leather();
+			// set hmi update
 			osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED);
 		}
 		// print report
@@ -288,6 +329,11 @@ void lgc_hmi_task_entry(void *param)
 		{
 			// send print command
 			osSetEventBits(&events, LGC_EVENT_PRINT_BATCH);
+			// increment batch index
+			// clear leather count
+			lgc_increment_batch_index();
+			// set hmi update
+			osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED);
 			break;
 		}
 		// Sensor test
@@ -350,6 +396,35 @@ void lgc_hmi_task_entry(void *param)
 				datetime.month = hmi_data.month;
 				datetime.year = hmi_data.year;
 				lgc_module_rtc_set(&datetime);
+				// save ok
+				value = 1;
+			}
+			else if (hmi_data.current_page == HMI_PAGE10)
+			{
+				// read hh value
+				dwin_read_u16(&dwin_hmi, 0x1346, &value, 1000);
+				osAcquireMutex(&hmi_data.mutex);
+				hmi_data.hh = value;
+				osReleaseMutex(&hmi_data.mutex);
+				// read mm value
+				dwin_read_u16(&dwin_hmi, 0x1347, &value, 1000);
+				osAcquireMutex(&hmi_data.mutex);
+				hmi_data.mm = value;
+				osReleaseMutex(&hmi_data.mutex);
+				// read ss value
+				dwin_read_u16(&dwin_hmi, 0x1348, &value, 1000);
+				osAcquireMutex(&hmi_data.mutex);
+				hmi_data.ss = value;
+				osReleaseMutex(&hmi_data.mutex);
+				// get current date
+				lgc_module_rtc_get(&datetime);
+				// update
+				datetime.hours = hmi_data.hh;
+				datetime.minutes = hmi_data.mm;
+				datetime.seconds = hmi_data.ss;
+				// set date time
+				lgc_module_rtc_set(&datetime);
+				
 				// save ok
 				value = 1;
 			}
@@ -439,35 +514,30 @@ void lgc_hmi_task_entry(void *param)
 			lgc_module_conf_set(&conf);
 			break;
 		}
-		case 0x1003:
+		
+		case 0x121A:
 		{
-			// read hh value
-			dwin_read_u16(&dwin_hmi, 0x1346, &value, 1000);
-			osAcquireMutex(&hmi_data.mutex);
-			hmi_data.hh = value;
-			osReleaseMutex(&hmi_data.mutex);
-			// read mm value
-			dwin_read_u16(&dwin_hmi, 0x1347, &value, 1000);
-			osAcquireMutex(&hmi_data.mutex);
-			hmi_data.mm = value;
-			osReleaseMutex(&hmi_data.mutex);
-			// read ss value
-			dwin_read_u16(&dwin_hmi, 0x1348, &value, 1000);
-			osAcquireMutex(&hmi_data.mutex);
-			hmi_data.ss = value;
-			osReleaseMutex(&hmi_data.mutex);
-			// get current date
-			lgc_module_rtc_get(&datetime);
-			// update
-			datetime.hours = hmi_data.hh;
-			datetime.minutes = hmi_data.mm;
-			datetime.seconds = hmi_data.ss;
-			// set date time
-			lgc_module_rtc_set(&datetime);
-			// update result
-			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_SAVE_RESULT, value);
-			osDelayTask(1000);
-			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_SAVE_RESULT, 0);
+			// update config
+			conf.conversion = 0;
+			dwin_write_vp_u16(&dwin_hmi, 0x121A, 1);
+			dwin_write_vp_u16(&dwin_hmi, 0x122A, 0);
+			dwin_write_vp_u16(&dwin_hmi, 0x123A, 0);
+			break;
+		}
+		case 0x122A:
+		{
+			conf.conversion = 1;
+			dwin_write_vp_u16(&dwin_hmi, 0x121A, 0);
+			dwin_write_vp_u16(&dwin_hmi, 0x122A, 1);
+			dwin_write_vp_u16(&dwin_hmi, 0x123A, 0);
+			break;
+		}
+		case 0x123A:
+		{
+			conf.conversion = 2;
+			dwin_write_vp_u16(&dwin_hmi, 0x121A, 0);
+			dwin_write_vp_u16(&dwin_hmi, 0x122A, 0);
+			dwin_write_vp_u16(&dwin_hmi, 0x123A, 1);
 			break;
 		}
 

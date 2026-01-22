@@ -1,0 +1,2 @@
+../Middlewares/ST/usbx/common/usbx_host_classes/src/ux_host_class_printer_name_get.c:38:6:_ux_host_class_printer_name_parse	40	static
+../Middlewares/ST/usbx/common/usbx_host_classes/src/ux_host_class_printer_name_get.c:177:7:_ux_host_class_printer_name_get	40	static

@@ -1,0 +1,12 @@
+../leather_gauge_controller/app/src/lgc_main_task.c:81:6:lgc_main_task_entry	20
+../leather_gauge_controller/app/src/lgc_main_task.c:269:13:lgc_encoder_callback	1
+../leather_gauge_controller/app/src/lgc_main_task.c:275:16:lgc_get_state	1
+../leather_gauge_controller/app/src/lgc_main_task.c:280:16:lgc_set_state	1
+../leather_gauge_controller/app/src/lgc_main_task.c:292:13:lgc_set_leds	5
+../leather_gauge_controller/app/src/lgc_main_task.c:324:17:lgc_count_active_bits	4
+../leather_gauge_controller/app/src/lgc_main_task.c:351:14:lgc_calculate_slice_area	1
+../leather_gauge_controller/app/src/lgc_main_task.c:372:16:lgc_process_measurement	10
+../leather_gauge_controller/app/src/lgc_main_task.c:486:6:lgc_buttons_callback	13
+../leather_gauge_controller/app/src/lgc_main_task.c:585:6:lgc_set_stop_condition	2
+../leather_gauge_controller/app/src/lgc_main_task.c:597:6:lgc_get_measurements	1
+../leather_gauge_controller/app/src/lgc_main_task.c:607:6:lgc_get_state_data	1

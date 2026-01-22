@@ -1,0 +1,4 @@
+../leather_gauge_controller/app/src/printer/lgc_printer_task.c:39:9:lgc_printer_connected	8	static
+../leather_gauge_controller/app/src/printer/lgc_printer_task.c:46:13:printer_delay	16	static
+../leather_gauge_controller/app/src/printer/lgc_printer_task.c:53:9:lgc_printer_init	40	static
+../leather_gauge_controller/app/src/printer/lgc_printer_task.c:73:13:lgc_printer_task_entry	112	static

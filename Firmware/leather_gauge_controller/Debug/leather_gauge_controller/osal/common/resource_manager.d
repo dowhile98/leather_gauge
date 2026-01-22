@@ -1,12 +1,12 @@
 leather_gauge_controller/osal/common/resource_manager.o: \
  ../leather_gauge_controller/osal/common/resource_manager.c \
- C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/osal/include/os_port.h \
- C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/config/os_port_config.h \
- C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/lwprintf/src/include/lwprintf/lwprintf.h \
- C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/lwprintf/src/include/lwprintf/lwprintf_opt.h \
- C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/config/lwprintf_opts.h \
- C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/osal/common/compiler_port.h \
- C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/osal/portable/threadx/os_port_threadx.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/osal/include/os_port.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/config/os_port_config.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/middlewares/lwprintf/src/include/lwprintf/lwprintf.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/middlewares/lwprintf/src/include/lwprintf/lwprintf_opt.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/config/lwprintf_opts.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/osal/common/compiler_port.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/osal/portable/threadx/os_port_threadx.h \
  ../Middlewares/ST/threadx/ports/cortex_m4/gnu/inc/tx_port.h \
  ../Core/Inc/tx_user.h ../Middlewares/ST/threadx/common/inc/tx_api.h \
  ../Middlewares/ST/threadx/common/inc/tx_thread.h \
@@ -19,15 +19,15 @@ leather_gauge_controller/osal/common/resource_manager.o: \
  ../leather_gauge_controller/osal/common/compiler_port.h \
  ../leather_gauge_controller/osal/common/error.h \
  ../leather_gauge_controller/osal/common/debug.h \
- C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/stm32_log/stm32_log.h \
- C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/config/stm32_log_config.h
-C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/osal/include/os_port.h:
-C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/config/os_port_config.h:
-C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/lwprintf/src/include/lwprintf/lwprintf.h:
-C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/lwprintf/src/include/lwprintf/lwprintf_opt.h:
-C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/config/lwprintf_opts.h:
-C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/osal/common/compiler_port.h:
-C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/osal/portable/threadx/os_port_threadx.h:
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/middlewares/stm32_log/stm32_log.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/config/stm32_log_config.h
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/osal/include/os_port.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/config/os_port_config.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/middlewares/lwprintf/src/include/lwprintf/lwprintf.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/middlewares/lwprintf/src/include/lwprintf/lwprintf_opt.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/config/lwprintf_opts.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/osal/common/compiler_port.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/osal/portable/threadx/os_port_threadx.h:
 ../Middlewares/ST/threadx/ports/cortex_m4/gnu/inc/tx_port.h:
 ../Core/Inc/tx_user.h:
 ../Middlewares/ST/threadx/common/inc/tx_api.h:
@@ -41,5 +41,5 @@ C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_
 ../leather_gauge_controller/osal/common/compiler_port.h:
 ../leather_gauge_controller/osal/common/error.h:
 ../leather_gauge_controller/osal/common/debug.h:
-C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/stm32_log/stm32_log.h:
-C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/config/stm32_log_config.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/middlewares/stm32_log/stm32_log.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/config/stm32_log_config.h:

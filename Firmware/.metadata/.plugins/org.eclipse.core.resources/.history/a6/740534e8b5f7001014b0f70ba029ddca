@@ -1,0 +1,5 @@
+../leather_gauge_controller/app/src/lgc_mem_pool.c:35:9:osPoolInit	3
+../leather_gauge_controller/app/src/lgc_mem_pool.c:62:7:osAllocMem	2
+../leather_gauge_controller/app/src/lgc_mem_pool.c:88:7:osCallocMem	4
+../leather_gauge_controller/app/src/lgc_mem_pool.c:116:7:osReallocMem	4
+../leather_gauge_controller/app/src/lgc_mem_pool.c:141:6:osFreeMem	3

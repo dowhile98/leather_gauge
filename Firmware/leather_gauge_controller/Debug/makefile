@@ -41,6 +41,7 @@ RM := rm -rf
 -include leather_gauge_controller/middlewares/lwbtn/src/lwbtn/subdir.mk
 -include leather_gauge_controller/middlewares/dwin/subdir.mk
 -include leather_gauge_controller/middlewares/at24cxx/subdir.mk
+-include leather_gauge_controller/middlewares/DSP_Biquad/subdir.mk
 -include leather_gauge_controller/app/src/printer/subdir.mk
 -include leather_gauge_controller/app/src/hmi/subdir.mk
 -include leather_gauge_controller/app/src/subdir.mk
@@ -102,8 +103,8 @@ all: main-build
 main-build: leather_gauge_controller.elf secondary-outputs
 
 # Tool invocations
-leather_gauge_controller.elf leather_gauge_controller.map: $(OBJS) $(USER_OBJS) C:\Users\eplim\Downloads\leather_gauge-main\leather_gauge-main\Firmware\leather_gauge_controller\STM32F446RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "leather_gauge_controller.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\eplim\Downloads\leather_gauge-main\leather_gauge-main\Firmware\leather_gauge_controller\STM32F446RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="leather_gauge_controller.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+leather_gauge_controller.elf leather_gauge_controller.map: $(OBJS) $(USER_OBJS) /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/STM32F446RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "leather_gauge_controller.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/STM32F446RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="leather_gauge_controller.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

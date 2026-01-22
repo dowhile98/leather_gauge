@@ -1,7 +1,7 @@
 leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.o: \
  ../leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.c \
  ../leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.h \
- C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/at24cxx/driver_at24cxx.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/middlewares/at24cxx/driver_at24cxx.h \
  ../Core/Inc/i2c.h ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
@@ -38,7 +38,7 @@ leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.o: \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_hcd.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
 ../leather_gauge_controller/modules/eeprom/driver_at24cxx_interface.h:
-C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/at24cxx/driver_at24cxx.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/middlewares/at24cxx/driver_at24cxx.h:
 ../Core/Inc/i2c.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:

@@ -1,0 +1,5 @@
+../leather_gauge_controller/modules/eeprom/lgc_module_eeprom.c:21:17:lgc_crc32_compute	32	static
+../leather_gauge_controller/modules/eeprom/lgc_module_eeprom.c:52:9:lgc_module_eeprom_init	8	static
+../leather_gauge_controller/modules/eeprom/lgc_module_eeprom.c:84:9:lgc_module_conf_get	32	static
+../leather_gauge_controller/modules/eeprom/lgc_module_eeprom.c:96:9:lgc_module_conf_set	40	static
+../leather_gauge_controller/modules/eeprom/lgc_module_eeprom.c:119:9:lgc_module_conf_load	16	static

@@ -35,6 +35,7 @@ USBX/App \
 leather_gauge_controller/app/src/hmi \
 leather_gauge_controller/app/src \
 leather_gauge_controller/app/src/printer \
+leather_gauge_controller/middlewares/DSP_Biquad \
 leather_gauge_controller/middlewares/at24cxx \
 leather_gauge_controller/middlewares/dwin \
 leather_gauge_controller/middlewares/lwbtn/src/lwbtn \

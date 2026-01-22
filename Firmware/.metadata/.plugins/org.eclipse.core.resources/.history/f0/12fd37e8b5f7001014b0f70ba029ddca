@@ -1,0 +1,10 @@
+../leather_gauge_controller/osal/common/path.c:41:8:pathIsAbsolute	3
+../leather_gauge_controller/osal/common/path.c:61:8:pathIsRelative	3
+../leather_gauge_controller/osal/common/path.c:81:15:pathGetFilename	7
+../leather_gauge_controller/osal/common/path.c:124:6:pathRemoveFilename	1
+../leather_gauge_controller/osal/common/path.c:141:6:pathCopy	1
+../leather_gauge_controller/osal/common/path.c:162:6:pathCanonicalize	37
+../leather_gauge_controller/osal/common/path.c:344:6:pathAddSlash	6
+../leather_gauge_controller/osal/common/path.c:376:6:pathRemoveSlash	7
+../leather_gauge_controller/osal/common/path.c:414:6:pathCombine	5
+../leather_gauge_controller/osal/common/path.c:457:8:pathMatch	12

@@ -99,6 +99,7 @@ void lgc_main_task_entry(void *param)
 	/*Mutex*/
 	osCreateMutex(&mutex);
 
+	osCreateMutex(&measurements.mutex);
 	/*encoder init*/
 	lgc_module_encoder_init(lgc_encoder_callback);
 
@@ -107,7 +108,7 @@ void lgc_main_task_entry(void *param)
 	{
 		// handle error
 	}
-	//test only
+	// test only
 	//--------------------------------
 	config.batch = 2;
 	config.conversion = 1;
@@ -117,8 +118,6 @@ void lgc_main_task_entry(void *param)
 	strcpy(config.leather_id, "xxx");
 	lgc_module_conf_set(&config);
 	//--------------------------------
-
-	
 
 	for (;;)
 	{
@@ -225,8 +224,12 @@ void lgc_main_task_entry(void *param)
 				/* Process measurement only if all sensors are healthy */
 				if (data.sensor_status == NO_ERROR)
 				{
+					// acquire measurements mutex
+					osAcquireMutex(&measurements.mutex);
+					/* Process measurement and get event status */
 					measurement_event = lgc_process_measurement(&config);
-
+					// release measurements mutex
+					osReleaseMutex(&measurements.mutex);
 					/* Handle measurement events
 					 * 0: No event (still measuring or idle)
 					 * 1: Leather measurement completed
@@ -265,6 +268,49 @@ void lgc_main_task_entry(void *param)
 		}
 		}
 	}
+}
+
+void lgc_clear_measurement_last_leather(void)
+{
+	// acquire measurements mutex
+	osAcquireMutex(&measurements.mutex);
+	/* Clear last leather measurement */
+	if (measurements.current_leather_index > 0)
+	{
+		// current leather area
+		measurements.current_leather_area = 0.0f;
+		// clear acumualte batch area
+		measurements.batch_measurement[measurements.current_batch_index] -= measurements.leather_measurement[measurements.current_batch_index * 50 + measurements.current_leather_index - 1];
+		if (measurements.batch_measurement[measurements.current_batch_index] < 0.0f)
+		{
+			measurements.batch_measurement[measurements.current_batch_index] = 0.0f;
+		}
+		// clear last leather measurement
+		measurements.leather_measurement[measurements.current_batch_index * 50 + measurements.current_leather_index - 1] = 0.0f;
+		measurements.current_leather_index--;
+	}
+	// total leathers measured
+	measurements.total_leathers_measured = measurements.current_leather_index;
+
+	// release measurements mutex
+	osReleaseMutex(&measurements.mutex);
+}
+
+void lgc_increment_batch_index(void)
+{
+	// acquire measurements mutex
+	osAcquireMutex(&measurements.mutex);
+	/* Increment batch index and reset leather index */
+	if (measurements.current_batch_index < LGC_LEATHER_BATCH_COUNT_MAX - 1)
+	{
+		measurements.current_batch_index++;
+		measurements.current_leather_index = 0;
+		measurements.current_leather_area = 0.0f;
+	}
+	// total leathers measured
+	measurements.total_leathers_measured = measurements.current_leather_index;
+	// release measurements mutex
+	osReleaseMutex(&measurements.mutex);
 }
 //-------------------------------------------------------------------------------
 // callbacks
@@ -376,14 +422,35 @@ static uint8_t lgc_process_measurement(LGC_CONF_TypeDef_t *config)
 {
 	uint16_t active_bits;
 	float slice_area;
-	uint8_t event_status = 0; /* Default: no event */
-
+	uint8_t event_status = 0;	  /* Default: no event */
+	float area_conversion = 0.0f; // ft2 factor
 	/* ============================================================================
 	 * STEP 1: COUNT ACTIVE PHOTORECEPTORS AND CALCULATE AREA
 	 * ============================================================================ */
 	active_bits = lgc_count_active_bits();
-	slice_area = lgc_calculate_slice_area(active_bits);
-
+	slice_area = lgc_calculate_slice_area(active_bits); // mm2
+	slice_area = slice_area / 1000000.0f;				// Convert mm² to m²
+	/* Unit conversion if required */
+	if (config->units == 0) // ft2
+	{
+		switch (config->conversion)
+		{
+		case 0:
+			/* code */
+			area_conversion = 10.7639f; // m2 to ft2
+			break;
+		case 1:
+			area_conversion = 10.7639f; // m2 to ft2
+			break;
+		case 2:
+			area_conversion = 10.7639f; // m2 to ft2
+			break;
+		default:
+			area_conversion = 10.7639f; // m2 to ft2
+			break;
+		}
+		slice_area = slice_area * area_conversion;
+	}
 	/* ============================================================================
 	 * STEP 2: LEATHER DETECTION STATE MACHINE
 	 * ============================================================================ */
@@ -457,9 +524,16 @@ static uint8_t lgc_process_measurement(LGC_CONF_TypeDef_t *config)
 				if (measurements.current_leather_index >= config->batch)
 				{
 					/* ====== EVENT: END OF BATCH DETECTED ====== */
+					measurements.total_leathers_measured = measurements.current_leather_index;
 					/* Batch is full - transition to next batch */
 					measurements.current_leather_index = 0;
+					// copy
+					memcpy(measurements.leather_measurement_last, measurements.leather_measurement, sizeof(float) * LGC_LEATHER_COUNT_MAX);
+					// clear last leather measurement
+					memset(measurements.leather_measurement, 0, sizeof(float) * LGC_LEATHER_COUNT_MAX);
+					// increment batch index
 					measurements.current_batch_index++;
+					// update return status
 					event_status = 2; /* Batch measurement completed */
 
 					/* Prevent batch array overflow */
@@ -496,13 +570,16 @@ void lgc_buttons_callback(uint8_t di, uint32_t evt)
 		// Handle START/STOP button event
 		if (evt == LWBTN_EVT_ONPRESS)
 		{
-			// lock
-			osAcquireMutex(&mutex);
-			data.start_stop_flag ^= 1 & 0x1; // toggle flag
-			// unlock
-			osReleaseMutex(&mutex);
-			// set event
-			osSetEventBits(&events, data.start_stop_flag ? LGC_EVENT_START : LGC_EVENT_STOP);
+			if (data.guard_motor == 0) // only if not in fail
+			{
+				// lock
+				osAcquireMutex(&mutex);
+				data.start_stop_flag ^= 1 & 0x1; // toggle flag
+				// unlock
+				osReleaseMutex(&mutex);
+				// set event
+				osSetEventBits(&events, data.start_stop_flag ? LGC_EVENT_START : LGC_EVENT_STOP);
+			}
 		}
 		break;
 	}

@@ -75,6 +75,7 @@ static void lgc_printer_task_entry(void *params)
 	char buffer[64];
 	lgc_measurements_t *measurements;
 	measurements = osAllocMem(sizeof(lgc_measurements_t));
+	LGC_CONF_TypeDef_t conf = {0};
 	/*wait for printer connected*/
 	do
 	{
@@ -85,19 +86,13 @@ static void lgc_printer_task_entry(void *params)
 	// printer is ready
 	osDelayTask(50);
 
-	esc_pos_set_align(&printer, ALIGN_CENTER);
-	esc_pos_print_text(&printer, (char *)"\rHOL MUNDO\r\n");
-	esc_pos_print_text(&printer, (char *)"\rHOL MUNDO1\r\n");
-	esc_pos_print_text(&printer, (char *)"\rHOL MUNDO2\r\n");
-	esc_pos_print_text(&printer, (char *)"\rHOL MUNDO3\r\n");
-	esc_pos_print_text(&printer, (char *)"\rHOL MUNDO4\r\n");
-	esc_pos_set_align(&printer, ALIGN_LEFT);
-	esc_pos_cut(&printer, false);
 
 	for (;;)
 	{
-		if (osWaitForEventBits(&events, LGC_EVENT_PRINT_BATCH, FALSE, TRUE, INFINITE_DELAY) == TRUE)
+		if (osWaitForEventBits(&events, LGC_EVENT_PRINT_BATCH | LGC_EVENT_PRINT_BATCH_COMPLETED, FALSE, TRUE, INFINITE_DELAY) == TRUE)
 		{
+			//get current config
+			lgc_module_conf_get(&conf);
 			// print batch data
 
 			// get measurements
@@ -110,6 +105,35 @@ static void lgc_printer_task_entry(void *params)
 			esc_pos_set_align(&printer, ALIGN_CENTER);
 			esc_pos_print_text(&printer, (char *)"\rBatch Measurement\r\n");
 			esc_pos_set_align(&printer, ALIGN_LEFT);
+			//batch number
+			lwprintf_snprintf(buffer, sizeof(buffer), "Batch: %d\r\n", measurements->current_batch_index);
+			esc_pos_print_text(&printer, buffer);
+			//company info
+			esc_pos_print_text(&printer, "EMPRESA  : CURPISCO S.A.C.\r\n");
+			esc_pos_print_text(&printer, "DIRECCION: AV. LOS GIRASOLES 123\r\n");
+			esc_pos_print_text(&printer, "TELFONO  : +51 987654321\r\n");
+			esc_pos_print_text(&printer, "RUC      : 20123456789\r\n");
+			//client info
+			lwprintf_snprintf(buffer, sizeof(buffer), "CLIENTE  : %s\r\n", conf.client_name);
+			esc_pos_print_text(&printer, buffer);
+			lwprintf_snprintf(buffer, sizeof(buffer), "COLOR    : %s\r\n", conf.color);
+			esc_pos_print_text(&printer, buffer);
+			lwprintf_snprintf(buffer, sizeof(buffer), "LEATHER ID: %s\r\n", conf.leather_id);
+			esc_pos_print_text(&printer, buffer);
+			
+			// units
+			if (conf.units == 0)
+			{
+				esc_pos_print_text(&printer, "UNITS: SQUARE METERS\r\n");
+			}
+			else if (conf.units == 1)
+			{	
+				esc_pos_print_text(&printer, "UNITS: SQUARE FEET\r\n");
+			}
+			esc_pos_print_text(&printer, "--------------------------------\r\n");
+			
+
+
 			// print leathers
 			for (uint16_t i = 0; i < measurements->current_batch_index; i++)
 			{

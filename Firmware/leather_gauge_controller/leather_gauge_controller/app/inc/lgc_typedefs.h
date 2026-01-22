@@ -62,11 +62,15 @@ typedef struct
 {
     uint16_t current_batch_index;                         /* Current batch index */
     uint16_t current_leather_index;                       /* Current leather index within batch */
+    uint16_t total_leathers_measured;                     /* Total leathers measured */
     float current_leather_area;                           /* Accumulator for current leather area */
     float leather_measurement[LGC_LEATHER_COUNT_MAX];     /* Individual leather areas */
+    float leather_measurement_last[LGC_LEATHER_COUNT_MAX];     /* Individual leather areas */
     float batch_measurement[LGC_LEATHER_BATCH_COUNT_MAX]; /* Batch sums */
     uint8_t is_measuring;                                 /* Measuring state flag */
     uint8_t no_detection_count;                           /* Consecutive steps with no detection */
+    /*mutex*/
+    OsMutex mutex;
 } lgc_measurements_t;
 
 typedef enum
@@ -80,12 +84,13 @@ typedef enum
 typedef enum
 {
     LGC_EVENT_STOP = 1,
-    LGC_EVENT_START = 1 << 2,
-    LGC_FAILURE_DETECTED = 1 << 3,
-    LGC_FAILURE_CLEARED = 1 << 4,
-    LGC_HMI_UPDATE_REQUIRED = 1 << 5,
-    LGC_EVENT_PRINT_BATCH = 1 << 6,
-    LGC_HMI_SENSOR_TEST_UPDATE = 1 << 7,
+    LGC_EVENT_START = 1 << 1,
+    LGC_FAILURE_DETECTED = 1 << 2,
+    LGC_FAILURE_CLEARED = 1 << 3,
+    LGC_HMI_UPDATE_REQUIRED = 1 << 4,
+    LGC_EVENT_PRINT_BATCH = 1 << 5,
+    LGC_HMI_SENSOR_TEST_UPDATE = 1 << 6,
+    LGC_EVENT_PRINT_BATCH_COMPLETED = 1 << 7,
 } LGC_Events_t;
 
 typedef enum

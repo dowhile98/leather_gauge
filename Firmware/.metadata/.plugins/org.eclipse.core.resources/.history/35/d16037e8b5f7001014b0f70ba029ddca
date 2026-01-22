@@ -1,0 +1,8 @@
+../leather_gauge_controller/modules/rtc/lgc_module_rtc.c:38:9:lgc_module_rtc_init	24	static
+../leather_gauge_controller/modules/rtc/lgc_module_rtc.c:66:9:lgc_module_rtc_set	48	static
+../leather_gauge_controller/modules/rtc/lgc_module_rtc.c:120:9:lgc_module_rtc_get	40	static
+../leather_gauge_controller/modules/rtc/lgc_module_rtc.c:165:9:lgc_module_rtc_deinit	8	static
+../leather_gauge_controller/modules/rtc/lgc_module_rtc.c:178:6:lgc_module_rtc_is_initialized	4	static
+../leather_gauge_controller/modules/rtc/lgc_module_rtc.c:192:16:lgc_rtc_validate_datetime	16	static
+../leather_gauge_controller/modules/rtc/lgc_module_rtc.c:244:16:lgc_rtc_decimal_to_bcd	16	static
+../leather_gauge_controller/modules/rtc/lgc_module_rtc.c:254:16:lgc_rtc_bcd_to_decimal	16	static
