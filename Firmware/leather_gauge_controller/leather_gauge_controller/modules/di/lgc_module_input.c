@@ -85,7 +85,7 @@ static uint8_t lwbtn_get_state(struct lwbtn *lwobj, struct lwbtn_btn *btn)
         break;
     case LGC_DI_GUARD:
         // read hardware input
-        state = HAL_GPIO_ReadPin(DI_3_GPIO_Port, DI_3_Pin);
+        state = HAL_GPIO_ReadPin(DI_3_GPIO_Port, DI_3_Pin) ? 0 : 1;
         break;
     case LGC_DI_SPEEDS:
         // read hardware input

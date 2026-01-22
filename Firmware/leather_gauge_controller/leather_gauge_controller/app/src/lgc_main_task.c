@@ -107,6 +107,19 @@ void lgc_main_task_entry(void *param)
 	{
 		// handle error
 	}
+	//test only
+	//--------------------------------
+	config.batch = 2;
+	config.conversion = 1;
+	config.units = 1;
+	strcpy(config.client_name, "test");
+	strcpy(config.color, "marron");
+	strcpy(config.leather_id, "xxx");
+	lgc_module_conf_set(&config);
+	//--------------------------------
+
+	
+
 	for (;;)
 	{
 		lgc_module_conf_get(&config); // load configuration

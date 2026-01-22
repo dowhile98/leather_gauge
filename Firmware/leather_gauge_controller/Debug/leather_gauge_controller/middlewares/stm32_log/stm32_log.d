@@ -1,10 +1,10 @@
 leather_gauge_controller/middlewares/stm32_log/stm32_log.o: \
- /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/stm32_log/stm32_log.c \
- /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/stm32_log/stm32_log.h \
- /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/config/stm32_log_config.h \
- /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwprintf/src/include/lwprintf/lwprintf.h \
- /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwprintf/src/include/lwprintf/lwprintf_opt.h \
- /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/config/lwprintf_opts.h \
+ C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/stm32_log/stm32_log.c \
+ C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/stm32_log/stm32_log.h \
+ C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/config/stm32_log_config.h \
+ C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/lwprintf/src/include/lwprintf/lwprintf.h \
+ C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/lwprintf/src/include/lwprintf/lwprintf_opt.h \
+ C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/config/lwprintf_opts.h \
  ../Core/Inc/main.h ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -39,11 +39,11 @@ leather_gauge_controller/middlewares/stm32_log/stm32_log.o: \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_hcd.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h
-/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/stm32_log/stm32_log.h:
-/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/config/stm32_log_config.h:
-/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwprintf/src/include/lwprintf/lwprintf.h:
-/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwprintf/src/include/lwprintf/lwprintf_opt.h:
-/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller/leather_gauge_controller/config/lwprintf_opts.h:
+C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/stm32_log/stm32_log.h:
+C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/config/stm32_log_config.h:
+C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/lwprintf/src/include/lwprintf/lwprintf.h:
+C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/lwprintf/src/include/lwprintf/lwprintf_opt.h:
+C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/leather_gauge_controller/leather_gauge_controller/config/lwprintf_opts.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:

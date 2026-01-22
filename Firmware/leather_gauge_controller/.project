@@ -33,37 +33,37 @@
 		<link>
 			<name>leather_gauge_controller/middlewares/at24cxx</name>
 			<type>2</type>
-			<location>/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/at24cxx</location>
+			<location>C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/at24cxx</location>
 		</link>
 		<link>
 			<name>leather_gauge_controller/middlewares/dwin</name>
 			<type>2</type>
-			<location>/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/dwin</location>
+			<location>C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/dwin</location>
 		</link>
 		<link>
 			<name>leather_gauge_controller/middlewares/lwbtn</name>
 			<type>2</type>
-			<locationURI>/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwbtn</locationURI>
+			<location>C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/lwbtn</location>
 		</link>
 		<link>
 			<name>leather_gauge_controller/middlewares/lwprintf</name>
 			<type>2</type>
-			<location>/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwprintf</location>
+			<location>C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/lwprintf</location>
 		</link>
 		<link>
 			<name>leather_gauge_controller/middlewares/lwrb</name>
 			<type>2</type>
-			<location>/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/lwrb</location>
+			<location>C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/lwrb</location>
 		</link>
 		<link>
 			<name>leather_gauge_controller/middlewares/nanoMODBUS</name>
 			<type>2</type>
-			<location>/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/nanoMODBUS</location>
+			<location>C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/nanoMODBUS</location>
 		</link>
 		<link>
 			<name>leather_gauge_controller/middlewares/stm32_log</name>
 			<type>2</type>
-			<location>/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/stm32_log</location>
+			<location>C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/stm32_log</location>
 		</link>
 	</linkedResources>
 </projectDescription>

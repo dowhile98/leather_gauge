@@ -1,4 +1,4 @@
 leather_gauge_controller/middlewares/nanoMODBUS/nanomodbus.o: \
- /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/nanoMODBUS/nanomodbus.c \
- /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/nanoMODBUS/nanomodbus.h
-/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/nanoMODBUS/nanomodbus.h:
+ C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/nanoMODBUS/nanomodbus.c \
+ C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/nanoMODBUS/nanomodbus.h
+C:/Users/eplim/Downloads/leather_gauge-main/leather_gauge-main/Firmware/middlewares/nanoMODBUS/nanomodbus.h:

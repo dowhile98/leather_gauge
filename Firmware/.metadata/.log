@@ -2453,3 +2453,182 @@ Command-line arguments:  -os linux -ws gtk -arch x86_64
 
 !ENTRY org.eclipse.cdt.core 1 0 2026-01-19 23:25:51.568
 !MESSAGE Indexed 'leather_gauge_controller' (395 sources, 248 headers) in 12.1 sec: 26,146 declarations; 131,961 references; 6 unresolved inclusions; 130 syntax errors; 396 unresolved names (0.25%)
+!SESSION 2026-01-20 11:29:14.922 -----------------------------------------------
+eclipse.buildId=Version 1.18.1
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=es_ES
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-20 11:29:30.492
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-20 11:29:30.496
+!MESSAGE Log4j2 initialized with config file /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-20 11:29:47.684
+!MESSAGE Started RMI Server, listening on port 41338
+
+!ENTRY org.eclipse.equinox.p2.artifact.repository 2 0 2026-01-20 11:43:53.947
+!MESSAGE No digest algorithm is available to verify download of osgi.bundle,com.microsoft.copilot.eclipse.core,0.14.0.202512112209 from repository https://azuredownloads-g3ahgwb5b8bkbxhd.b01.azurefd.net/github-copilot/.
+
+!ENTRY org.eclipse.equinox.p2.artifact.repository 2 0 2026-01-20 11:43:53.950
+!MESSAGE No digest algorithm is available to verify download of osgi.bundle,com.microsoft.copilot.eclipse.core.agent.linux.x64,0.14.0.202512112209 from repository https://azuredownloads-g3ahgwb5b8bkbxhd.b01.azurefd.net/github-copilot/.
+
+!ENTRY org.eclipse.equinox.p2.artifact.repository 2 0 2026-01-20 11:43:53.950
+!MESSAGE No digest algorithm is available to verify download of osgi.bundle,com.microsoft.copilot.eclipse.branding,0.14.0.202512112209 from repository https://azuredownloads-g3ahgwb5b8bkbxhd.b01.azurefd.net/github-copilot/.
+
+!ENTRY org.eclipse.equinox.p2.artifact.repository 2 0 2026-01-20 11:43:53.951
+!MESSAGE No digest algorithm is available to verify download of org.eclipse.update.feature,com.microsoft.copilot.eclipse.feature,0.14.0.202512112209 from repository https://azuredownloads-g3ahgwb5b8bkbxhd.b01.azurefd.net/github-copilot/.
+
+!ENTRY org.eclipse.equinox.p2.artifact.repository 2 0 2026-01-20 11:43:54.090
+!MESSAGE No digest algorithm is available to verify download of osgi.bundle,com.microsoft.copilot.eclipse.terminal.api,0.14.0.202512112209 from repository https://azuredownloads-g3ahgwb5b8bkbxhd.b01.azurefd.net/github-copilot/.
+
+!ENTRY org.eclipse.equinox.p2.artifact.repository 2 0 2026-01-20 11:43:54.111
+!MESSAGE No digest algorithm is available to verify download of osgi.bundle,com.microsoft.copilot.eclipse.ui,0.14.0.202512112209 from repository https://azuredownloads-g3ahgwb5b8bkbxhd.b01.azurefd.net/github-copilot/.
+
+!ENTRY org.eclipse.equinox.p2.artifact.repository 2 0 2026-01-20 11:43:54.437
+!MESSAGE No digest algorithm is available to verify download of osgi.bundle,com.microsoft.copilot.eclipse.ui.jobs,0.14.0.202512112209 from repository https://azuredownloads-g3ahgwb5b8bkbxhd.b01.azurefd.net/github-copilot/.
+
+!ENTRY org.eclipse.core.jobs 4 2 2026-01-20 11:46:09.846
+!MESSAGE An internal error occurred during: "Update validate job".
+!STACK 0
+java.lang.NullPointerException: Cannot invoke "org.eclipse.core.runtime.IExtensionRegistry.getConfigurationElementsFor(String)" because the return value of "org.eclipse.core.runtime.RegistryFactory.getRegistry()" is null
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.findMatchingRepositoryExtensions(AbstractRepositoryManager.java:426)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:794)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:697)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:110)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:105)
+	at org.eclipse.equinox.p2.engine.ProvisioningContext.loadMetadataRepository(ProvisioningContext.java:253)
+	at org.eclipse.equinox.p2.engine.ProvisioningContext.getLoadedMetadataRepositories(ProvisioningContext.java:235)
+	at org.eclipse.equinox.p2.engine.ProvisioningContext.getMetadata(ProvisioningContext.java:317)
+	at org.eclipse.equinox.internal.p2.director.SimplePlanner.updatesFor(SimplePlanner.java:962)
+	at org.eclipse.equinox.p2.operations.UpdateOperation.updatesFor(UpdateOperation.java:144)
+	at org.eclipse.equinox.p2.operations.UpdateOperation.computeProfileChangeRequest(UpdateOperation.java:180)
+	at org.eclipse.equinox.p2.operations.UpdateOperation.lambda$0(UpdateOperation.java:315)
+	at org.eclipse.equinox.internal.p2.operations.SearchForUpdatesResolutionJob.runModal(SearchForUpdatesResolutionJob.java:41)
+	at org.eclipse.equinox.p2.operations.ProfileChangeOperation.resolveModal(ProfileChangeOperation.java:117)
+	at org.eclipse.equinox.internal.p2.ui.sdk.scheduler.AutomaticUpdater.updatesAvailable(AutomaticUpdater.java:122)
+	at org.eclipse.equinox.internal.p2.ui.sdk.scheduler.AutomaticUpdater.updatesAvailable(AutomaticUpdater.java:101)
+	at org.eclipse.equinox.internal.p2.ui.sdk.scheduler.AutomaticUpdater$2.run(AutomaticUpdater.java:386)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SESSION 2026-01-20 11:46:11.655 -----------------------------------------------
+eclipse.buildId=Version 1.18.1
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=es_ES
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -data file:/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-20 11:46:32.792
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-20 11:46:32.794
+!MESSAGE Log4j2 initialized with config file /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/.metadata/.log4j2.xml
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2026-01-20 11:46:47.440
+!MESSAGE [Info] Starting language server with binary lsp agent.
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2026-01-20 11:46:47.461
+!MESSAGE [Info] Found native binary in fragment bundle: com.microsoft.copilot.eclipse.core.agent.linux.x64
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2026-01-20 11:46:50.268
+!MESSAGE [Info] Lsp agent started successfully.
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-20 11:46:57.014
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.lsp4e 1 0 2026-01-20 11:47:02.055
+!MESSAGE [Info]	[lsp] GitHub Copilot Language Server 1.401.0 initialized
+
+!ENTRY org.eclipse.lsp4e 1 0 2026-01-20 11:47:02.121
+!MESSAGE [Info]	[default] Policy watcher not supported on this platform: Unsupported platform
+
+!ENTRY org.eclipse.lsp4e 1 0 2026-01-20 11:47:02.139
+!MESSAGE [Info]	[GithubAvailableEmbeddingTypes] Could not find any available embedding types. Error: noSession
+
+!ENTRY org.eclipse.lsp4e 1 0 2026-01-20 11:47:02.325
+!MESSAGE [Info]	[certificates] Removed 2 expired certificates
+
+!ENTRY com.microsoft.copilot.eclipse.terminal.api 2 0 2026-01-20 11:47:03.875
+!MESSAGE Terminal dependencies not available. User needs to install them manually.
+
+!ENTRY org.eclipse.core.jobs 4 2 2026-01-20 11:47:04.274
+!MESSAGE An internal error occurred during: "Copilot initialization".
+!STACK 0
+java.lang.NullPointerException: Cannot invoke "org.eclipse.e4.core.services.events.IEventBroker.subscribe(String, org.osgi.service.event.EventHandler)" because "eventBroker" is null
+	at com.microsoft.copilot.eclipse.ui.chat.tools.FileToolService.<init>(FileToolService.java:59)
+	at com.microsoft.copilot.eclipse.ui.chat.services.ChatServiceManager.<init>(ChatServiceManager.java:43)
+	at com.microsoft.copilot.eclipse.ui.CopilotUi$1.run(CopilotUi.java:96)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.core.jobs 2 2 2026-01-20 11:47:05.227
+!MESSAGE Job found still running after platform shutdown.  Jobs should be canceled by the plugin that scheduled them during shutdown: org.eclipse.ui.internal.Workbench$39 RUNNING
+	 at java.base/java.lang.invoke.DirectMethodHandle.checkCast(DirectMethodHandle.java:599)
+	 at java.base/jdk.internal.reflect.MethodHandleObjectFieldAccessorImpl.set(MethodHandleObjectFieldAccessorImpl.java:109)
+	 at java.base/java.lang.reflect.Field.set(Field.java:834)
+	 at com.st.microxplorer.plugins.power.PowerMsg.createInstanceFromProperties(PowerMsg.java:1154)
+	 at com.st.microxplorer.plugins.power.PowerMsg.<clinit>(PowerMsg.java:1140)
+	 at com.st.microxplorer.plugins.power.PowerPluginView.createPCCMenu(PowerPluginView.java:271)
+	 at com.st.microxplorer.plugins.power.PowerPluginView.getUI(PowerPluginView.java:244)
+	 at com.st.microxplorer.plugin.PluginManage.PluginDiscovery(PluginManage.java:84)
+	 at com.st.microxplorer.maingui.MainPanel.initialization(MainPanel.java:332)
+	 at com.st.microxplorer.maingui.AppletMainFrameCubeIde.init(AppletMainFrameCubeIde.java:242)
+	 at com.st.stm32cube.common.mx.core.CubeMxInstance.<init>(CubeMxInstance.java:117)
+	 at com.st.stm32cube.common.mx.core.CubeMxInstance.getInstance(CubeMxInstance.java:91)
+	 at com.st.stm32cube.common.mx.userauth.UserAuthAdapter.<init>(UserAuthAdapter.java:25)
+	 at com.st.stm32cube.common.mx.userauth.UserAuthProvider.getUserAuthAdapter(UserAuthProvider.java:16)
+	 at com.st.stm32cube.common.ecosystemintegration.ui.core.MCUEcoSystemIntegrationUiHelper.getUserAuth(MCUEcoSystemIntegrationUiHelper.java:100)
+	 at com.st.stm32cube.ide.mcu.userauth.UserAuthStartup.earlyStartup(UserAuthStartup.java:32)
+	 at org.eclipse.ui.internal.EarlyStartupRunnable.runEarlyStartup(EarlyStartupRunnable.java:79)
+	 at org.eclipse.ui.internal.EarlyStartupRunnable.run(EarlyStartupRunnable.java:55)
+	 at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	 at org.eclipse.ui.internal.Workbench$39.run(Workbench.java:2733)
+	 at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SESSION 2026-01-22 08:35:31.799 -----------------------------------------------
+eclipse.buildId=Version 1.18.1
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=es_ES
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -data /home/tecna-smart-lab/GitHub/leather_gauge/Firmware
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-01-22 08:35:39.869
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-01-22 08:35:39.871
+!MESSAGE Log4j2 initialized with config file /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/.metadata/.log4j2.xml
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2026-01-22 08:35:44.462
+!MESSAGE [Info] Starting language server with binary lsp agent.
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2026-01-22 08:35:44.466
+!MESSAGE [Info] Found native binary in fragment bundle: com.microsoft.copilot.eclipse.core.agent.linux.x64
+
+!ENTRY com.microsoft.copilot.eclipse 1 0 2026-01-22 08:35:44.492
+!MESSAGE [Info] Lsp agent started successfully.
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-01-22 08:35:48.121
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.lsp4e 1 0 2026-01-22 08:35:51.298
+!MESSAGE [Info]	[lsp] GitHub Copilot Language Server 1.401.0 initialized
+
+!ENTRY org.eclipse.lsp4e 1 0 2026-01-22 08:35:51.350
+!MESSAGE [Info]	[default] Policy watcher not supported on this platform: Unsupported platform
+
+!ENTRY org.eclipse.lsp4e 1 0 2026-01-22 08:35:51.456
+!MESSAGE [Info]	[certificates] Removed 2 expired certificates
+
+!ENTRY org.eclipse.lsp4e 1 0 2026-01-22 08:35:51.877
+!MESSAGE [Info]	[GithubAvailableEmbeddingTypes] Got embeddings. Primary: metis-1024-I16-Binary. Deprecated: 
+
+!ENTRY org.eclipse.lsp4e 1 0 2026-01-22 08:35:52.409
+!MESSAGE [Info]	[AutoModelService] Auto model cache cleared due to token update
+
+!ENTRY org.eclipse.lsp4e 1 0 2026-01-22 08:35:52.410
+!MESSAGE [Info]	[Semantic Search] Semantic search is disabled { reason: 'watchedFiles capability is not available' }
+
+!ENTRY org.eclipse.lsp4e 1 0 2026-01-22 08:35:52.410
+!MESSAGE [Info]	[CopilotMCP] MCP state changed from false to true
+
+!ENTRY com.microsoft.copilot.eclipse.terminal.api 2 0 2026-01-22 08:35:52.609
+!MESSAGE Terminal dependencies not available. User needs to install them manually.
