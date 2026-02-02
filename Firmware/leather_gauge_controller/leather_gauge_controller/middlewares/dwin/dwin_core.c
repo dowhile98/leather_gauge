@@ -381,6 +381,11 @@ dwin_error_t dwin_write_text(dwin_t *hdl, uint16_t vp_addr, const char *text)
     if (!text)
         return DWIN_ERROR_PARAM;
     size_t len = strlen(text);
+
+    if(len == 0)
+    {
+    	return DWIN_ERROR_PARAM;
+    }
     return dwin_write_vp_raw(hdl, vp_addr, (uint8_t *)text, (uint16_t)len);
 }
 

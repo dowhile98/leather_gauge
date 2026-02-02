@@ -19,7 +19,16 @@
 
 #define COILS_ADDR_MAX LG_ADC_SENAOR_MAX_SIZE
 
-
+// Baudrate table
+uint32_t bauds_tables[] = {
+	9600,
+	19200,
+	28800,
+	38400,
+	57600,
+	76800,
+	115200
+};
 /* ============================================================================
  * typedefs
  * ========================================================================= */
@@ -58,13 +67,57 @@ static nmbs_error handle_write_single_register(uint16_t address, uint16_t value,
 
 static void modbus_server_update(void);
 nmbs_error modbus_tcp_write_data(uint16_t address, uint16_t val);
+
+void modbus_baudrate_set(uint32_t baudrate)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+  HAL_UART_DeInit(&huart1);
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = baudrate;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart1.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetTxFifoThreshold(&huart1, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetRxFifoThreshold(&huart1, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_DisableFifoMode(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
+}
 /* ============================================================================
  * public function definition
  * ========================================================================= */
-uint8_t lg_module_modbus_init(uint8_t addr)
+uint8_t lg_module_modbus_init(uint8_t addr, uint8_t baudrate_index)
 {
 	uint8_t ret = 0;
 
+	modbus_baudrate_set(bauds_tables[baudrate_index]);
 	/*ring buffer init*/
 	lwrb_init(&rb, rb_buffer, LG_UART_RX_BUFFER_SIZE);
 	/*start rx with uart*/
@@ -268,6 +321,7 @@ static void modbus_server_update(void)
 	server_registers[SERVER_ADDR] = conf.address;
 	server_registers[FILTER_FC_ADDR] = (uint16_t)(conf.fc * 10);
 	server_registers[SENSOR_THRESHOLD_ADDR] = conf.threshold;
+	server_registers[BAUDRATE_ADDR] = conf.baudrate;
 	/*sensor filtered data*/
 	for (uint8_t i = S1_ADDR; i < LG_ADC_SENAOR_MAX_SIZE; i++)
 	{
@@ -372,7 +426,14 @@ nmbs_error modbus_tcp_write_data(uint16_t address, uint16_t val)
 		conf.threshold = LB_THRESHOLD_DEFAULT;
 
 		break;
-
+	case BAUDRATE_ADDR:
+		modbus_baudrate_set(bauds_tables[val % 7]);
+		//get current config
+		lg_module_eeprom_conf_get(&conf);
+		//save condig
+		conf.baudrate = val % 7;
+		lg_module_eeprom_conf_set(&conf);
+		break;
 	default:
 		err = NMBS_EXCEPTION_ILLEGAL_DATA_ADDRESS;
 		break;

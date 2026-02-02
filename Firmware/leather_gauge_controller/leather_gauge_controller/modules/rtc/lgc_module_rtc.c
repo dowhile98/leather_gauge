@@ -16,7 +16,6 @@
 /* ============================================================================
  * DEFINES
  * ============================================================================ */
-#define RTC_BASE_YEAR 2000
 
 /* ============================================================================
  * STATIC VARIABLES
@@ -113,6 +112,7 @@ error_t lgc_module_rtc_set(const RTC_DateTime_t *datetime)
         return ERROR_FAILURE;
     }
 
+    HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1, 0x32F2);
     osReleaseMutex(&s_mutex);
     return NO_ERROR;
 }

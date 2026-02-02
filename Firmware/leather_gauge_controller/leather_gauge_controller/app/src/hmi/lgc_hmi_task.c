@@ -22,11 +22,11 @@
 #endif
 
 #ifndef DWIN_PROCESS_TASK_PRI
-#define DWIN_PROCESS_TASK_PRI 11
+#define DWIN_PROCESS_TASK_PRI 10
 #endif
 
 #ifndef DWIN_PROCESS_TASK_STACK
-#define DWIN_PROCESS_TASK_STACK 256
+#define DWIN_PROCESS_TASK_STACK 512
 #endif
 
 #ifndef LGC_HMI_TASK_PRI
@@ -34,7 +34,7 @@
 #endif
 
 #ifndef LGC_HMI_TASK_STACK
-#define LGC_HMI_TASK_STACK 256
+#define LGC_HMI_TASK_STACK 1024
 #endif
 
 #ifndef LGC_HMI_UPDATE_TASK_PRI
@@ -42,7 +42,11 @@
 #endif
 
 #ifndef LGC_HMI_UPDATE_TASK_STACK
-#define LGC_HMI_UPDATE_TASK_STACK 256
+#define LGC_HMI_UPDATE_TASK_STACK 1024
+#endif
+
+#ifndef LGC_SENSOR_K
+#define LGC_SENSOR_K 20
 #endif
 //-------------------------------------------------------------------------------
 // typedefs
@@ -128,10 +132,12 @@ void lgc_hmi_update_task_entry(void *param)
 			osDelayTask(1000);
 		}
 	}
-	osDelayTask(500); // wait for system to stabilize
+	osDelayTask(2000); // wait for system to stabilize
 
 	// set initial page
 	hmi_set_current_page(HMI_PAGE1);
+	//set hmi 1
+	dwin_page_jump(&dwin_hmi, HMI_PAGE1);
 
 	for (;;)
 	{
@@ -152,7 +158,7 @@ void lgc_hmi_update_task_entry(void *param)
 			lgc_module_conf_get(&conf);
 			// update HMI variables
 			//->guard
-			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_STATE, state_data.guard_motor);
+			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_STATE, state_data.guard_motor ? 0 : 1);
 			//->speed
 			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_ICON_SPEEP, state_data.speed_motor);
 			// set date (YYYY / MM / DD)
@@ -174,6 +180,8 @@ void lgc_hmi_update_task_entry(void *param)
 			//  Display the current batch's accumulated area, not the previous one
 			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_ACUMULATED_LEATHER_AREA, (uint16_t)(measurements->batch_measurement[measurements->current_batch_index] * 100)); // assuming area in cm², sending as integer
 			/*Current configuration*/
+			//set units
+			dwin_write_vp_u16(&dwin_hmi, 0x1350, conf.units);
 			//->client name
 			dwin_write_text(&dwin_hmi, LGC_HMI_VP_CONFIG_TEXT_NAME_CLIENT, conf.client_name);
 			// leather color
@@ -238,6 +246,7 @@ void lgc_hmi_task_entry(void *param)
 	uint16_t value = 0;
 	LGC_CONF_TypeDef_t conf = {0};
 	char text[32] = {0};
+	size_t len = 0;
 	RTC_DateTime_t datetime;
 	/*main loop*/
 	for (;;)
@@ -310,8 +319,32 @@ void lgc_hmi_task_entry(void *param)
 				hmi_data.sensor_test_id = 1; // initial sensor test value
 				hmi_data.sensor_test_active = true;
 				osReleaseMutex(&hmi_data.mutex);
+				//read
+				lgc_modbus_read_holding_regs(hmi_data.sensor_test_id, 12, &value, 1);
 				// set initial sensor test value
-				dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_TEST_CHOICED_SENSOR, hmi_data.sensor_test_id);
+				value = value / LGC_SENSOR_K; // scale factor for slider
+				// update HMI values
+				dwin_write_vp_u16(&dwin_hmi, 0x1108, value);
+				dwin_write_vp_u16(&dwin_hmi, 0x1109, value);
+			}
+
+			else if (value == HMI_PAGE10)
+			{
+				//get current date
+				lgc_module_rtc_get(&datetime);
+
+				dwin_write_vp_u16(&dwin_hmi, 0x1346, datetime.hours);
+				dwin_write_vp_u16(&dwin_hmi, 0x1347, datetime.minutes);
+				dwin_write_vp_u16(&dwin_hmi, 0x1348, datetime.seconds);
+			}
+			else if(value == HMI_PAGE7)
+			{
+				//get current date
+				lgc_module_rtc_get(&datetime);
+
+				dwin_write_vp_u16(&dwin_hmi, 0x1341, datetime.day);
+				dwin_write_vp_u16(&dwin_hmi, 0x1342, datetime.month);
+				dwin_write_vp_u16(&dwin_hmi, 0x1343, datetime.year - RTC_BASE_YEAR);
 			}
 
 			break;
@@ -349,7 +382,7 @@ void lgc_hmi_task_entry(void *param)
 			// update sensor threadhold
 			lgc_modbus_read_holding_regs(hmi_data.sensor_test_id % 12, 12, &value, 1);
 
-			value = value / 40; // scale factor for slider
+			value = value / LGC_SENSOR_K; // scale factor for slider
 			// update HMI values
 			dwin_write_vp_u16(&dwin_hmi, 0x1108, value);
 			dwin_write_vp_u16(&dwin_hmi, 0x1109, value);
@@ -394,7 +427,7 @@ void lgc_hmi_task_entry(void *param)
 				lgc_module_rtc_get(&datetime);
 				datetime.day = hmi_data.day;
 				datetime.month = hmi_data.month;
-				datetime.year = hmi_data.year;
+				datetime.year = hmi_data.year + RTC_BASE_YEAR;
 				lgc_module_rtc_set(&datetime);
 				// save ok
 				value = 1;
@@ -424,7 +457,7 @@ void lgc_hmi_task_entry(void *param)
 				datetime.seconds = hmi_data.ss;
 				// set date time
 				lgc_module_rtc_set(&datetime);
-				
+
 				// save ok
 				value = 1;
 			}
@@ -453,7 +486,7 @@ void lgc_hmi_task_entry(void *param)
 			value = (msg.data[0] << 8) | msg.data[1];
 			dwin_write_vp_u16(&dwin_hmi, 0x1109, value);
 			// set to sensor offset
-			value = value * 40.96; // scale factor for slider
+			value = value * LGC_SENSOR_K; // scale factor for slider
 			lgc_modbus_write_holding_regs(hmi_data.sensor_test_id % 12, 12, &value, 1);
 			// set update event
 			osSetEventBits(&events, LGC_HMI_SENSOR_TEST_UPDATE);
@@ -464,6 +497,12 @@ void lgc_hmi_task_entry(void *param)
 			memset(text, 0, sizeof(text));
 			// get text value
 			dwin_read_text(&dwin_hmi, 0x1310, text, 10, 1000);
+			len = strlen((const char *)text);
+			for(size_t i = len ; i <11; i++)
+			{
+				text[i] = ' ';
+			}
+			text[11] = '\0';
 			// save text
 			lgc_module_conf_get(&conf);
 			strcpy(conf.client_name, text);
@@ -475,6 +514,12 @@ void lgc_hmi_task_entry(void *param)
 			memset(text, 0, sizeof(text));
 			// get text value
 			dwin_read_text(&dwin_hmi, 0x1320, text, 10, 1000);
+			len = strlen((const char *)text);
+			for(size_t i = len ; i <11; i++)
+			{
+				text[i] = ' ';
+			}
+			text[11] = '\0';
 			// save text
 			lgc_module_conf_get(&conf);
 			strcpy(conf.color, text);
@@ -486,6 +531,12 @@ void lgc_hmi_task_entry(void *param)
 			memset(text, 0, sizeof(text));
 			// get text value
 			dwin_read_text(&dwin_hmi, 0x1330, text, 20, 1000);
+			len = strlen((const char *)text);
+			for(size_t i = len ; i <11; i++)
+			{
+				text[i] = ' ';
+			}
+			text[11] = '\0';
 			// save text
 			lgc_module_conf_get(&conf);
 			strcpy(conf.leather_id, text);
@@ -514,7 +565,7 @@ void lgc_hmi_task_entry(void *param)
 			lgc_module_conf_set(&conf);
 			break;
 		}
-		
+
 		case 0x121A:
 		{
 			// update config

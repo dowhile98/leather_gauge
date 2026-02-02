@@ -35,7 +35,7 @@ uint8_t lg_sensor_init(void)
         return ret;
     }
     /*modbus init*/
-    ret = lg_module_modbus_init(conf.address);
+    ret = lg_module_modbus_init(conf.address, conf.baudrate);
 
     return ret;
 }

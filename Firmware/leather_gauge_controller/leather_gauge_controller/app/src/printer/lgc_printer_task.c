@@ -15,7 +15,7 @@
 // defines
 //-------------------------------------------------------------------------------
 #ifndef LGC_PRINTER_TASK_STACK
-#define LGC_PRINTER_TASK_STACK 128
+#define LGC_PRINTER_TASK_STACK 200
 #endif
 
 #ifndef LGC_PRINTER_TASK_PRI
@@ -122,29 +122,31 @@ static void lgc_printer_task_entry(void *params)
 			esc_pos_print_text(&printer, buffer);
 			
 			// units
-			if (conf.units == 0)
+			if (conf.units == 1)
 			{
 				esc_pos_print_text(&printer, "UNITS: SQUARE METERS\r\n");
 			}
-			else if (conf.units == 1)
+			else if (conf.units == 0)
 			{	
 				esc_pos_print_text(&printer, "UNITS: SQUARE FEET\r\n");
 			}
 			esc_pos_print_text(&printer, "--------------------------------\r\n");
 			
-
-
 			// print leathers
-			for (uint16_t i = 0; i < measurements->current_batch_index; i++)
+			for (uint16_t i = 0; i < measurements->total_leathers_measured; i++)
 			{
-				lwprintf_snprintf(buffer, sizeof(buffer), "Leather %d: %.2f sqm\r\n", i + 1, measurements->leather_measurement[i]);
+				lwprintf_snprintf(buffer, sizeof(buffer), " %d: %.2f\r\n", i + 1, measurements->leather_measurement_last[i]);
 				esc_pos_print_text(&printer, buffer);
 			}
-			// print batch total
-			lwprintf_snprintf(buffer, sizeof(buffer), "\rBatch Total: %.2f sqm\r\n", measurements->batch_measurement[measurements->current_batch_index - 1]);
-			esc_pos_print_text(&printer, buffer);
+
+			if (measurements->current_batch_index > 0)
+			{
+				// print batch total
+				lwprintf_snprintf(buffer, sizeof(buffer), "\rBatch Total: %.2f sqm\r\n", measurements->batch_measurement[measurements->current_batch_index - 1]);
+				esc_pos_print_text(&printer, buffer);
+			}
 			// cut paper
-			esc_pos_cut(&printer, false);
+			esc_pos_cut(&printer, true);
 		}
 	}
 }

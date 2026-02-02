@@ -117,7 +117,7 @@ static void lgc_btns_task_entry(void *param)
     for (;;)
     {
         // process buttons
-        lwbtn_process(HAL_GetTick());
+        lwbtn_process(osGetSystemTime());
         // delay
         osDelayTask(20);
     }

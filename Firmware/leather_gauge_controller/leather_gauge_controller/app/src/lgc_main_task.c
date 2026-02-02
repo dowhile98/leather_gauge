@@ -18,17 +18,17 @@
 //-------------------------------------------------------------------------------
 
 #ifndef LGC_SENSOR_READ_RETRY
-#define LGC_SENSOR_READ_RETRY 4
+#define LGC_SENSOR_READ_RETRY 10
 #endif
 
 /* Pixel width in mm (single sensor pixel) */
 #ifndef LGC_PIXEL_WIDTH_MM
-#define LGC_PIXEL_WIDTH_MM 10.0f
+#define LGC_PIXEL_WIDTH_MM 20.0f
 #endif
 
 /* Encoder step distance in mm */
 #ifndef LGC_ENCODER_STEP_MM
-#define LGC_ENCODER_STEP_MM 5.0f
+#define LGC_ENCODER_STEP_MM 5.5f
 #endif
 
 /* Number of photoreceptors per sensor */
@@ -39,6 +39,10 @@
 #define LGC_LEATHER_END_HYSTERESIS 3
 #endif
 
+
+#ifndef LGC_LEATHER_MAX_PULSE_FLAG
+#define LGC_LEATHER_MAX_PULSE_FLAG 5
+#endif
 //-------------------------------------------------------------------------------
 // global variables
 //-------------------------------------------------------------------------------
@@ -46,7 +50,9 @@ lgc_t data;
 static lgc_measurements_t measurements;
 static OsSemaphore encoder_flag;
 static OsMutex mutex;
-
+static uint32_t pulse_count = 0;
+static uint32_t last_sensor_read_ms = 0;
+static uint32_t sensor_read_time_diff_ms = 0;
 //-------------------------------------------------------------------------------
 // private function prototype
 //-------------------------------------------------------------------------------
@@ -85,15 +91,15 @@ void lgc_main_task_entry(void *param)
 	LGC_CONF_TypeDef_t config;
 	uint8_t measurement_event; /* Event status from measurement processing */
 	RTC_Config_t rtc_config = {
-		.initial_datetime = {
-			.year = 2026,
-			.month = 1,
-			.day = 19,
-			.weekday = 7, // Domingo
-			.hours = 14,
-			.minutes = 30,
-			.seconds = 0},
-		.use_initial_datetime = false};
+			.initial_datetime = {
+					.year = 2026,
+					.month = 1,
+					.day = 19,
+					.weekday = 7, // Domingo
+					.hours = 14,
+					.minutes = 30,
+					.seconds = 0},
+					.use_initial_datetime = false};
 	/*create semaphore*/
 	osCreateSemaphore(&encoder_flag, 0);
 	/*Mutex*/
@@ -108,16 +114,39 @@ void lgc_main_task_entry(void *param)
 	{
 		// handle error
 	}
+
+	lgc_module_conf_load();
+
+	//verify speed select for init
+	osDelayTask(300);
+	if(HAL_GPIO_ReadPin(DI_4_GPIO_Port, DI_4_Pin) == 0)
+	{
+		// lock
+		osAcquireMutex(&mutex);
+		data.speed_motor = 0;
+		// unlock
+		osReleaseMutex(&mutex);
+		// set led
+		lgc_set_leds(LGC_SPEED_HIGH_LED, 0);
+		lgc_set_leds(LGC_SPEED_LOW_LED, 1);
+	}
 	// test only
 	//--------------------------------
-	config.batch = 2;
+	/*config.batch = 2;
 	config.conversion = 1;
 	config.units = 1;
 	strcpy(config.client_name, "test");
 	strcpy(config.color, "marron");
 	strcpy(config.leather_id, "xxx");
-	lgc_module_conf_set(&config);
+	lgc_module_conf_set(&config);*/
 	//--------------------------------
+	uint16_t baudrate = 0;
+
+	for(uint8_t i = 1; i<=11; i++)
+	{
+
+		lgc_modbus_write_holding_regs(i, 46, &baudrate, 1);
+	}
 
 	for (;;)
 	{
@@ -190,6 +219,9 @@ void lgc_main_task_entry(void *param)
 				// memset(data.sensor, 0, sizeof(data.sensor));
 
 				/* Read all sensors with retry logic */
+
+				last_sensor_read_ms = osGetSystemTime();
+
 				for (uint8_t i = 0; i < 11; i++)
 				{
 					sensor_retry = 0;
@@ -198,11 +230,12 @@ void lgc_main_task_entry(void *param)
 					/* Retry loop for Modbus read */
 					do
 					{
+
 						err = lgc_modbus_read_holding_regs(i + 1, 45, &data.sensor[i], 1);
 						if (err != NO_ERROR)
 						{
+							osDelayTask(1);
 							sensor_retry++;
-							osDelayTask(20);
 						}
 						else
 						{
@@ -220,7 +253,7 @@ void lgc_main_task_entry(void *param)
 						data.sensor_status &= ~(1 << i);
 					}
 				}
-
+				sensor_read_time_diff_ms = osGetSystemTime() - last_sensor_read_ms;
 				/* Process measurement only if all sensors are healthy */
 				if (data.sensor_status == NO_ERROR)
 				{
@@ -308,7 +341,7 @@ void lgc_increment_batch_index(void)
 		measurements.current_leather_area = 0.0f;
 	}
 	// total leathers measured
-	measurements.total_leathers_measured = measurements.current_leather_index;
+	//	measurements.total_leathers_measured = measurements.current_leather_index;
 	// release measurements mutex
 	osReleaseMutex(&measurements.mutex);
 }
@@ -317,8 +350,16 @@ void lgc_increment_batch_index(void)
 //-------------------------------------------------------------------------------
 static void lgc_encoder_callback(void)
 {
-	// set flag
-	osReleaseSemaphore(&encoder_flag);
+
+
+	pulse_count += 1;
+	if(pulse_count > LGC_LEATHER_MAX_PULSE_FLAG)
+	{
+		pulse_count = 0;
+		// set flag
+		osReleaseSemaphore(&encoder_flag);
+	}
+
 }
 
 static uint8_t lgc_get_state(void)
@@ -401,7 +442,7 @@ static float lgc_calculate_slice_area(uint16_t active_bits)
 {
 	/* Area = width (active_bits * pixel_width) * length (encoder_step) */
 	float width = active_bits * LGC_PIXEL_WIDTH_MM;
-	float area = width * LGC_ENCODER_STEP_MM;
+	float area = width * LGC_ENCODER_STEP_MM * LGC_LEATHER_MAX_PULSE_FLAG;
 
 	return area;
 }
@@ -440,13 +481,13 @@ static uint8_t lgc_process_measurement(LGC_CONF_TypeDef_t *config)
 			area_conversion = 10.7639f; // m2 to ft2
 			break;
 		case 1:
-			area_conversion = 10.7639f; // m2 to ft2
+			area_conversion = 30.48f; // m2 to ft2
 			break;
 		case 2:
-			area_conversion = 10.7639f; // m2 to ft2
+			area_conversion = 30.0f; // m2 to ft2
 			break;
 		default:
-			area_conversion = 10.7639f; // m2 to ft2
+			area_conversion = 28.0f; // m2 to ft2
 			break;
 		}
 		slice_area = slice_area * area_conversion;
@@ -501,7 +542,7 @@ static uint8_t lgc_process_measurement(LGC_CONF_TypeDef_t *config)
 				if (measurements.current_leather_index < LGC_LEATHER_COUNT_MAX)
 				{
 					measurements.leather_measurement[measurements.current_leather_index] =
-						measurements.current_leather_area;
+							measurements.current_leather_area;
 				}
 
 				/* ==================================================
@@ -510,7 +551,7 @@ static uint8_t lgc_process_measurement(LGC_CONF_TypeDef_t *config)
 				if (measurements.current_batch_index < LGC_LEATHER_BATCH_COUNT_MAX)
 				{
 					measurements.batch_measurement[measurements.current_batch_index] +=
-						measurements.current_leather_area;
+							measurements.current_leather_area;
 				}
 
 				/* ==================================================

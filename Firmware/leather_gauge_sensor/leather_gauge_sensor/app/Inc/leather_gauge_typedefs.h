@@ -41,6 +41,8 @@ typedef struct __attribute__((packed)) LG_CONF_TypeDef
 	float fc; /*0.1 - 200.0 : 1 - 2000*/
 	/*Threshold data*/
 	uint16_t threshold; /*1-4095*/
+	/*baudrate*/
+	uint32_t baudrate;
 	/*checksum*/
 	uint32_t checksum;
 } LG_CONF_TypeDef_t;

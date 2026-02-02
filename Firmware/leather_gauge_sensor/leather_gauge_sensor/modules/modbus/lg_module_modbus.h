@@ -76,16 +76,20 @@ typedef enum lg_module_modbus_addr
     A10_ADDR,
     /*DIGITAL VALUE SENSOR*/
     DI_VALUE_ADDR,
+	/*BAUDS*/
+	BAUDRATE_ADDR,
     LB_MODBUS_ADDR_MAX,
 } lg_module_modbus_addr_t;
 
 /* ============================================================================
  * public function prototype
  * ========================================================================= */
-uint8_t lg_module_modbus_init(uint8_t addr);
+uint8_t lg_module_modbus_init(uint8_t addr, uint8_t baudrate_index);
 
 uint8_t lg_module_modbus_set_addr(uint8_t addr);
 
 uint8_t lg_module_modbus_pool(void);
+
+void modbus_baudrate_set(uint32_t baudrate);
 
 #endif /* LG_MODULE_MODBUS_H */

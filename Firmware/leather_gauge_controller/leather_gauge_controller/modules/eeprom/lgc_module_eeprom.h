@@ -32,9 +32,9 @@ typedef struct __attribute__((__packed__)) LGC_CONF_TypeDef
     /*client*/
     char client_name[12];
     /*color*/
-    char color[10];
+    char color[12];
     /*leather id*/
-    char leather_id[20];
+    char leather_id[12];
     /*batch*/
     uint32_t batch;
     /*units*/
