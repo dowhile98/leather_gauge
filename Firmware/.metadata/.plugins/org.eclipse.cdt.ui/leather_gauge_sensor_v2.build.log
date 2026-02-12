@@ -1,0 +1,10 @@
+09:01:30 **** Build of configuration Debug for project leather_gauge_sensor_v2 ****
+make -j12 all 
+arm-none-eabi-size  leather_gauge_sensor_v2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  44724	      0	   7472	  52196	   cbe4	leather_gauge_sensor_v2.elf
+Finished building: default.size.stdout
+ 
+
+09:01:30 Build Finished. 0 errors, 0 warnings. (took 285ms)
+

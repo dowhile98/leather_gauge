@@ -3,6 +3,7 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
+		<item value="modbus_rx_semaphore"/>
 		<item value="conf.threshold"/>
 		<item value="SENSOR_THRESHOLD_ADDR"/>
 		<item value="hmi_msg"/>
