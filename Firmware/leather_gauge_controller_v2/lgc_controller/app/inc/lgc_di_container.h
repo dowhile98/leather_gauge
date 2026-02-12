@@ -24,7 +24,7 @@ extern "C"
 /* ============================= Includes ============================= */
 #include "../../domain/entities/lgc_common_types.h"
 
-    /* Forward declarations */
+    /* Forward declarations (Interfaces) */
     typedef struct ILgcSensorReader_t ILgcSensorReader_t;
     typedef struct ILgcEncoder_t ILgcEncoder_t;
     typedef struct ILgcStorage_t ILgcStorage_t;
@@ -33,6 +33,16 @@ extern "C"
     typedef struct ILgcEventPublisher_t ILgcEventPublisher_t;
     typedef struct LgcSystemConfig_t LgcSystemConfig_t;
     typedef struct LgcMeasurements_t LgcMeasurements_t;
+
+    /* Forward declarations (Active Objects) */
+    typedef struct LgcLwPktAgent_t LgcLwPktAgent_t;
+
+    /* ============================= External Instances ================== */
+    /**
+     * @brief Global LwPKT Agent instance pointer (for ISR callbacks)
+     * @note Points to static instance in lgc_di_container.c after LgcDI_Init()
+     */
+    extern LgcLwPktAgent_t *g_lwpkt_agent;
 
     /* ============================= Public API =========================== */
     /**

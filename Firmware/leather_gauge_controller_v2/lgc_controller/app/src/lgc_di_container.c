@@ -27,7 +27,7 @@
 #include "../../domain/entities/lgc_measurement_entity.h"
 
 /* Concrete adapters (implementations) */
-#include "../../adapters/communication/lwpkt_adapter/lgc_lwpkt_adapter.h"
+#include "../../adapters/communication/lwpkt_adapter/lgc_lwpkt_agent.h"
 #include "../../adapters/peripherals/encoder_adapter/lgc_encoder_adapter.h"
 #include "../../adapters/storage/eeprom_adapter/lgc_eeprom_adapter.h"
 #include "../../adapters/peripherals/display_adapter/lgc_display_adapter.h"
@@ -48,6 +48,13 @@ extern UART_HandleTypeDef huart2; // LwPKT communication
 extern UART_HandleTypeDef huart1; // DWIN display
 // extern I2C_HandleTypeDef hi2c1;    // EEPROM
 
+/* ============================= Global Instances ===================== */
+/**
+ * @brief Global LwPKT Agent instance pointer (for ISR callbacks)
+ * @note Points to static instance in s_adapters struct after initialization
+ */
+LgcLwPktAgent_t *g_lwpkt_agent = NULL;
+
 /* ============================= Static Instances ===================== */
 /**
  * @brief Static adapter instances (no dynamic memory)
@@ -55,7 +62,7 @@ extern UART_HandleTypeDef huart1; // DWIN display
 static struct
 {
     /* Communication adapters */
-    LgcLwPktAdapter_t lwpkt_adapter;
+    LgcLwPktAgent_t lwpkt_agent; /* Active Object (OSAL-based) */
 
     /* Peripheral adapters */
     LgcDisplayAdapter_t display_adapter;
@@ -112,9 +119,18 @@ static Result_t di_init_adapters(void)
 
     /* ===== Communication Adapters ===== */
 
-    // LwPKT adapter (primary)
-    res = LgcLwPktAdapter_Init(&s_adapters.lwpkt_adapter, &huart2);
-    if (res != ERR_OK) return res;
+    /* LwPKT Agent (Active Object - OSAL-based) */
+    error_t err = LgcLwPktAgent_Init(&s_adapters.lwpkt_agent, &huart2);
+    if (err != NO_ERROR)
+        return ERR_ERROR;
+
+    /* Start LwPKT Agent (begin UART DMA reception) */
+    err = LgcLwPktAgent_Start(&s_adapters.lwpkt_agent);
+    if (err != NO_ERROR)
+        return ERR_ERROR;
+
+    /* Expose global pointer for ISR callbacks */
+    g_lwpkt_agent = &s_adapters.lwpkt_agent;
 
     /* ===== Peripheral Adapters ===== */
 
@@ -123,7 +139,8 @@ static Result_t di_init_adapters(void)
 
     /* Display adapter (UART DWIN) */
     res = LgcDisplayAdapter_Init(&s_adapters.display_adapter, &huart1);
-    if (res != ERR_OK) return res;
+    if (res != ERR_OK)
+        return res;
 
     /* Printer adapter (USB ESC/POS) - TODO */
     /* s_interfaces.printer = PrinterAdapter_GetInterface(...); */
@@ -143,13 +160,16 @@ static Result_t di_wire_interfaces(void)
 {
     /* Get interface pointers from adapters */
 
-    /* Sensor Reader (LwPKT) */
-    s_interfaces.sensor_reader = LgcLwPktAdapter_GetInterface(&s_adapters.lwpkt_adapter);
-    if (s_interfaces.sensor_reader == NULL) return ERR_NULL_POINTER;
+    /* Sensor Reader (LwPKT Agent - Active Object) */
+    /* TODO: Create wrapper adapter that uses LgcLwPktAgent async API */
+    /* For now, set to NULL to avoid build errors */
+    s_interfaces.sensor_reader = NULL;                                     /* Active Object migration in progress */
+    /* if (s_interfaces.sensor_reader == NULL) return ERR_NULL_POINTER; */ /* Disabled during migration */
 
     /* Encoder (GPIO EXTI - Singleton) */
     s_interfaces.encoder = (ILgcEncoder_t *)LgcEncoderAdapter_GetInterface();
-    if (s_interfaces.encoder == NULL) return ERR_NULL_POINTER;
+    if (s_interfaces.encoder == NULL)
+        return ERR_NULL_POINTER;
 
     /* Initialize encoder with config */
     LgcEncoderConfig_t encoder_cfg = {
@@ -157,11 +177,13 @@ static Result_t di_wire_interfaces(void)
         .enable_interrupts = true,
         .debounce_ms = 10};
     Result_t res = s_interfaces.encoder->init(s_interfaces.encoder->context, &encoder_cfg);
-    if (res != ERR_OK) return res;
+    if (res != ERR_OK)
+        return res;
 
     /* Storage (EEPROM - Singleton) */
     s_interfaces.storage = (ILgcStorage_t *)LgcEepromAdapter_GetInterface();
-    if (s_interfaces.storage == NULL) return ERR_NULL_POINTER;
+    if (s_interfaces.storage == NULL)
+        return ERR_NULL_POINTER;
 
     /* Initialize EEPROM */
     LgcStorageConfig_t storage_cfg = {
@@ -169,7 +191,8 @@ static Result_t di_wire_interfaces(void)
         .enable_crc = true,
         .auto_retry = true};
     res = s_interfaces.storage->init(s_interfaces.storage->context, &storage_cfg);
-    if (res != ERR_OK) return res;
+    if (res != ERR_OK)
+        return res;
 
     /* Load System Configuration */
     res = s_interfaces.storage->load_config(s_interfaces.storage->context, &s_system_config);
@@ -190,7 +213,8 @@ static Result_t di_wire_interfaces(void)
 
     /* Display (DWIN - UART1) */
     s_interfaces.display = LgcDisplayAdapter_GetInterface(&s_adapters.display_adapter);
-    if (s_interfaces.display == NULL) return ERR_NULL_POINTER;
+    if (s_interfaces.display == NULL)
+        return ERR_NULL_POINTER;
 
     LgcDisplayConfig_t display_cfg = {
         .timeout_ms = 1000,
@@ -198,17 +222,21 @@ static Result_t di_wire_interfaces(void)
         .backlight = 80,
         .enable_buzzer = true};
     res = s_interfaces.display->init(s_interfaces.display->context, &display_cfg);
-    if (res != ERR_OK) return res;
+    if (res != ERR_OK)
+        return res;
 
     /* Event Publisher */
     res = LgcEventPublisher_Init(&s_services.event_publisher);
-    if (res != ERR_OK) return res;
-    
+    if (res != ERR_OK)
+        return res;
+
     s_interfaces.event_publisher = LgcEventPublisher_GetInterface(&s_services.event_publisher);
-    if (s_interfaces.event_publisher == NULL) return ERR_NULL_POINTER;
+    if (s_interfaces.event_publisher == NULL)
+        return ERR_NULL_POINTER;
 
     res = s_interfaces.event_publisher->init(s_interfaces.event_publisher->context);
-    if (res != ERR_OK) return res;
+    if (res != ERR_OK)
+        return res;
 
     /* Initialize Measurements structure */
     LgcMeasurements_Init(&s_services.measurements);
@@ -226,11 +254,11 @@ static Result_t di_create_tasks(void)
     /* 1. Main Control Task */
     LgcMainTaskConfig_t main_cfg = {
         .encoder_timeout_ms = 0, /* Infinite wait for pulse */
-        .enable_diagnostics = true
-    };
-    
+        .enable_diagnostics = true};
+
     res = LgcMainTask_Start(&main_cfg);
-    if (res != ERR_OK) return res;
+    if (res != ERR_OK)
+        return res;
 
     /* 2. HMI Task */
     res = LgcHmiTask_Init(
@@ -240,19 +268,21 @@ static Result_t di_create_tasks(void)
         &s_system_config,
         &s_services.measurements);
 
-    if (res != ERR_OK) return res;
+    if (res != ERR_OK)
+        return res;
 
     res = LgcHmiTask_Start(&s_tasks.hmi_task);
-    if (res != ERR_OK) return res;
+    if (res != ERR_OK)
+        return res;
 
     /* 3. Printer Task */
     /* Only init if printer interface is available (TODO) */
-    if (s_interfaces.printer != NULL) {
+    if (s_interfaces.printer != NULL)
+    {
         res = LgcPrinterTask_Init(
-            s_interfaces.printer, 
-            s_interfaces.event_publisher, 
-            &s_system_config
-        );
+            s_interfaces.printer,
+            s_interfaces.event_publisher,
+            &s_system_config);
         /* Printer task starts automatically in Init */
     }
 
@@ -267,17 +297,20 @@ Result_t LgcDI_Init(void)
 
     /* Step 1: Initialize adapters */
     res = di_init_adapters();
-    if (res != ERR_OK) return res;
+    if (res != ERR_OK)
+        return res;
 
     /* Step 2: Wire interfaces */
     res = di_wire_interfaces();
-    if (res != ERR_OK) return res;
+    if (res != ERR_OK)
+        return res;
 
     /* Step 3: Create and Start Tasks */
-    /* Note: Use Cases are implicitly used within Tasks via DI Getters, 
+    /* Note: Use Cases are implicitly used within Tasks via DI Getters,
        no explicit init needed if they are pure logic or managed by tasks. */
     res = di_create_tasks();
-    if (res != ERR_OK) return res;
+    if (res != ERR_OK)
+        return res;
 
     return ERR_OK;
 }
@@ -293,11 +326,12 @@ Result_t LgcDI_Shutdown(void)
     /* Graceful shutdown logic */
     LgcMainTask_Stop();
     LgcHmiTask_Stop(&s_tasks.hmi_task);
-    if (s_interfaces.printer) LgcPrinterTask_Deinit();
-    
+    if (s_interfaces.printer)
+        LgcPrinterTask_Deinit();
+
     /* Save config */
     s_interfaces.storage->save_config(s_interfaces.storage->context, &s_system_config);
-    
+
     return ERR_OK;
 }
 

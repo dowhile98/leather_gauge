@@ -10,19 +10,9 @@
 
 /* ============================= Includes ============================= */
 #include "lgc_hmi_task.h"
+#include "lgc_hmi_vp_addresses.h" /* Centralized VP address definitions */
 #include <string.h>
 #include <stdio.h>
-
-/* ============================= VP Addresses (from lgc_hmi.h) ======== */
-#define VP_STATE 0x1110U
-#define VP_BATCH_COUNT 0x1050U
-#define VP_LEATHER_COUNT 0x1051U
-#define VP_CURRENT_AREA 0x1060U
-#define VP_ACCUMULATED_AREA 0x1080U
-#define VP_CONFIG_NAME_CLIENT 0x1310U
-#define VP_CONFIG_NAME_COLOR 0x1320U
-#define VP_CONFIG_NAME_LEATHER 0x1330U
-#define VP_CONFIG_BATCH_SIZE 0x1340U
 
 /* ============================= Event Flags ========================== */
 #define HMI_EVENT_DISPLAY_BUTTON (1U << 0)
@@ -35,19 +25,26 @@
 /**
  * @brief Update display with current measurement
  */
+/**
+ * @brief Update display with current measurement
+ * @note Uses VP_AREA_TO_UINT16 macro to convert float → uint16_t (×100)
+ */
 static void hmi_update_display_measurement(LgcHmiTask_t *task)
 {
-    /* Update current leather area */
-    task->display->write_float(
+    /* Update current leather area (convert float dm² → uint16_t ×100) */
+    uint16_t current_area_display = VP_AREA_TO_UINT16(task->measurements->current_leather_area);
+    task->display->write_u16(
         task->display->context,
         VP_CURRENT_AREA,
-        task->measurements->current_leather_area);
+        current_area_display);
 
     /* Update accumulated batch area */
-    task->display->write_float(
+    uint16_t accumulated_area_display = VP_AREA_TO_UINT16(
+        task->measurements->batch_measurement[task->measurements->current_batch_index]);
+    task->display->write_u16(
         task->display->context,
         VP_ACCUMULATED_AREA,
-        task->measurements->batch_measurement[task->measurements->current_batch_index]);
+        accumulated_area_display);
 
     /* Update counters */
     task->display->write_u16(
