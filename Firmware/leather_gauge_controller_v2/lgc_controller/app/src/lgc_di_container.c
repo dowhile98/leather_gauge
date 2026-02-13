@@ -28,6 +28,7 @@
 
 /* Concrete adapters (implementations) */
 #include "../../adapters/communication/lwpkt_adapter/lgc_lwpkt_agent.h"
+#include "../../adapters/communication/lwpkt_adapter/lgc_lwpkt_sensor_reader.h"
 #include "../../adapters/peripherals/encoder_adapter/lgc_encoder_adapter.h"
 #include "../../adapters/storage/eeprom_adapter/lgc_eeprom_adapter.h"
 #include "../../adapters/peripherals/display_adapter/lgc_display_adapter.h"
@@ -62,7 +63,8 @@ LgcLwPktAgent_t *g_lwpkt_agent = NULL;
 static struct
 {
     /* Communication adapters */
-    LgcLwPktAgent_t lwpkt_agent; /* Active Object (OSAL-based) */
+    LgcLwPktAgent_t lwpkt_agent;                   /* Active Object (OSAL-based) */
+    LgcLwPktSensorReader_t lwpkt_sensor_reader;    /* Async→Sync wrapper for ISensorReader */
 
     /* Peripheral adapters */
     LgcDisplayAdapter_t display_adapter;
@@ -132,6 +134,11 @@ static Result_t di_init_adapters(void)
     /* Expose global pointer for ISR callbacks */
     g_lwpkt_agent = &s_adapters.lwpkt_agent;
 
+    /* LwPKT Sensor Reader Wrapper (Async→Sync bridge for ISensorReader) */
+    err = LgcLwPktSensorReader_Init(&s_adapters.lwpkt_sensor_reader, &s_adapters.lwpkt_agent);
+    if (err != NO_ERROR)
+        return ERR_ERROR;
+
     /* ===== Peripheral Adapters ===== */
 
     /* Encoder adapter (GPIO EXTI) */
@@ -160,11 +167,10 @@ static Result_t di_wire_interfaces(void)
 {
     /* Get interface pointers from adapters */
 
-    /* Sensor Reader (LwPKT Agent - Active Object) */
-    /* TODO: Create wrapper adapter that uses LgcLwPktAgent async API */
-    /* For now, set to NULL to avoid build errors */
-    s_interfaces.sensor_reader = NULL;                                     /* Active Object migration in progress */
-    /* if (s_interfaces.sensor_reader == NULL) return ERR_NULL_POINTER; */ /* Disabled during migration */
+    /* Sensor Reader (LwPKT Wrapper - Async→Sync bridge) */
+    s_interfaces.sensor_reader = LgcLwPktSensorReader_GetInterface(&s_adapters.lwpkt_sensor_reader);
+    if (s_interfaces.sensor_reader == NULL)
+        return ERR_NULL_POINTER;
 
     /* Encoder (GPIO EXTI - Singleton) */
     s_interfaces.encoder = (ILgcEncoder_t *)LgcEncoderAdapter_GetInterface();
