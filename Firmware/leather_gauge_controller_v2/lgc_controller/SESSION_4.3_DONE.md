@@ -44,6 +44,7 @@ Domain: Process slice → Update HMI
 **Action:** Flash STM32 + conectar 11 sensores
 
 **Quick Start:**
+
 ```bash
 cd Debug
 make clean && make -j8
@@ -79,11 +80,13 @@ openocd -f interface/stlink.cfg -f target/stm32f4x.cfg \
 ## Progreso total
 
 **Session 4.0-4.3:**
+
 - Lines of code: ~2,490
 - Files created/modified: 10
 - Status: ✅ **INTEGRATION COMPLETE**
 
 **Falta para producción:**
+
 - ⏳ Hardware validation (6 horas)
 - ⏳ Encoder pulse buffering (2 horas - HIGH PRIORITY)
 - ⏳ Unit tests (8 horas)
@@ -98,6 +101,7 @@ openocd -f interface/stlink.cfg -f target/stm32f4x.cfg \
 **¿Compilación limpia?** Sí ✅
 
 **Siguiente comando:**
+
 ```bash
 # Flash and test!
 cd ~/GitHub/leather_gauge/Firmware/leather_gauge_controller_v2/Debug

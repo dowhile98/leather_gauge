@@ -25,6 +25,18 @@ extern "C"
 #include "../../domain/interfaces/lgc_i_display.h"
 #include "../../Third_Party/dwin/dwin_core.h"
 #include "stm32f4xx_hal.h"
+#include "os_port.h"
+
+    /* ============================= Constants ============================ */
+    /** Task stack size (words) */
+#ifndef LGC_DISPLAY_TASK_STACK_SIZE
+#define LGC_DISPLAY_TASK_STACK_SIZE 512U
+#endif
+
+    /** Task priority */
+#ifndef LGC_DISPLAY_TASK_PRIORITY
+#define LGC_DISPLAY_TASK_PRIORITY 10U
+#endif
 
     /* ============================= Types ================================ */
     /**
@@ -39,13 +51,25 @@ extern "C"
         UART_HandleTypeDef *huart; /**< UART handle for display */
 
         /* Ring buffer for DMA reception */
-        uint8_t rx_buffer[256];
+        uint8_t rx_buffer[256];      /**< Internal DWIN FIFO buffer */
+        uint8_t uart_rx_buffer[128]; /**< Raw UART DMA reception buffer */
+
+        /* OS Primitives for DWIN HAL */
+        OsMutex mutex;            /**< Mutex for thread-safe access */
+        OsSemaphore response_sem; /**< Semaphore for command response */
+        OsSemaphore new_data_sem; /**< Semaphore for new data notification */
+        OsSemaphore tx_sem;       /**< Semaphore for UART TX completion */
+
+        /* Task resources (Active Object) */
+        OsTaskId task_id;                                /**< Task handle */
+        uint32_t task_stack[LGC_DISPLAY_TASK_STACK_SIZE]; /**< Task stack */
 
         /* Configuration */
         LgcDisplayConfig_t config;
 
         /* State */
         bool is_initialized;
+        bool is_running;
 
         /* Button event callback */
         LgcDisplayCallback_t event_callback;
@@ -71,6 +95,22 @@ extern "C"
     Result_t LgcDisplayAdapter_Init(
         LgcDisplayAdapter_t *adapter,
         UART_HandleTypeDef *huart);
+
+    /**
+     * @brief Start display processing task (Active Object)
+     *
+     * @param[in,out] adapter Pointer to adapter context
+     * @return ERR_OK on success
+     */
+    Result_t LgcDisplayAdapter_Start(LgcDisplayAdapter_t *adapter);
+
+    /**
+     * @brief Stop display processing task
+     *
+     * @param[in,out] adapter Pointer to adapter context
+     * @return ERR_OK on success
+     */
+    Result_t LgcDisplayAdapter_Stop(LgcDisplayAdapter_t *adapter);
 
     /**
      * @brief Get display interface (V-Table)

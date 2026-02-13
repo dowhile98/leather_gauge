@@ -130,19 +130,47 @@ static lg_result_t comm_init(uint8_t address, uint32_t baudrate)
 
 /**
  * @brief Process LwPKT protocol events (call from main loop).
+ * @note  lwpkt_process() internally calls lwpkt_read() and handles timeouts.
  */
 static lg_result_t comm_process(void)
 {
-    // Process LwPKT internal state (timeouts, retries, etc.)
-    lwpkt_process(&s_ctx.pkt, HAL_GetTick());
+    // DEBUG: Check if there's data in RX ring buffer (comment out for production)
+    static uint32_t debug_counter = 0;
+    size_t rx_full = lwrb_get_full(&s_ctx.rx_rb);
 
-    // Check for new packets (only if previous consumed)
-    if (!s_ctx.packet_ready)
+    if (rx_full > 0 && (++debug_counter % 100 == 0))
     {
-        if (lwpkt_read(&s_ctx.pkt) == lwpktVALID)
+        // DEBUG: Data in buffer but not processed (set breakpoint here)
+        // Expected: lwpkt should process this data
+        (void)rx_full; // Prevent unused variable warning
+    }
+
+    // Process LwPKT protocol (internally calls lwpkt_read() + timeout handling)
+    lwpktr_t res = lwpkt_process(&s_ctx.pkt, HAL_GetTick());
+
+    // DEBUG: Log different lwpkt states
+    if (res == lwpktVALID)
+    {
+        // Valid packet received (set breakpoint here to verify)
+        if (!s_ctx.packet_ready)
         {
             s_ctx.packet_ready = true;
         }
+    }
+    else if (res == lwpktINPROG)
+    {
+        // Packet reception in progress (normal during multi-byte RX)
+        (void)0; // No action needed
+    }
+    else if (res == lwpktERRCRC)
+    {
+        // CRC error detected (check if PC is sending correct CRC-8)
+        (void)0; // Breakpoint here to catch CRC errors
+    }
+    else if (res == lwpktWAITDATA)
+    {
+        // Waiting for START byte (0xAA) - check if PC sends correct format
+        (void)0; // Normal idle state
     }
 
     return LG_OK;
@@ -239,6 +267,8 @@ static lg_result_t comm_set_address(uint8_t address)
 /**
  * @brief LwPKT event callback for RS-485 DE pin control.
  * @note  Executes in main loop context (not ISR).
+ * @warning CRITICAL: LWPKT_EVT_PRE_WRITE fires BEFORE data is written to TX buffer.
+ *          Must use LWPKT_EVT_POST_WRITE to start transmission after buffer is filled.
  */
 static void lwpkt_event_callback(lwpkt_t *pkt, lwpkt_evt_type_t evt_type)
 {
@@ -247,22 +277,30 @@ static void lwpkt_event_callback(lwpkt_t *pkt, lwpkt_evt_type_t evt_type)
     switch (evt_type)
     {
     case LWPKT_EVT_PRE_WRITE:
-        // Enable RS-485 driver (TX mode)
+        // Prepare RS-485 for transmission (enable TX mode)
         HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_SET);
-
-        // Kick-start UART TX if idle
-        if (huart1.gState == HAL_UART_STATE_READY)
-        {
-            uint8_t byte;
-            if (lwrb_read(&s_ctx.tx_rb, &byte, 1) == 1)
-            {
-                HAL_UART_Transmit_IT(&huart1, &byte, 1);
-            }
-        }
         break;
 
     case LWPKT_EVT_POST_WRITE:
-        // Note: DE pin will be cleared in TxCpltCallback when buffer empty
+        // Now TX ring buffer has data, kick-start UART transmission
+        if (huart1.gState == HAL_UART_STATE_READY)
+        {
+            uint8_t byte;
+            size_t read_count = lwrb_read(&s_ctx.tx_rb, &byte, 1);
+
+            if (read_count == 1)
+            {
+                // Start UART TX (interrupt will continue draining buffer)
+                HAL_UART_Transmit_IT(&huart1, &byte, 1);
+            }
+            else
+            {
+                // DEBUG: No data in TX buffer (should not happen)
+                // If breakpoint hits here, lwpkt_write() failed
+                HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_RESET); // Back to RX
+            }
+        }
+        // If UART busy, data will be sent when current TX completes
         break;
 
     default:
@@ -319,8 +357,20 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
     if (huart->Instance == USART1)
     {
-        // Write received data to RX ring buffer
-        lwrb_write(&s_ctx.rx_rb, s_ctx.dma_rx_buffer, Size);
+        // DEBUG: Verify data is being received (set breakpoint here)
+        // Expected: Size > 0 when UART receives bytes
+        if (Size > 0)
+        {
+            // Write received data to RX ring buffer
+            size_t written = lwrb_write(&s_ctx.rx_rb, s_ctx.dma_rx_buffer, Size);
+
+            // DEBUG: Check if ring buffer write succeeded
+            if (written != Size)
+            {
+                // Ring buffer full or error (should NOT happen with 256 byte buffer)
+                (void)written; // Breakpoint here to catch buffer overflow
+            }
+        }
 
         // Restart DMA for next packet
         HAL_UARTEx_ReceiveToIdle_DMA(&huart1, s_ctx.dma_rx_buffer, COMM_DMA_BUFFER_SIZE);

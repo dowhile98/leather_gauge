@@ -49,6 +49,10 @@
 /** Touch page */
 #define VP_TOUCH_PAGE 0x1005U
 
+/* ============================= Static Variables ===================== */
+/** Static pointer to active adapter for context-less DWIN HAL callbacks */
+static LgcDisplayAdapter_t *s_active_adapter = NULL;
+
 /* ============================= Button VP Mapping ==================== */
 /** Map VP addresses to button enums */
 static LgcDisplayButton_t map_vp_to_button(uint16_t vp_addr, uint16_t value)
@@ -72,14 +76,67 @@ static LgcDisplayButton_t map_vp_to_button(uint16_t vp_addr, uint16_t value)
     }
 }
 
+/* ============================= HAL UART Callbacks =================== */
+/**
+ * @brief TX completion callback (registered via HAL_UART_RegisterCallback)
+ */
+static void display_uart_tx_callback(UART_HandleTypeDef *huart)
+{
+    if (s_active_adapter && s_active_adapter->huart == huart)
+    {
+        osReleaseSemaphore(&s_active_adapter->tx_sem);
+    }
+}
+
+/**
+ * @brief RX Idle Event callback (registered via HAL_UART_RegisterRxEventCallback)
+ */
+static void display_uart_rx_callback(UART_HandleTypeDef *huart, uint16_t Pos)
+{
+    if (s_active_adapter && s_active_adapter->huart == huart)
+    {
+        /* Push data to DWIN ring buffer */
+        dwin_rx_push_ex(&s_active_adapter->dwin, s_active_adapter->uart_rx_buffer, Pos);
+
+        /* Notify DWIN processing logic */
+        dwin_rx_notify(&s_active_adapter->dwin);
+
+        /* Restart DMA reception */
+        HAL_UARTEx_ReceiveToIdle_DMA(huart, s_active_adapter->uart_rx_buffer, sizeof(s_active_adapter->uart_rx_buffer));
+    }
+}
+
+/**
+ * @brief Error callback (registered via HAL_UART_RegisterCallback)
+ */
+static void display_uart_error_callback(UART_HandleTypeDef *huart)
+{
+    if (s_active_adapter && s_active_adapter->huart == huart)
+    {
+        /* Restart DMA reception on error (e.g., overrun) */
+        HAL_UARTEx_ReceiveToIdle_DMA(huart, s_active_adapter->uart_rx_buffer, sizeof(s_active_adapter->uart_rx_buffer));
+    }
+}
+
 /* ============================= DWIN HAL Callbacks =================== */
 /**
- * @brief UART transmit wrapper for DWIN
+ * @brief UART transmit wrapper for DWIN using DMA and semaphore sync
  */
 static uint32_t dwin_uart_transmit(uint8_t *data, uint16_t len)
 {
-    extern UART_HandleTypeDef *g_display_uart; /* Set by adapter init */
-    HAL_UART_Transmit(g_display_uart, data, len, 100);
+    if (s_active_adapter == NULL || s_active_adapter->huart == NULL)
+    {
+        return 0;
+    }
+
+    HAL_UART_Transmit_DMA(s_active_adapter->huart, data, len);
+
+    /* Wait for transmit completion (signaled from display_uart_tx_callback) */
+    if (osWaitForSemaphore(&s_active_adapter->tx_sem, 500) != TRUE)
+    {
+        return 0; /* Timeout */
+    }
+
     return len;
 }
 
@@ -88,7 +145,74 @@ static uint32_t dwin_uart_transmit(uint8_t *data, uint16_t len)
  */
 static uint32_t dwin_get_tick_ms(void)
 {
-    return HAL_GetTick();
+    return osGetSystemTime();
+}
+
+/**
+ * @brief Mutex lock for DWIN transmission
+ */
+static void dwin_lock(void)
+{
+    if (s_active_adapter)
+    {
+        osAcquireMutex(&s_active_adapter->mutex);
+    }
+}
+
+/**
+ * @brief Mutex unlock for DWIN transmission
+ */
+static void dwin_unlock(void)
+{
+    if (s_active_adapter)
+    {
+        osReleaseMutex(&s_active_adapter->mutex);
+    }
+}
+
+/**
+ * @brief Wait for DWIN response signal
+ */
+static bool dwin_sem_wait(uint32_t timeout_ms)
+{
+    if (s_active_adapter)
+    {
+        return (osWaitForSemaphore(&s_active_adapter->response_sem, timeout_ms) == TRUE);
+    }
+    return false;
+}
+
+/**
+ * @brief Signal DWIN response received
+ */
+static void dwin_sem_signal(void)
+{
+    if (s_active_adapter)
+    {
+        osReleaseSemaphore(&s_active_adapter->response_sem);
+    }
+}
+
+/**
+ * @brief Block task until new data arrives in RX buffer
+ */
+static void dwin_new_data_wait(void)
+{
+    if (s_active_adapter)
+    {
+        osWaitForSemaphore(&s_active_adapter->new_data_sem, INFINITE_DELAY);
+    }
+}
+
+/**
+ * @brief Signal new data arrived (Called from ISR-safe context)
+ */
+static void dwin_new_data_signal(void)
+{
+    if (s_active_adapter)
+    {
+        osReleaseSemaphore(&s_active_adapter->new_data_sem);
+    }
 }
 
 /**
@@ -134,9 +258,24 @@ static void dwin_event_callback(dwin_evt_t *evt, void *user_ctx)
             .button = button,
             .raw_vp_addr = vp_addr,
             .raw_value = value,
-            .timestamp_ms = HAL_GetTick()};
+            .timestamp_ms = osGetSystemTime()};
 
         adapter->event_callback(&display_evt, adapter->event_user_ctx);
+    }
+}
+
+/* ============================= Active Object Task =================== */
+/**
+ * @brief Display processing task entry point
+ */
+static void display_task_entry(void *arg)
+{
+    LgcDisplayAdapter_t *adapter = (LgcDisplayAdapter_t *)arg;
+
+    while (adapter->is_running)
+    {
+        /* Process DWIN protocol (blocks on new_data_sem internally) */
+        dwin_process(&adapter->dwin);
     }
 }
 
@@ -160,16 +299,26 @@ static Result_t display_init_impl(void *ctx, const LgcDisplayConfig_t *config)
     /* Copy configuration */
     memcpy(&adapter->config, config, sizeof(LgcDisplayConfig_t));
 
+    /* Initialize OS Primitives */
+    if (osCreateMutex(&adapter->mutex) != TRUE)
+        return ERR_HARDWARE_FAULT;
+    if (osCreateSemaphore(&adapter->response_sem, 0) != TRUE)
+        return ERR_HARDWARE_FAULT;
+    if (osCreateSemaphore(&adapter->new_data_sem, 0) != TRUE)
+        return ERR_HARDWARE_FAULT;
+    if (osCreateSemaphore(&adapter->tx_sem, 0) != TRUE)
+        return ERR_HARDWARE_FAULT;
+
     /* Setup DWIN HAL interface */
     dwin_interface_t dwin_hal = {
         .uart_transmit = dwin_uart_transmit,
         .get_tick_ms = dwin_get_tick_ms,
-        .lock = NULL, /* TODO: Mutex if needed */
-        .unlock = NULL,
-        .sem_wait = NULL,
-        .sem_signal = NULL,
-        .sem_new_data_wait = NULL,
-        .sem_new_data_signal = NULL};
+        .lock = dwin_lock,
+        .unlock = dwin_unlock,
+        .sem_wait = dwin_sem_wait,
+        .sem_signal = dwin_sem_signal,
+        .sem_new_data_wait = dwin_new_data_wait,
+        .sem_new_data_signal = dwin_new_data_signal};
 
     /* Initialize DWIN driver */
     dwin_error_t dwin_res = dwin_init(
@@ -402,22 +551,16 @@ static Result_t display_detach_callback_impl(void *ctx)
 }
 
 /**
- * @brief Process display events
+ * @brief Process display events (Internal helper)
  */
 static Result_t display_process_impl(void *ctx)
 {
-    LGC_VALIDATE_PTR(ctx);
-
     LgcDisplayAdapter_t *adapter = (LgcDisplayAdapter_t *)ctx;
-
-    if (!adapter->is_initialized)
+    /* If task is not running, we can call it manually */
+    if (!adapter->is_running)
     {
-        return ERR_NOT_INITIALIZED;
+        dwin_process(&adapter->dwin);
     }
-
-    /* Process DWIN events (non-blocking) */
-    dwin_process(&adapter->dwin);
-
     return ERR_OK;
 }
 
@@ -435,6 +578,15 @@ static Result_t display_deinit_impl(void *ctx)
         return ERR_NOT_INITIALIZED;
     }
 
+    /* Stop task */
+    LgcDisplayAdapter_Stop(adapter);
+
+    /* Delete OS Primitives */
+    osDeleteMutex(&adapter->mutex);
+    osDeleteSemaphore(&adapter->response_sem);
+    osDeleteSemaphore(&adapter->new_data_sem);
+    osDeleteSemaphore(&adapter->tx_sem);
+
     /* Detach callback */
     adapter->event_callback = NULL;
     adapter->event_user_ctx = NULL;
@@ -444,9 +596,6 @@ static Result_t display_deinit_impl(void *ctx)
 }
 
 /* ============================= Public API =========================== */
-
-/** Global UART handle for DWIN (set by Init function) */
-static UART_HandleTypeDef *g_display_uart = NULL;
 
 Result_t LgcDisplayAdapter_Init(
     LgcDisplayAdapter_t *adapter,
@@ -458,11 +607,77 @@ Result_t LgcDisplayAdapter_Init(
     /* Clear adapter structure */
     memset(adapter, 0, sizeof(LgcDisplayAdapter_t));
 
-    /* Store UART handle globally for DWIN HAL */
+    /* Store UART handle */
     adapter->huart = huart;
-    g_display_uart = huart;
+
+    /* Set active adapter for context-less DWIN HAL callbacks */
+    s_active_adapter = adapter;
+
+    /* Register HAL callbacks */
+    HAL_UART_RegisterCallback(huart, HAL_UART_TX_COMPLETE_CB_ID, display_uart_tx_callback);
+    HAL_UART_RegisterCallback(huart, HAL_UART_ERROR_CB_ID, display_uart_error_callback);
+    HAL_UART_RegisterRxEventCallback(huart, display_uart_rx_callback);
+
+    /* Start initial DMA reception */
+    HAL_UARTEx_ReceiveToIdle_DMA(huart, adapter->uart_rx_buffer, sizeof(adapter->uart_rx_buffer));
 
     /* Adapter initialized (DWIN protocol init called via display->init()) */
+    return ERR_OK;
+}
+
+Result_t LgcDisplayAdapter_Start(LgcDisplayAdapter_t *adapter)
+{
+    LGC_VALIDATE_PTR(adapter);
+
+    if (!adapter->is_initialized)
+    {
+        return ERR_NOT_INITIALIZED;
+    }
+
+    if (adapter->is_running)
+    {
+        return ERR_OK;
+    }
+
+    /* Create display task */
+    OsTaskParameters params = OS_TASK_DEFAULT_PARAMS;
+    params.priority = LGC_DISPLAY_TASK_PRIORITY;
+    params.stackSize = LGC_DISPLAY_TASK_STACK_SIZE;
+
+    adapter->is_running = true;
+    adapter->task_id = osCreateTask(
+        "DWIN Process",
+        display_task_entry,
+        adapter,
+        &params);
+
+    if (adapter->task_id == NULL)
+    {
+        adapter->is_running = false;
+        return ERR_HARDWARE_FAULT;
+    }
+
+    return ERR_OK;
+}
+
+Result_t LgcDisplayAdapter_Stop(LgcDisplayAdapter_t *adapter)
+{
+    LGC_VALIDATE_PTR(adapter);
+
+    if (!adapter->is_running)
+    {
+        return ERR_OK;
+    }
+
+    adapter->is_running = false;
+
+    /* Signal task if blocked */
+    dwin_new_data_signal();
+
+    /* Delete task */
+    osDeleteTask(adapter->task_id);
+    adapter->task_id = NULL;
+
     return ERR_OK;
 }
 
@@ -497,6 +712,10 @@ ILgcDisplay_t *LgcDisplayAdapter_GetInterface(LgcDisplayAdapter_t *adapter)
 
 Result_t LgcDisplayAdapter_Deinit(LgcDisplayAdapter_t *adapter)
 {
+    if (s_active_adapter == adapter)
+    {
+        s_active_adapter = NULL;
+    }
     return display_deinit_impl(adapter);
 }
 

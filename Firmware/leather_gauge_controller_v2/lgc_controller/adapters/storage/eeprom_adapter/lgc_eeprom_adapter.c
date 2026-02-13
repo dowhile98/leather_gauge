@@ -18,8 +18,8 @@
 #include "tx_api.h" /* ThreadX for mutex - allowed in adapters */
 #include <string.h>
 
-/* TODO: Move at24cxx driver to Third_Party/ */
-#include "driver_at24cxx.h" /* AT24Cxx EEPROM driver */
+#include "lgc_eeprom_i2c_port.h" // I2C porting layer
+#include "../../middlewares/at24cxx/driver_at24cxx.h" /* AT24Cxx EEPROM driver */
 
 /* ============================= Configuration ======================== */
 #define EEPROM_CHIP_TYPE AT24C256

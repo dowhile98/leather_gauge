@@ -20,7 +20,9 @@
 #include "../../domain/interfaces/lgc_i_storage.h"
 #include "../../domain/interfaces/lgc_i_display.h"
 #include "../../domain/interfaces/lgc_i_printer.h"
+#include "../../domain/interfaces/lgc_i_digital_inputs.h"
 #include "../../domain/interfaces/lgc_i_event_publisher.h"
+#include "../../domain/interfaces/lgc_i_real_time_clock.h"
 
 /* Domain entities */
 #include "../../domain/entities/lgc_configuration_entity.h"
@@ -32,7 +34,9 @@
 #include "../../adapters/peripherals/encoder_adapter/lgc_encoder_adapter.h"
 #include "../../adapters/storage/eeprom_adapter/lgc_eeprom_adapter.h"
 #include "../../adapters/peripherals/display_adapter/lgc_display_adapter.h"
-/* #include "../../adapters/peripherals/printer_adapter/lgc_printer_adapter.h" // TODO */
+#include "../../adapters/storage/rtc_adapter/lgc_rtc_adapter.h"
+#include "../../adapters/peripherals/printer_adapter/lgc_printer_adapter.h" // New: Include Printer adapter
+#include "../../adapters/peripherals/digital_inputs_adapter/lgc_digital_inputs_adapter.h"
 
 /* Application services & Tasks */
 #include "events/lgc_event_publisher.h"
@@ -45,9 +49,11 @@
 #include "tx_api.h"
 
 /* Peripherals (from Core/Inc) */
-extern UART_HandleTypeDef huart2; // LwPKT communication
-extern UART_HandleTypeDef huart1; // DWIN display
-// extern I2C_HandleTypeDef hi2c1;    // EEPROM
+extern UART_HandleTypeDef huart3; // LwPKT communication
+extern UART_HandleTypeDef huart6; // DWIN display
+extern I2C_HandleTypeDef hi2c1;    // EEPROM
+extern RTC_HandleTypeDef hrtc;     // RTC
+extern HCD_HandleTypeDef hhcd_USB_OTG_FS; // New: Declare USB OTG FS Host Controller Handle
 
 /* ============================= Global Instances ===================== */
 /**
@@ -63,15 +69,17 @@ LgcLwPktAgent_t *g_lwpkt_agent = NULL;
 static struct
 {
     /* Communication adapters */
-    LgcLwPktAgent_t lwpkt_agent;                   /* Active Object (OSAL-based) */
-    LgcLwPktSensorReader_t lwpkt_sensor_reader;    /* Async→Sync wrapper for ISensorReader */
+    LgcLwPktAgent_t lwpkt_agent;                /* Active Object (OSAL-based) */
+    LgcLwPktSensorReader_t lwpkt_sensor_reader; /* Async→Sync wrapper for ISensorReader */
 
     /* Peripheral adapters */
     LgcDisplayAdapter_t display_adapter;
-    /* Printer: TODO */
+    LgcPrinterAdapter_t printer_adapter; // New: Printer adapter instance
+    LgcDigitalInputsAdapter_t di_adapter;
 
     /* Storage adapters */
     /* EEPROM: Static instance managed inside adapter (singleton) */
+    LgcRtcAdapter_t rtc_adapter; // New: RTC adapter instance
 
 } s_adapters;
 
@@ -85,7 +93,9 @@ static struct
     ILgcStorage_t *storage;
     ILgcDisplay_t *display;
     ILgcPrinter_t *printer;
+    ILgcDigitalInputs_t *digital_inputs;
     ILgcEventPublisher_t *event_publisher;
+    ILgcRealTimeClock_t *real_time_clock;
 } s_interfaces;
 
 /**
@@ -122,7 +132,7 @@ static Result_t di_init_adapters(void)
     /* ===== Communication Adapters ===== */
 
     /* LwPKT Agent (Active Object - OSAL-based) */
-    error_t err = LgcLwPktAgent_Init(&s_adapters.lwpkt_agent, &huart2);
+    error_t err = LgcLwPktAgent_Init(&s_adapters.lwpkt_agent, &huart3);
     if (err != NO_ERROR)
         return ERR_ERROR;
 
@@ -145,17 +155,34 @@ static Result_t di_init_adapters(void)
     /* Note: Encoder uses singleton pattern, init called via interface */
 
     /* Display adapter (UART DWIN) */
-    res = LgcDisplayAdapter_Init(&s_adapters.display_adapter, &huart1);
+    res = LgcDisplayAdapter_Init(&s_adapters.display_adapter, &huart6);
     if (res != ERR_OK)
         return res;
 
-    /* Printer adapter (USB ESC/POS) - TODO */
-    /* s_interfaces.printer = PrinterAdapter_GetInterface(...); */
+    /* Start Display Adapter Task (Active Object for DWIN process) */
+    res = LgcDisplayAdapter_Start(&s_adapters.display_adapter);
+    if (res != ERR_OK)
+        return res;
+
+    /* Digital Inputs adapter (lwbtn) */
+    res = LgcDigitalInputsAdapter_Init(&s_adapters.di_adapter);
+    if (res != ERR_OK)
+        return res;
+
+    /* Printer adapter */
+    res = LgcPrinterAdapter_Init(&s_adapters.printer_adapter); // New: Initialize Printer adapter
+    if (res != ERR_OK)
+        return res;
 
     /* ===== Storage Adapters ===== */
 
     /* EEPROM adapter (I2C AT24Cxx) */
     /* Note: EEPROM uses singleton pattern, init called via interface */
+
+    /* RTC adapter */
+    res = LgcRtcAdapter_Init(&s_adapters.rtc_adapter, &hrtc);
+    if (res != ERR_OK)
+        return res;
 
     return ERR_OK;
 }
@@ -231,6 +258,23 @@ static Result_t di_wire_interfaces(void)
     if (res != ERR_OK)
         return res;
 
+    /* Digital Inputs (lwbtn) */
+    s_interfaces.digital_inputs = LgcDigitalInputsAdapter_GetInterface(&s_adapters.di_adapter);
+    if (s_interfaces.digital_inputs == NULL)
+        return ERR_NULL_POINTER;
+
+    LgcDigitalInputConfig_t di_cfg = {
+        .debounce_ms = 50,
+        .poll_rate_ms = 20};
+    res = s_interfaces.digital_inputs->init(s_interfaces.digital_inputs->context, &di_cfg);
+    if (res != ERR_OK)
+        return res;
+
+    /* Start DI polling task */
+    res = LgcDigitalInputsAdapter_Start(&s_adapters.di_adapter);
+    if (res != ERR_OK)
+        return res;
+
     /* Event Publisher */
     res = LgcEventPublisher_Init(&s_services.event_publisher);
     if (res != ERR_OK)
@@ -241,6 +285,27 @@ static Result_t di_wire_interfaces(void)
         return ERR_NULL_POINTER;
 
     res = s_interfaces.event_publisher->init(s_interfaces.event_publisher->context);
+    if (res != ERR_OK)
+        return res;
+
+    /* Real-Time Clock */
+    s_interfaces.real_time_clock = LgcRtcAdapter_GetInterface(&s_adapters.rtc_adapter);
+    if (s_interfaces.real_time_clock == NULL)
+        return ERR_NULL_POINTER;
+
+    res = s_interfaces.real_time_clock->init(s_interfaces.real_time_clock->context);
+    if (res != ERR_OK)
+        return res;
+
+    /* Printer */
+    s_interfaces.printer = LgcPrinterAdapter_GetInterface(&s_adapters.printer_adapter); // New: Get Printer interface
+    if (s_interfaces.printer == NULL)
+        return ERR_NULL_POINTER;
+
+    LgcPrinterConfig_t printer_cfg = {
+        .timeout_ms = 500,
+        .line_spacing = 30};
+    res = s_interfaces.printer->init(s_interfaces.printer->context, &printer_cfg); // New: Initialize Printer
     if (res != ERR_OK)
         return res;
 
@@ -282,14 +347,14 @@ static Result_t di_create_tasks(void)
         return res;
 
     /* 3. Printer Task */
-    /* Only init if printer interface is available (TODO) */
-    if (s_interfaces.printer != NULL)
+    if (s_interfaces.printer != NULL) // Only init if printer interface is available
     {
         res = LgcPrinterTask_Init(
             s_interfaces.printer,
             s_interfaces.event_publisher,
             &s_system_config);
-        /* Printer task starts automatically in Init */
+        if (res != ERR_OK)
+            return res;
     }
 
     return ERR_OK;
@@ -335,6 +400,9 @@ Result_t LgcDI_Shutdown(void)
     if (s_interfaces.printer)
         LgcPrinterTask_Deinit();
 
+    LgcDigitalInputsAdapter_Deinit(&s_adapters.di_adapter);
+    LgcDisplayAdapter_Deinit(&s_adapters.display_adapter);
+
     /* Save config */
     s_interfaces.storage->save_config(s_interfaces.storage->context, &s_system_config);
 
@@ -368,6 +436,11 @@ ILgcPrinter_t *DIContainer_GetPrinter(void)
     return s_interfaces.printer;
 }
 
+ILgcDigitalInputs_t *DIContainer_GetDigitalInputs(void)
+{
+    return s_interfaces.digital_inputs;
+}
+
 LgcSystemConfig_t *DIContainer_GetConfig(void)
 {
     return &s_system_config;
@@ -376,6 +449,11 @@ LgcSystemConfig_t *DIContainer_GetConfig(void)
 ILgcEventPublisher_t *DIContainer_GetEventPublisher(void)
 {
     return s_interfaces.event_publisher;
+}
+
+ILgcRealTimeClock_t *DIContainer_GetRealTimeClock(void)
+{
+    return s_interfaces.real_time_clock;
 }
 
 LgcMeasurements_t *DIContainer_GetMeasurements(void)

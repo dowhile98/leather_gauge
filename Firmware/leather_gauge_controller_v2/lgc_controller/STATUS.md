@@ -109,6 +109,7 @@ The **Leather Gauge Controller** Clean Architecture migration is **98% complete*
 ### ✅ SESSION 4.3 COMPLETE - Ready for Hardware Testing!
 
 **Integration Status:**
+
 - ✅ LwPKT Agent wired (Active Object)
 - ✅ ISensorReader wrapper wired (Async→Sync bridge)
 - ✅ DI Container complete (all interfaces ready)
@@ -122,6 +123,7 @@ The **Leather Gauge Controller** Clean Architecture migration is **98% complete*
 **Status:** Ready for testing (firmware complete, hardware pending)
 
 **Checklist:**
+
 - [ ] Flash STM32F446RC with new firmware
 - [ ] Connect 11 RS-485 sensors (addresses 0x01-0x0B)
 - [ ] Test CASCADE read command (verify ~550ms latency)
@@ -131,6 +133,7 @@ The **Leather Gauge Controller** Clean Architecture migration is **98% complete*
 - [ ] Measure performance (CPU usage, latency, memory)
 
 **Expected Results:**
+
 - ✅ All 11 sensors respond (FLAGS sequence 1→0)
 - ✅ Sensor read latency <600ms (target: ~550ms)
 - ✅ CPU usage <60% (active measurement)
@@ -150,6 +153,7 @@ The **Leather Gauge Controller** Clean Architecture migration is **98% complete*
 **Solution:** FIFO queue (64 pulses) to buffer bursts
 
 **Files to Modify:**
+
 - `lgc_encoder_adapter.c` (add ring buffer)
 - `lgc_main_task.c` (process queue until empty)
 
@@ -166,24 +170,22 @@ The **Leather Gauge Controller** Clean Architecture migration is **98% complete*
 **Framework:** Unity + CMock (PC-based testing, no hardware)
 
 **Required Tests (26 total):**
+
 - ISensorReader wrapper (5 tests):
   - Init validation
   - Cascade read success
   - Timeout handling
   - Thread safety (concurrent access)
   - Error propagation
-  
 - LwPKT Agent (10 tests):
   - TX serialization (7 command types)
   - RX parsing (CASCADE sequence validation)
   - Error response handling
   - DMA event processing
-  
 - DI Container (3 tests):
   - Initialization sequence
   - Interface getters
   - NULL pointer validation
-  
 - Main Task (8 tests):
   - Encoder synchronization
   - Slice processing
@@ -203,6 +205,7 @@ The **Leather Gauge Controller** Clean Architecture migration is **98% complete*
 **Goal:** Decouple MeasurementCore → HMI/Printer (eliminate event flags)
 
 **Pattern:**
+
 ```
 MeasurementCore (Publisher)
     ↓ Publish events
@@ -211,6 +214,7 @@ MeasurementCore (Publisher)
 ```
 
 **Files to Create:**
+
 - `lgc_event_publisher.c/h` (generic observer registry)
 - Update `lgc_hmi_task.c` (subscribe to events)
 - Update `lgc_printer_task.c` (subscribe to BATCH_FINISHED only)
@@ -226,6 +230,7 @@ MeasurementCore (Publisher)
 **Status:** Deprecated files identified (not used in DI Container)
 
 **Files to Remove/Deprecate:**
+
 - ❌ `lgc_lwpkt_adapter.c` (9 compilation errors, replaced by Agent + Wrapper)
 - ❌ Legacy modules in `modules/` (modbus, eeprom, encoder old implementations)
 - ❌ nanoMODBUS (not used with LwPKT)
@@ -239,6 +244,7 @@ MeasurementCore (Publisher)
 **Status:** Interface defined, adapter pending
 
 **Task:**
+
 - Create `lgc_printer_adapter.c/h` (USB/Serial ESC/POS)
 - Wire in DI Container
 - Subscribe to BATCH_FINISHED events (Observer pattern)
@@ -253,6 +259,7 @@ MeasurementCore (Publisher)
 #### 7. **Full System Integration Test**
 
 **Checklist:**
+
 - [ ] 24-hour stress test (continuous operation)
 - [ ] Power-cycle recovery (10 cycles)
 - [ ] Configuration persistence (EEPROM wear leveling)

@@ -215,9 +215,6 @@ static void hmi_task_entry(ULONG param)
             &actual_flags,
             LGC_HMI_UPDATE_RATE_MS); /* Timeout for periodic display process */
 
-        /* Process display events (DMA ring buffer parsing) */
-        task->display->process(task->display->context);
-
         /* Handle button events (from queue) */
         if (actual_flags & HMI_EVENT_DISPLAY_BUTTON)
         {

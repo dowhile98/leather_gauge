@@ -30,7 +30,9 @@ extern "C"
     typedef struct ILgcStorage_t ILgcStorage_t;
     typedef struct ILgcDisplay_t ILgcDisplay_t;
     typedef struct ILgcPrinter_t ILgcPrinter_t;
+    typedef struct ILgcDigitalInputs_t ILgcDigitalInputs_t;
     typedef struct ILgcEventPublisher_t ILgcEventPublisher_t;
+    typedef struct ILgcRealTimeClock_t ILgcRealTimeClock_t;
     typedef struct LgcSystemConfig_t LgcSystemConfig_t;
     typedef struct LgcMeasurements_t LgcMeasurements_t;
 
@@ -137,6 +139,15 @@ extern "C"
     ILgcPrinter_t *DIContainer_GetPrinter(void);
 
     /**
+     * @brief Get digital inputs interface (for injection)
+     *
+     * @return Pointer to IDigitalInputs interface (never NULL after init)
+     *
+     * @pre  LgcDI_Init() called successfully
+     */
+    ILgcDigitalInputs_t *DIContainer_GetDigitalInputs(void);
+
+    /**
      * @brief Get system configuration (for injection)
      *
      * @return Pointer to system config (never NULL after init)
@@ -158,6 +169,15 @@ extern "C"
     ILgcEventPublisher_t *DIContainer_GetEventPublisher(void);
 
     /**
+     * @brief Get real-time clock interface (for injection)
+     *
+     * @return Pointer to IRealTimeClock interface (never NULL after init)
+     *
+     * @pre  LgcDI_Init() called successfully
+     */
+    ILgcRealTimeClock_t *DIContainer_GetRealTimeClock(void);
+
+    /**
      * @brief Get measurements data structure (for injection)
      *
      * @return Pointer to measurements structure (never NULL after init)
@@ -165,11 +185,9 @@ extern "C"
      * @pre  LgcDI_Init() called successfully
      */
     LgcMeasurements_t *DIContainer_GetMeasurements(void);
-    typedef struct ILgcSensorReader_t ILgcSensorReader_t;
-    typedef struct ILgcEncoder_t ILgcEncoder_t;
-    typedef struct ILgcStorage_t ILgcStorage_t;
-    typedef struct ILgcDisplay_t ILgcDisplay_t;
-    typedef struct ILgcPrinter_t ILgcPrinter_t;
 
-    /* Entities (from domain/) */
-    typedef struct LgcSystemConfig_t LgcSystemConfig_t;
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* LGC_DI_CONTAINER_H */

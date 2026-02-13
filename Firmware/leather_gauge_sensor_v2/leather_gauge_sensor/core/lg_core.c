@@ -85,6 +85,7 @@ static void handle_command(void)
     lg_result_t res = LG_OK;
     uint8_t response_data[256];
     uint16_t response_len = 0;
+    uint8_t response_cmd = 0;    // Command ID to send in response
     uint32_t response_flags = 0; // 🆕 FLAGS for cascade control
 
     switch (ctx.rx_packet.cmd)
@@ -94,6 +95,7 @@ static void handle_command(void)
         // Response: uint16_t raw[10]
         memcpy(response_data, ctx.current_data.raw, sizeof(ctx.current_data.raw));
         response_len = sizeof(ctx.current_data.raw);
+        response_cmd = CMD_READ_RAW_RESP; // 0x91
         break;
 
     case CMD_READ_SENSOR:
@@ -101,6 +103,7 @@ static void handle_command(void)
         // Response: float calibrated[10]
         memcpy(response_data, ctx.current_data.calibrated, sizeof(ctx.current_data.calibrated));
         response_len = sizeof(ctx.current_data.calibrated);
+        response_cmd = CMD_READ_SENSOR_RESP; // 0x90
         break;
 
     case CMD_READ_CASCADE:
@@ -111,8 +114,9 @@ static void handle_command(void)
         if (ctx.rx_packet.flags == ctx.config.address)
         {
             // It's my turn to respond!
-            memcpy(response_data, &ctx.current_data.digital_state, sizeof(ctx.current_data.digital_state));
-            response_len = sizeof(ctx.current_data.digital_state);
+            memcpy(response_data, ctx.current_data.calibrated, sizeof(ctx.current_data.calibrated));
+            response_len = sizeof(ctx.current_data.calibrated);
+            response_cmd = CMD_READ_CASCADE_RESP; // 0x92
 
             // Set FLAGS to next sensor address (cascade trigger)
             response_flags = ctx.config.address + 1;
@@ -121,7 +125,6 @@ static void handle_command(void)
                 response_flags = 0; // End of chain (no more sensors)
             }
         }
-
         else
         {
             // Not my turn, ignore (don't respond)
@@ -134,12 +137,13 @@ static void handle_command(void)
         // Response: uint16_t digital_state
         memcpy(response_data, &ctx.current_data.digital_state, sizeof(uint16_t));
         response_len = sizeof(uint16_t);
+        response_cmd = CMD_GET_STATUS_RESP; // 0xB1
         break;
 
     case CMD_SET_OFFSET:
         // Payload: float offset[10] or specific channel?
         // Let's assume full array for now or we need a protocol definition.
-        // Assuming payload is full float array
+        response_cmd = CMD_WRITE_CONFIG_RESP; // 0xA0
         if (ctx.rx_packet.len == sizeof(ctx.config.offset))
         {
             memcpy(ctx.config.offset, ctx.rx_packet.data, sizeof(ctx.config.offset));
@@ -152,7 +156,7 @@ static void handle_command(void)
             // Ideally, ISensor should expose 'set_calibration'.
             // I'll skip dynamic update for a moment and just save to storage.
             ctx.storage->save_config(&ctx.config);
-            response_len = 0; // Ack
+            response_len = 0; // Ack (empty payload)
         }
         else
         {
@@ -162,6 +166,7 @@ static void handle_command(void)
 
     case CMD_SET_FILTER:
         // Payload: float fc
+        response_cmd = CMD_SET_FILTER; // Echo command for ACK
         if (ctx.rx_packet.len == sizeof(float))
         {
             float fc;
@@ -169,7 +174,7 @@ static void handle_command(void)
             ctx.config.fc = fc;
             ctx.sensor->set_filter(fc);
             ctx.storage->save_config(&ctx.config);
-            response_len = 0;
+            response_len = 0; // Ack (empty payload)
         }
         else
         {
@@ -184,21 +189,22 @@ static void handle_command(void)
 
     if (res == LG_OK)
     {
-        // 🆕 Send with FLAGS if cascade mode, otherwise normal send
+        // Send with FLAGS if cascade mode, otherwise normal send
         if (response_flags != 0)
         {
-            LgComm_SendWithFlags(ctx.comm, CMD_READ_CASCADE_RESP, response_flags,
+            // Cascade mode: use FLAGS field
+            LgComm_SendWithFlags(ctx.comm, response_cmd, response_flags,
                                  response_data, response_len);
         }
         else
         {
-            LgComm_Send(ctx.comm, ctx.rx_packet.cmd, response_data, response_len);
+            // Normal mode: send response command
+            LgComm_Send(ctx.comm, response_cmd, response_data, response_len);
         }
     }
     else
     {
-        // Send Error?
-        // LwPKT doesn't have standard error packet, maybe cmd | 0x80?
+        // Send Error: Set bit 7 to indicate error (e.g., 0x10 → 0x90)
         uint8_t err = res;
         LgComm_Send(ctx.comm, ctx.rx_packet.cmd | 0x80, &err, 1);
     }

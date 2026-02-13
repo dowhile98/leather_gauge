@@ -91,8 +91,10 @@ extern "C"
         CMD_READ_CASCADE_RESP = 0x92, /**< Response: digital_state + FLAGS for next sensor */
 
         /* Write/Config Commands (command = response code, payload empty for ACK) */
-        CMD_SET_OFFSET = 0x21, /**< Set calibration offset (float[10]) */
-        CMD_SET_FILTER = 0x22, /**< Set filter parameters (float fc) */
+        CMD_WRITE_CONFIG = 0x20,      /**< Write generic configuration */
+        CMD_SET_OFFSET = 0x21,        /**< Set calibration offset (float[10]) */
+        CMD_SET_FILTER = 0x22,        /**< Set filter parameters (float fc) */
+        CMD_WRITE_CONFIG_RESP = 0xA0, /**< Generic write config response */
 
         /* Control Commands (command = response code) */
         CMD_CALIBRATE = 0x30,  /**< Trigger calibration sequence */
@@ -140,10 +142,11 @@ extern "C"
 
         /* LwPKT protocol */
         lwpkt_t lwpkt;                               /**< LwPKT instance */
-        lwrb_t rx_rb;                                /**< RX ring buffer */
-        lwrb_t tx_rb;                                /**< TX ring buffer */
-        uint8_t rx_buffer[LGC_LWPKT_RX_BUFFER_SIZE]; /**< RX DMA buffer */
-        uint8_t tx_buffer[LGC_LWPKT_TX_BUFFER_SIZE]; /**< TX buffer */
+        lwrb_t rx_rb;                                /**< RX ring buffer state */
+        lwrb_t tx_rb;                                /**< TX ring buffer state */
+        uint8_t rx_rb_storage[LGC_LWPKT_RX_BUFFER_SIZE]; /**< RX ring buffer memory */
+        uint8_t tx_rb_storage[LGC_LWPKT_TX_BUFFER_SIZE]; /**< TX ring buffer memory */
+        uint8_t rx_dma_buffer[LGC_LWPKT_RX_BUFFER_SIZE]; /**< Raw RX DMA buffer */
 
         /* OSAL primitives */
         OsTaskId task_id;                               /**< Task handle */

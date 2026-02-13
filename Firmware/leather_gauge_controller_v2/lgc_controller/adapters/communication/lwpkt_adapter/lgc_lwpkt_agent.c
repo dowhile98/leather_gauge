@@ -11,12 +11,17 @@
 /* ============================= Includes ============================= */
 #include "lgc_lwpkt_agent.h"
 #include <string.h>
+#include "main.h" // For DIR_SENSORES_GPIO_Port and DIR_SENSORES_Pin
 
 /* ============================= Private Macros ======================= */
 #define COMM_TASK_WAIT_TIMEOUT_MS 100U /**< Semaphore wait timeout */
 #define CASCADE_BROADCAST_ADDR 0xFF    /**< Broadcast address for cascade */
 #define CASCADE_START_FLAGS 1          /**< Start cascade with FLAGS=1 (first sensor) */
 #define CASCADE_MAX_SENSORS 11         /**< Maximum number of sensors in cascade */
+
+/* ============================= Static Variables ===================== */
+/** Static pointer to active agent for context-less HAL callbacks */
+static LgcLwPktAgent_t *s_active_agent = NULL;
 
 /* ============================= Private Function Prototypes ========== */
 /**
@@ -44,6 +49,35 @@ static lwpktr_t lwpkt_event_callback(lwpkt_evt_type_t evt_type, lwpkt_t *lwpkt);
  */
 static bool lwpkt_output_func(const uint8_t *data, uint16_t len, void *arg);
 
+/* ============================= HAL UART Callbacks =================== */
+/**
+ * @brief UART RX Event callback (Idle detection)
+ */
+static void lwpkt_uart_rx_callback(UART_HandleTypeDef *huart, uint16_t Pos)
+{
+    if (s_active_agent && s_active_agent->huart == huart)
+    {
+        /* Write received data to ring buffer */
+        LgcLwPktAgent_RxISRCallback(s_active_agent, s_active_agent->rx_dma_buffer, Pos);
+
+        /* Restart DMA reception */
+        HAL_UARTEx_ReceiveToIdle_DMA(huart, s_active_agent->rx_dma_buffer, sizeof(s_active_agent->rx_dma_buffer));
+    }
+}
+
+/**
+ * @brief UART Error callback
+ */
+static void lwpkt_uart_error_callback(UART_HandleTypeDef *huart)
+{
+    if (s_active_agent && s_active_agent->huart == huart)
+    {
+        /* Log error and restart reception */
+        s_active_agent->error_count++;
+        HAL_UARTEx_ReceiveToIdle_DMA(huart, s_active_agent->rx_dma_buffer, sizeof(s_active_agent->rx_dma_buffer));
+    }
+}
+
 /* ============================= Public Functions ===================== */
 error_t LgcLwPktAgent_Init(LgcLwPktAgent_t *agent, UART_HandleTypeDef *huart)
 {
@@ -60,10 +94,11 @@ error_t LgcLwPktAgent_Init(LgcLwPktAgent_t *agent, UART_HandleTypeDef *huart)
 
     /* 2. Store hardware handle */
     agent->huart = huart;
+    s_active_agent = agent;
 
     /* 3. Initialize ring buffers */
-    lwrb_init(&agent->rx_rb, agent->rx_buffer, sizeof(agent->rx_buffer));
-    lwrb_init(&agent->tx_rb, agent->tx_buffer, sizeof(agent->tx_buffer));
+    lwrb_init(&agent->rx_rb, agent->rx_rb_storage, sizeof(agent->rx_rb_storage));
+    lwrb_init(&agent->tx_rb, agent->tx_rb_storage, sizeof(agent->tx_rb_storage));
 
     /* 4. Initialize LwPKT instance */
     if (lwpkt_init(&agent->lwpkt, &agent->tx_rb, &agent->rx_rb) != lwpktOK)
@@ -102,13 +137,20 @@ error_t LgcLwPktAgent_Init(LgcLwPktAgent_t *agent, UART_HandleTypeDef *huart)
         return ERROR_OUT_OF_RESOURCES;
     }
 
-    /* 7. Initialize state */
+    /* 7. Register HAL Callbacks specifically for this UART handle */
+    HAL_UART_RegisterCallback(huart, HAL_UART_ERROR_CB_ID, lwpkt_uart_error_callback);
+    HAL_UART_RegisterRxEventCallback(huart, lwpkt_uart_rx_callback);
+
+    /* 8. Initialize state */
     agent->is_initialized = true;
     agent->is_running = false; /* Not started yet */
     agent->is_command_pending = false;
     agent->rx_count = 0;
     agent->tx_count = 0;
     agent->error_count = 0;
+
+    /* Set RS-485 to RX mode by default */
+    HAL_GPIO_WritePin(DIR_SENSORES_GPIO_Port, DIR_SENSORES_Pin, GPIO_PIN_RESET);
 
     return NO_ERROR;
 }
@@ -126,7 +168,7 @@ error_t LgcLwPktAgent_Start(LgcLwPktAgent_t *agent)
     }
 
     /* Start UART DMA reception (event-based: IDLE detection) */
-    HAL_StatusTypeDef hal_res = HAL_UARTEx_ReceiveToIdle_DMA(agent->huart, agent->rx_buffer, sizeof(agent->rx_buffer));
+    HAL_StatusTypeDef hal_res = HAL_UARTEx_ReceiveToIdle_DMA(agent->huart, agent->rx_dma_buffer, sizeof(agent->rx_dma_buffer));
     if (hal_res != HAL_OK)
     {
         return ERROR_FAILURE;
@@ -174,6 +216,10 @@ error_t LgcLwPktAgent_Deinit(LgcLwPktAgent_t *agent)
 
     /* Clear state */
     agent->is_initialized = false;
+    if (s_active_agent == agent)
+    {
+        s_active_agent = NULL;
+    }
 
     return NO_ERROR;
 }
@@ -420,17 +466,24 @@ static void execute_tx_command(LgcLwPktAgent_t *agent, const LgcLwPktCommand_t *
     }
 
     /* ===== WRITE/CONFIG COMMANDS ===== */
-    case CMD_SET_OFFSET: /* 0x21 - Write float[10] calibration offset */
+    case CMD_WRITE_CONFIG: /* 0x20 - Generic config write */
+    case CMD_SET_OFFSET:   /* 0x21 - Write float[10] calibration offset */
     {
-        /* Payload: float offset[10] (40 bytes)
+        /* Payload: Generic or float offset[10] (40 bytes)
          * Sensor responds with ACK (no payload) or NACK (error code)
          */
-        if (cmd->payload_len == 40) /* sizeof(float) * 10 */
+        bool valid_len = true;
+        if (cmd->type == CMD_SET_OFFSET && cmd->payload_len != 40)
+        {
+            valid_len = false;
+        }
+
+        if (valid_len)
         {
             res = lwpkt_write(&agent->lwpkt,
                               cmd->addr,
                               0, /* FLAGS = 0 */
-                              CMD_SET_OFFSET,
+                              cmd->type,
                               cmd->payload,
                               cmd->payload_len);
 
@@ -508,11 +561,9 @@ static void execute_tx_command(LgcLwPktAgent_t *agent, const LgcLwPktCommand_t *
         break;
     }
 
-    /* ===== UNSUPPORTED ===== */
-    case CMD_WRITE_CONFIG:      /* 0x20 - Generic config write */
-    case CMD_WRITE_CONFIG_RESP: /* 0xA0 - Response */
     /* ===== RESPONSE CODES (RX only - should NOT be sent as commands) ===== */
     case CMD_READ_CASCADE_RESP: /* 0x92 - Response (RX only) */
+    case CMD_WRITE_CONFIG_RESP: /* 0xA0 - Response (RX only) */
         /* Response code - should not be sent as command */
         result = ERROR_INVALID_PARAMETER;
         break;
@@ -683,9 +734,10 @@ static lwpktr_t lwpkt_event_callback(lwpkt_evt_type_t evt_type, lwpkt_t *lwpkt)
                     }
 
                     /* ===== WRITE/CONFIG COMMANDS (response: empty payload = ACK) ===== */
-                    case CMD_SET_OFFSET: /* 0x21 - Payload: empty (ACK) */
-                    case CMD_SET_FILTER: /* 0x22 - Payload: empty (ACK) */
-                    case CMD_CALIBRATE:  /* 0x30 - Payload: empty (ACK) */
+                    case CMD_WRITE_CONFIG_RESP: /* 0xA0 - Generic ACK */
+                    case CMD_SET_OFFSET:        /* 0x21 - Payload: empty (ACK) */
+                    case CMD_SET_FILTER:        /* 0x22 - Payload: empty (ACK) */
+                    case CMD_CALIBRATE:         /* 0x30 - Payload: empty (ACK) */
                     {
                         /* Empty payload = success ACK */
                         if (agent->active_cmd.callback != NULL)
@@ -734,6 +786,7 @@ static lwpktr_t lwpkt_event_callback(lwpkt_evt_type_t evt_type, lwpkt_t *lwpkt)
 /**
  * @brief LwPKT output function (hardware transmit)
  * @note Called FROM lwpkt_write() when packet is ready to send
+ * @note Implements RS-485 DE/RE control for DIR_SENSORES pin.
  */
 static bool lwpkt_output_func(const uint8_t *data, uint16_t len, void *arg)
 {
@@ -744,8 +797,28 @@ static bool lwpkt_output_func(const uint8_t *data, uint16_t len, void *arg)
         return false;
     }
 
-    /* Transmit via UART (blocking or DMA) */
+    /* 1. Set RS-485 DE pin HIGH for transmit */
+    HAL_GPIO_WritePin(DIR_SENSORES_GPIO_Port, DIR_SENSORES_Pin, GPIO_PIN_SET);
+
+    /* 2. Transmit data via UART (blocking) */
     HAL_StatusTypeDef res = HAL_UART_Transmit(agent->huart, (uint8_t *)data, len, 100);
+
+    /* 3. Wait for transmission complete (UART_FLAG_TC) */
+    // Note: This loop might block if transmission fails or is very slow.
+    // A DMA-based approach with TxCpltCallback would be more robust.
+    uint32_t start_tick = HAL_GetTick();
+    while (__HAL_UART_GET_FLAG(agent->huart, UART_FLAG_TC) == RESET)
+    {
+        if ((HAL_GetTick() - start_tick) > 100) // Timeout for TC flag
+        {
+            // Transmission timeout, potentially an error
+            res = HAL_TIMEOUT;
+            break;
+        }
+    }
+
+    /* 4. Set RS-485 DE pin LOW after transmit */
+    HAL_GPIO_WritePin(DIR_SENSORES_GPIO_Port, DIR_SENSORES_Pin, GPIO_PIN_RESET);
 
     return (res == HAL_OK);
 }

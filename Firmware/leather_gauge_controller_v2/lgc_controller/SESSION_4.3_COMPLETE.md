@@ -224,6 +224,7 @@ STM32F446RC                    RS-485 Network
 **Objective:** Verify each sensor responds to CASCADE command.
 
 **Procedure:**
+
 1. Flash firmware with debug UART enabled
 2. Power on system
 3. Verify initialization logs:
@@ -246,6 +247,7 @@ STM32F446RC                    RS-485 Network
    ```
 
 **Success Criteria:**
+
 - ✅ All 11 sensors respond (no timeout)
 - ✅ FLAGS sequence correct (1→2→...→11→0)
 - ✅ Latency < 600ms (target: ~550ms)
@@ -254,18 +256,19 @@ STM32F446RC                    RS-485 Network
 
 **Failure Scenarios:**
 
-| Symptom | Possible Cause | Solution |
-|---------|---------------|----------|
-| Timeout (ERR_TIMEOUT) | RS-485 wiring | Check A/B polarity, termination |
-| Wrong FLAGS sequence | Sensor addressing | Verify each sensor address (0x01-0x0B) |
-| CRC error | Noise, baud rate | Add shielding, verify 9600 baud |
-| Task never wakes up | Semaphore not signaled | Debug `cascade_callback()` execution |
+| Symptom               | Possible Cause         | Solution                               |
+| --------------------- | ---------------------- | -------------------------------------- |
+| Timeout (ERR_TIMEOUT) | RS-485 wiring          | Check A/B polarity, termination        |
+| Wrong FLAGS sequence  | Sensor addressing      | Verify each sensor address (0x01-0x0B) |
+| CRC error             | Noise, baud rate       | Add shielding, verify 9600 baud        |
+| Task never wakes up   | Semaphore not signaled | Debug `cascade_callback()` execution   |
 
 #### Test 2: Encoder Synchronization
 
 **Objective:** Verify encoder pulse triggers sensor read.
 
 **Procedure:**
+
 1. Re-enable encoder dependency
 2. Manually rotate encoder (slow, ~1 pulse/second)
 3. Observe logs:
@@ -279,6 +282,7 @@ STM32F446RC                    RS-485 Network
 4. Rotate continuously (simulate leather passing at 10 m/min)
 
 **Success Criteria:**
+
 - ✅ Every encoder pulse triggers sensor read
 - ✅ No missed pulses (counter increments linearly)
 - ✅ Latency encoder→sensor read < 5ms
@@ -331,7 +335,7 @@ while (s_pulse_queue.count > 0) {
     uint32_t timestamp = s_pulse_queue.timestamps[s_pulse_queue.tail];
     s_pulse_queue.tail = (s_pulse_queue.tail + 1) % ENCODER_QUEUE_SIZE;
     s_pulse_queue.count--;
-    
+
     sensor->read_cascade_mode(ctx, &data);  // ~550ms
     process_slice(&data, timestamp);
 }
@@ -342,6 +346,7 @@ while (s_pulse_queue.count > 0) {
 **Objective:** Verify VP addresses update correctly on display.
 
 **Procedure:**
+
 1. Place leather piece on sensors
 2. Rotate encoder (simulate leather passing)
 3. Observe DWIN display (Page 1):
@@ -378,6 +383,7 @@ t=12s:  Next leather enters
 ```
 
 **Success Criteria:**
+
 - ✅ Current area updates every pulse (no lag > 100ms)
 - ✅ Values match expected (±1% tolerance)
 - ✅ Piece detection reliable (no false positives)
@@ -389,6 +395,7 @@ t=12s:  Next leather enters
 **Objective:** Verify system stability under maximum load.
 
 **Procedure:**
+
 1. Simulate rapid encoder pulses (30 Hz = 10 m/min)
 2. Run for 10 minutes continuous
 3. Monitor:
@@ -398,6 +405,7 @@ t=12s:  Next leather enters
    - Error logs
 
 **Success Criteria:**
+
 - ✅ No hard faults or freezes
 - ✅ Missed pulse counter < 5% (with FIFO queue)
 - ✅ CPU usage < 80%
@@ -405,15 +413,15 @@ t=12s:  Next leather enters
 
 **Performance Metrics:**
 
-| Metric | Target | Measured | Status |
-|--------|--------|----------|--------|
-| Sensor read latency | <600ms | ~550ms | ✅ |
-| Encoder ISR latency | <100µs | TBD | ⏳ |
-| Main task wakeup | <5ms | TBD | ⏳ |
-| HMI update rate | 10 Hz | TBD | ⏳ |
-| CPU usage (idle) | <10% | TBD | ⏳ |
-| CPU usage (active) | <50% | TBD | ⏳ |
-| Missed pulses @ 10 m/min | <5% | TBD | ⏳ |
+| Metric                   | Target | Measured | Status |
+| ------------------------ | ------ | -------- | ------ |
+| Sensor read latency      | <600ms | ~550ms   | ✅     |
+| Encoder ISR latency      | <100µs | TBD      | ⏳     |
+| Main task wakeup         | <5ms   | TBD      | ⏳     |
+| HMI update rate          | 10 Hz  | TBD      | ⏳     |
+| CPU usage (idle)         | <10%   | TBD      | ⏳     |
+| CPU usage (active)       | <50%   | TBD      | ⏳     |
+| Missed pulses @ 10 m/min | <5%    | TBD      | ⏳     |
 
 ---
 
@@ -433,10 +441,10 @@ void test_Init_ValidAgent_ReturnsNoError(void)
     // Arrange
     LgcLwPktAgent_t mock_agent;
     LgcLwPktSensorReader_t reader;
-    
+
     // Act
     error_t result = LgcLwPktSensorReader_Init(&reader, &mock_agent);
-    
+
     // Assert
     TEST_ASSERT_EQUAL(NO_ERROR, result);
     TEST_ASSERT_TRUE(reader.is_initialized);
@@ -447,10 +455,10 @@ void test_Init_NullAgent_ReturnsInvalidParameter(void)
 {
     // Arrange
     LgcLwPktSensorReader_t reader;
-    
+
     // Act
     error_t result = LgcLwPktSensorReader_Init(&reader, NULL);
-    
+
     // Assert
     TEST_ASSERT_EQUAL(ERROR_INVALID_PARAMETER, result);
 }
@@ -461,10 +469,10 @@ void test_GetInterface_ValidReader_ReturnsNonNull(void)
     LgcLwPktAgent_t mock_agent;
     LgcLwPktSensorReader_t reader;
     LgcLwPktSensorReader_Init(&reader, &mock_agent);
-    
+
     // Act
     ILgcSensorReader_t *iface = LgcLwPktSensorReader_GetInterface(&reader);
-    
+
     // Assert
     TEST_ASSERT_NOT_NULL(iface);
     TEST_ASSERT_EQUAL_PTR(&reader, iface->context);
@@ -481,22 +489,22 @@ void test_ReadCascadeMode_AgentRespondsOk_ReturnsErrOk(void)
     LgcLwPktAgent_t mock_agent;
     LgcLwPktSensorReader_t reader;
     LgcLwPktSensorReader_Init(&reader, &mock_agent);
-    
+
     ILgcSensorReader_t *iface = LgcLwPktSensorReader_GetInterface(&reader);
-    
+
     // Mock agent: Expect async command, simulate callback
     uint16_t mock_sensor_data[11] = {
         0x03FF, 0x0000, 0x0200, 0x01FF, 0x0080,
         0x0000, 0x03FF, 0x0100, 0x0000, 0x0040, 0x0000
     };
-    
+
     // Stub: When SendCommandAsync called, immediately invoke callback
     LgcLwPktAgent_SendCommandAsync_Stub(simulate_cascade_response_success);
-    
+
     // Act
     LgcSensorArray_t result_data;
     Result_t res = iface->read_cascade_mode(iface->context, &result_data);
-    
+
     // Assert
     TEST_ASSERT_EQUAL(ERR_OK, res);
     TEST_ASSERT_EQUAL(11, result_data.number_of_sensors);
@@ -506,7 +514,7 @@ void test_ReadCascadeMode_AgentRespondsOk_ReturnsErrOk(void)
 }
 
 // Stub callback simulator
-error_t simulate_cascade_response_success(LgcLwPktAgent_t *agent, 
+error_t simulate_cascade_response_success(LgcLwPktAgent_t *agent,
                                           const LgcLwPktCommand_t *cmd,
                                           int num_calls)
 {
@@ -526,21 +534,21 @@ void test_ReadCascadeMode_AgentTimeout_ReturnsErrTimeout(void)
     LgcLwPktAgent_t mock_agent;
     LgcLwPktSensorReader_t reader;
     LgcLwPktSensorReader_Init(&reader, &mock_agent);
-    
+
     ILgcSensorReader_t *iface = LgcLwPktSensorReader_GetInterface(&reader);
-    
+
     // Mock: Simulate agent never responds (semaphore timeout)
     LgcLwPktAgent_SendCommandAsync_Stub(simulate_no_response);
-    
+
     // Act
     LgcSensorArray_t result_data;
     Result_t res = iface->read_cascade_mode(iface->context, &result_data);
-    
+
     // Assert
     TEST_ASSERT_EQUAL(ERR_TIMEOUT, res);
 }
 
-error_t simulate_no_response(LgcLwPktAgent_t *agent, 
+error_t simulate_no_response(LgcLwPktAgent_t *agent,
                               const LgcLwPktCommand_t *cmd,
                               int num_calls)
 {
@@ -558,30 +566,30 @@ void test_ReadCascadeMode_ConcurrentCalls_Serialized(void)
     LgcLwPktAgent_t mock_agent;
     LgcLwPktSensorReader_t reader;
     LgcLwPktSensorReader_Init(&reader, &mock_agent);
-    
+
     ILgcSensorReader_t *iface = LgcLwPktSensorReader_GetInterface(&reader);
-    
+
     // Simulate 2 tasks calling read_cascade_mode() simultaneously
     // Task 1 should acquire mutex first, Task 2 waits
-    
+
     // Mock: First call succeeds, second call blocks until first completes
     LgcLwPktAgent_SendCommandAsync_ExpectAndReturn(&mock_agent, AnyPtr(), NO_ERROR);
-    
+
     // Act (simulated parallel execution)
     Result_t res1, res2;
     LgcSensorArray_t data1, data2;
-    
+
     // Thread 1: Starts read
     osAcquireMutex_ExpectAndReturn(&reader.mutex, TX_NO_WAIT, TX_SUCCESS);  // Acquires
     res1 = iface->read_cascade_mode(iface->context, &data1);
     osReleaseMutex_Expect(&reader.mutex);
-    
+
     // Thread 2: Tries to read (should wait for mutex)
     osAcquireMutex_ExpectAndReturn(&reader.mutex, TX_NO_WAIT, TX_NOT_AVAILABLE);  // Blocked
     osAcquireMutex_ExpectAndReturn(&reader.mutex, TX_WAIT_FOREVER, TX_SUCCESS);   // Eventually acquires
     res2 = iface->read_cascade_mode(iface->context, &data2);
     osReleaseMutex_Expect(&reader.mutex);
-    
+
     // Assert
     TEST_ASSERT_EQUAL(ERR_OK, res1);
     TEST_ASSERT_EQUAL(ERR_OK, res2);
@@ -613,7 +621,7 @@ ctest --output-on-failure
 # test_lgc_lwpkt_sensor_reader.c:103:test_ReadCascadeMode_AgentTimeout_ReturnsErrTimeout:PASS
 # test_lgc_lwpkt_sensor_reader.c:125:test_ReadCascadeMode_ConcurrentCalls_Serialized:PASS
 # ----------------------
-# 5 Tests 0 Failures 0 Ignored 
+# 5 Tests 0 Failures 0 Ignored
 # OK
 ```
 
@@ -623,30 +631,32 @@ ctest --output-on-failure
 
 ### Theoretical Performance (LwPKT vs Modbus)
 
-| Metric | Modbus RTU | LwPKT CASCADE | Improvement |
-|--------|-----------|---------------|-------------|
-| **Baud rate** | 9600 | 9600 | - |
-| **Command frames** | 11 (individual) | 1 (broadcast) | 91% less |
-| **Response frames** | 11 (individual) | 11 (sequential) | - |
-| **Latency per sensor** | ~180ms | ~50ms | 72% faster |
-| **Total latency** | ~2000ms | ~550ms | **67% faster** |
-| **CPU usage** | High (blocking) | Low (async) | ~50% reduction |
+| Metric                 | Modbus RTU      | LwPKT CASCADE   | Improvement    |
+| ---------------------- | --------------- | --------------- | -------------- |
+| **Baud rate**          | 9600            | 9600            | -              |
+| **Command frames**     | 11 (individual) | 1 (broadcast)   | 91% less       |
+| **Response frames**    | 11 (individual) | 11 (sequential) | -              |
+| **Latency per sensor** | ~180ms          | ~50ms           | 72% faster     |
+| **Total latency**      | ~2000ms         | ~550ms          | **67% faster** |
+| **CPU usage**          | High (blocking) | Low (async)     | ~50% reduction |
 
 ### Real-World Performance Targets
 
 **Leather Speed:** 10 m/min = 166.67 mm/s  
 **Encoder Resolution:** 5mm/pulse  
 **Pulse Rate:** 33.33 Hz (30ms period)  
-**Sensor Read Time:** ~550ms  
+**Sensor Read Time:** ~550ms
 
 **❌ BOTTLENECK:** Can only process **1.82 pulses/second** → Need **encoder pulse buffering** (Session 4.4)
 
 **With FIFO Queue (64 pulses):**
+
 - Buffer time: 64 pulses ÷ 33.33 Hz = **1.92 seconds**
 - Processing rate: 1000ms ÷ 550ms = **1.82 slices/second**
 - **Result:** System can handle **bursts up to 1.92s**, then processes backlog
 
 **Alternative Solution: Multi-sensor parallel read (future):**
+
 - Read sensors in groups: Group A (1-5) + Group B (6-11)
 - Latency: ~275ms per group (50% reduction)
 - Processing rate: 3.64 slices/second ✅ **Bottleneck eliminated**
@@ -660,6 +670,7 @@ ctest --output-on-failure
 #### Issue 1: `sensor_reader = NULL` in Main Task
 
 **Symptom:**
+
 ```
 [ERROR] Main task: sensor_reader is NULL
 Hard fault at address 0x00000000
@@ -668,6 +679,7 @@ Hard fault at address 0x00000000
 **Root Cause:** DI Container not initialized before tasks start.
 
 **Solution:**
+
 ```c
 // In main.c
 int main(void) {
@@ -675,13 +687,13 @@ int main(void) {
     SystemClock_Config();
     MX_GPIO_Init();
     MX_UART2_Init();
-    
+
     // ✅ Initialize DI Container BEFORE starting ThreadX
     Result_t res = LgcDI_Init();
     if (res != ERR_OK) {
         Error_Handler();  // Critical failure
     }
-    
+
     // Start ThreadX scheduler
     tx_kernel_enter();  // Never returns
 }
@@ -690,6 +702,7 @@ int main(void) {
 #### Issue 2: Wrapper Timeout (ERR_TIMEOUT)
 
 **Symptom:**
+
 ```
 [ERROR] Sensor read timeout (1500ms)
 [DEBUG] Semaphore wait failed: ERROR_TIMEOUT
@@ -698,6 +711,7 @@ int main(void) {
 **Possible Causes:**
 
 1. **Agent not running:**
+
    ```c
    // Verify Agent task is started
    tx_thread_info_get(&agent_task, NULL, &state, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -707,6 +721,7 @@ int main(void) {
    ```
 
 2. **Callback never invoked:**
+
    ```c
    // Add debug in cascade_callback()
    static void cascade_callback(error_t result, const uint8_t *data, uint16_t len, void *ctx) {
@@ -723,6 +738,7 @@ int main(void) {
 #### Issue 3: Corrupted Sensor Data
 
 **Symptom:**
+
 ```
 [WARN] Sensor 3: Invalid status (0xFFFF)
 [WARN] CRC mismatch: expected=0x4A, got=0x8B
@@ -731,6 +747,7 @@ int main(void) {
 **Debug Steps:**
 
 1. **Capture UART traffic:**
+
    ```c
    // In lgc_lwpkt_agent.c (tx_handler)
    printf("[TX] ");
@@ -755,6 +772,7 @@ int main(void) {
 **Symptom:** Main task consuming 70% CPU, system sluggish.
 
 **Profile:**
+
 ```c
 // Add timing instrumentation
 uint32_t start = tx_time_get();
@@ -767,6 +785,7 @@ if (elapsed > 600) {  // 600ms = 60 ticks @ 100Hz
 ```
 
 **If latency >800ms:**
+
 - Check RS-485 bus contention (other devices?)
 - Reduce retry attempts in Agent
 - Increase UART baud rate (19200 baud → 275ms latency)
@@ -782,6 +801,7 @@ if (elapsed > 600) {  // 600ms = 60 ticks @ 100Hz
 **Solution:** Implement FIFO queue for encoder pulses
 
 **Files to Modify:**
+
 - `lgc_encoder_adapter.c` (add ring buffer)
 - `lgc_main_task.c` (process queue until empty)
 
@@ -792,6 +812,7 @@ if (elapsed > 600) {  // 600ms = 60 ticks @ 100Hz
 **Optimization:** Read 2 groups in parallel → 50% latency reduction
 
 **Files:**
+
 - New adapter: `lgc_lwpkt_sensor_reader_parallel.c`
 - Requires 2 LwPKT Agents (UART2 + UART3)
 
@@ -800,11 +821,13 @@ if (elapsed > 600) {  // 600ms = 60 ticks @ 100Hz
 ### Priority 3: Error Recovery & Diagnostics (MEDIUM)
 
 **Features:**
+
 - Retry logic (3 attempts on timeout)
 - Sensor health monitoring (track failure rate per sensor)
 - CRC validation statistics (display on HMI Page 4)
 
 **Files to Modify:**
+
 - `lgc_lwpkt_sensor_reader.c` (add retry loop)
 - `lgc_hmi_task.c` (add diagnostics page)
 
@@ -815,6 +838,7 @@ if (elapsed > 600) {  // 600ms = 60 ticks @ 100Hz
 **Status:** 0% complete (no tests yet)
 
 **Required Tests:**
+
 - ISensorReader wrapper (5 tests - see Part 3)
 - LwPKT Agent (10 tests - TX/RX parsing)
 - DI Container (3 tests - initialization, getters)
@@ -827,6 +851,7 @@ if (elapsed > 600) {  // 600ms = 60 ticks @ 100Hz
 **Status:** Pending hardware availability
 
 **Checklist:**
+
 - [ ] Flash STM32F446RC with new firmware
 - [ ] Connect 11 RS-485 sensors (verify addressing)
 - [ ] Test CASCADE read (verify ~550ms latency)
@@ -870,17 +895,18 @@ if (elapsed > 600) {  // 600ms = 60 ticks @ 100Hz
 
 ### Lines of Code (Session 4 Total)
 
-| Component | Lines | Status | Files |
-|-----------|-------|--------|-------|
-| **Session 4:** LwPKT Active Object | ~1,050 | ✅ DONE | 3 files |
-| **Session 4.1:** Event-based DMA | ~225 | ✅ DONE | 2 files |
-| **Session 4.2:** Protocol + Wrapper | ~1,210 | ✅ DONE | 4 files |
-| **Session 4.3:** DI Integration | ~5 | ✅ DONE | 1 file |
-| **TOTAL (Session 4.0-4.3)** | **~2,490** | **✅ DONE** | **10 files** |
+| Component                           | Lines      | Status      | Files        |
+| ----------------------------------- | ---------- | ----------- | ------------ |
+| **Session 4:** LwPKT Active Object  | ~1,050     | ✅ DONE     | 3 files      |
+| **Session 4.1:** Event-based DMA    | ~225       | ✅ DONE     | 2 files      |
+| **Session 4.2:** Protocol + Wrapper | ~1,210     | ✅ DONE     | 4 files      |
+| **Session 4.3:** DI Integration     | ~5         | ✅ DONE     | 1 file       |
+| **TOTAL (Session 4.0-4.3)**         | **~2,490** | **✅ DONE** | **10 files** |
 
 ### Ready for Hardware Testing ✅
 
 **Complete integration chain:**
+
 ```
 main.c → LgcDI_Init() → di_init_adapters() → LgcLwPktSensorReader_Init()
                      ↓

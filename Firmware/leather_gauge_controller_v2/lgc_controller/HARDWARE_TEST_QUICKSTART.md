@@ -18,16 +18,16 @@
 
 ### Required Components
 
-| Component | Specification | Quantity |
-|-----------|---------------|----------|
-| **MCU** | STM32F446RC (LQFP64) | 1 |
-| **RS-485 Transceiver** | MAX485 or SN75176 | 1 |
-| **Sensors** | Leather Gauge Sensors (LwPKT protocol) | 11 |
-| **Encoder** | Incremental rotary (1000 PPR) | 1 |
-| **Display** | DWIN 7" TFT (UART, 115200 baud) | 1 |
-| **EEPROM** | AT24C32 (I2C, 32Kbit) | 1 |
-| **Power Supply** | 12V DC, 2A minimum | 1 |
-| **Debug Adapter** | ST-Link V2 or V3 | 1 |
+| Component              | Specification                          | Quantity |
+| ---------------------- | -------------------------------------- | -------- |
+| **MCU**                | STM32F446RC (LQFP64)                   | 1        |
+| **RS-485 Transceiver** | MAX485 or SN75176                      | 1        |
+| **Sensors**            | Leather Gauge Sensors (LwPKT protocol) | 11       |
+| **Encoder**            | Incremental rotary (1000 PPR)          | 1        |
+| **Display**            | DWIN 7" TFT (UART, 115200 baud)        | 1        |
+| **EEPROM**             | AT24C32 (I2C, 32Kbit)                  | 1        |
+| **Power Supply**       | 12V DC, 2A minimum                     | 1        |
+| **Debug Adapter**      | ST-Link V2 or V3                       | 1        |
 
 ### Wiring Diagram
 
@@ -57,17 +57,17 @@ STM32F446RC (LQFP64)              RS-485 Network (Twisted Pair)
 
 ### Pin Configuration
 
-| Pin | Function | Notes |
-|-----|----------|-------|
-| **PA2** | UART2_TX | RS-485 (9600 baud, 8N1) |
-| **PA3** | UART2_RX | RS-485 (DMA enabled) |
-| **PA9** | UART1_TX | DWIN Display (115200 baud) |
-| **PA10** | UART1_RX | DWIN Display |
-| **PA15** | TIM2_CH1 | Encoder Channel A (EXTI) |
-| **PB3** | TIM2_CH2 | Encoder Channel B (EXTI) |
-| **PB6** | I2C1_SCL | EEPROM (100 kHz, pull-up) |
-| **PB7** | I2C1_SDA | EEPROM (pull-up) |
-| **PC13** | GPIO_Output | LED status (optional) |
+| Pin      | Function    | Notes                      |
+| -------- | ----------- | -------------------------- |
+| **PA2**  | UART2_TX    | RS-485 (9600 baud, 8N1)    |
+| **PA3**  | UART2_RX    | RS-485 (DMA enabled)       |
+| **PA9**  | UART1_TX    | DWIN Display (115200 baud) |
+| **PA10** | UART1_RX    | DWIN Display               |
+| **PA15** | TIM2_CH1    | Encoder Channel A (EXTI)   |
+| **PB3**  | TIM2_CH2    | Encoder Channel B (EXTI)   |
+| **PB6**  | I2C1_SCL    | EEPROM (100 kHz, pull-up)  |
+| **PB7**  | I2C1_SDA    | EEPROM (pull-up)           |
+| **PC13** | GPIO_Output | LED status (optional)      |
 
 ### Sensor Addressing
 
@@ -88,6 +88,7 @@ Sensor 11: Address 0x0B  (closest to leather exit)
 ```
 
 **How to verify addresses:**
+
 1. Connect one sensor at a time to RS-485 bus
 2. Send LwPKT READ_CONFIG command (0x31)
 3. Response contains sensor address in ADDR field
@@ -138,6 +139,7 @@ openocd -f interface/stlink.cfg -f target/stm32f4x.cfg \
 ### Verification
 
 After flashing, device should:
+
 - ✅ LED blinks (if connected to PC13)
 - ✅ UART2 DMA starts (RS-485 reception enabled)
 - ✅ Display shows boot screen (Page 1, VP_STATE = 0)
@@ -221,23 +223,23 @@ To test sensors without encoder, comment out encoder check in `lgc_main_task.c`:
 void lgc_main_task_entry(ULONG param)
 {
     // ...initialization...
-    
+
     while (1)
     {
         // TEMPORARY: Comment out encoder wait
-        // tx_event_flags_get(&encoder_events, ENCODER_PULSE_FLAG, 
+        // tx_event_flags_get(&encoder_events, ENCODER_PULSE_FLAG,
         //                    TX_OR, &flags, TX_WAIT_FOREVER);
-        
+
         // Instead: Manual trigger with 1s delay
         tx_thread_sleep(100);  // 1s @ 100 Hz tick
-        
+
         // Read sensors (CASCADE mode)
         LgcSensorArray_t sensor_data;
         Result_t res = sensor_reader->read_cascade_mode(
             sensor_reader->context, &sensor_data);
-        
+
         if (res == ERR_OK) {
-            printf("[OK] Cascade read: %u sensors, %u ms\r\n", 
+            printf("[OK] Cascade read: %u sensors, %u ms\r\n",
                    sensor_data.number_of_sensors, elapsed_ms);
         } else {
             printf("[ERROR] Cascade read failed: %d\r\n", res);
@@ -282,13 +284,13 @@ Expected output (every 1 second):
 
 ### Troubleshooting
 
-| Issue | Possible Cause | Solution |
-|-------|---------------|----------|
-| **Timeout (ERR_TIMEOUT)** | RS-485 wiring | Check A/B polarity, swap if needed |
-| **Wrong FLAGS sequence** | Sensor addressing | Verify each sensor addr (0x01-0x0B) |
-| **CRC error** | Noise, baud rate | Add shielding, verify 9600 baud exactly |
-| **Only 1-5 sensors respond** | Weak termination | Add 120Ω resistor at both ends of bus |
-| **Random garbage** | DE/RE pin issue | Tie DE/RE to VCC (always transmit mode) |
+| Issue                        | Possible Cause    | Solution                                |
+| ---------------------------- | ----------------- | --------------------------------------- |
+| **Timeout (ERR_TIMEOUT)**    | RS-485 wiring     | Check A/B polarity, swap if needed      |
+| **Wrong FLAGS sequence**     | Sensor addressing | Verify each sensor addr (0x01-0x0B)     |
+| **CRC error**                | Noise, baud rate  | Add shielding, verify 9600 baud exactly |
+| **Only 1-5 sensors respond** | Weak termination  | Add 120Ω resistor at both ends of bus   |
+| **Random garbage**           | DE/RE pin issue   | Tie DE/RE to VCC (always transmit mode) |
 
 ---
 
@@ -306,7 +308,7 @@ Uncomment the encoder wait in `lgc_main_task.c`:
 
 ```c
 // Restore original code
-tx_event_flags_get(&encoder_events, ENCODER_PULSE_FLAG, 
+tx_event_flags_get(&encoder_events, ENCODER_PULSE_FLAG,
                    TX_OR, &flags, TX_WAIT_FOREVER);
 ```
 
@@ -369,19 +371,20 @@ Simulate leather passing through (10 × 5mm = 50mm length).
 
 **Step 3: Observe Display (Page 1)**
 
-| VP Address | Variable | Expected Value | Actual Value |
-|------------|----------|----------------|--------------|
-| **0x1110** | VP_STATE | 1 (Running) | _________ |
-| **0x1050** | VP_BATCH_COUNT | 1 | _________ |
-| **0x1051** | VP_LEATHER_COUNT | 0→1 | _________ |
-| **0x1060** | VP_CURRENT_AREA | 0.00→3.00 dm² | _________ |
-| **0x1080** | VP_ACCUMULATED_AREA | 0.00→3.00 dm² | _________ |
+| VP Address | Variable            | Expected Value | Actual Value |
+| ---------- | ------------------- | -------------- | ------------ |
+| **0x1110** | VP_STATE            | 1 (Running)    | ****\_****   |
+| **0x1050** | VP_BATCH_COUNT      | 1              | ****\_****   |
+| **0x1051** | VP_LEATHER_COUNT    | 0→1            | ****\_****   |
+| **0x1060** | VP_CURRENT_AREA     | 0.00→3.00 dm²  | ****\_****   |
+| **0x1080** | VP_ACCUMULATED_AREA | 0.00→3.00 dm²  | ****\_****   |
 
 **Step 4: Remove Leather (3 Empty Slices)**
 
 Rotate encoder 3 more times without leather.
 
 **Expected Behavior:**
+
 - Current area freezes at 3.00 dm²
 - Leather count increments to 1
 - Accumulated area shows 3.00 dm²
@@ -418,15 +421,15 @@ if (elapsed_ms > 600) {
 
 ### Expected Performance
 
-| Stage | Time (µs) | Time (ms) | Cumulative (ms) |
-|-------|-----------|-----------|-----------------|
-| Encoder ISR | ~10 | 0.01 | 0.01 |
-| Task wakeup | ~500 | 0.5 | 0.51 |
-| Wrapper overhead | ~100 | 0.1 | 0.61 |
-| Agent TX | ~5,000 | 5 | 5.61 |
-| Agent RX (11 sensors) | ~545,000 | 545 | **550.61** |
-| Callback + semaphore | ~50 | 0.05 | 550.66 |
-| Domain processing | ~2,000 | 2 | **552.66** ✅ |
+| Stage                 | Time (µs) | Time (ms) | Cumulative (ms) |
+| --------------------- | --------- | --------- | --------------- |
+| Encoder ISR           | ~10       | 0.01      | 0.01            |
+| Task wakeup           | ~500      | 0.5       | 0.51            |
+| Wrapper overhead      | ~100      | 0.1       | 0.61            |
+| Agent TX              | ~5,000    | 5         | 5.61            |
+| Agent RX (11 sensors) | ~545,000  | 545       | **550.61**      |
+| Callback + semaphore  | ~50       | 0.05      | 550.66          |
+| Domain processing     | ~2,000    | 2         | **552.66** ✅   |
 
 **Total:** 552.66ms (vs 2000ms Modbus RTU = **73% faster**)
 
@@ -447,6 +450,7 @@ printf("[PERF] Main Task: %lu execution time (%lu%% CPU)\r\n",
 ```
 
 **Target CPU Usage:**
+
 - Idle: <5%
 - Active (continuous measurement): <60%
 
@@ -459,12 +463,15 @@ printf("[PERF] Main Task: %lu execution time (%lu%% CPU)\r\n",
 **Symptom:** Board resets immediately after flashing.
 
 **Possible Causes:**
+
 1. Stack overflow (ThreadX task stack too small)
 2. NULL pointer dereference (DI Container not initialized)
 3. MPU violation (accessing unaligned memory)
 
 **Debug Steps:**
+
 1. Enable HardFault_Handler debugging:
+
 ```c
 void HardFault_Handler(void)
 {
@@ -486,6 +493,7 @@ void hard_fault_debug(uint32_t *stack_frame)
 ```
 
 2. Check DI Container initialization:
+
 ```c
 Result_t res = LgcDI_Init();
 if (res != ERR_OK) {
@@ -499,6 +507,7 @@ if (res != ERR_OK) {
 **Symptom:** Timeout (ERR_TIMEOUT) on every read.
 
 **Check RS-485 Hardware:**
+
 1. **Verify wiring:**
    - A and B not swapped
    - GND connected between STM32 and sensors
@@ -519,12 +528,14 @@ if (res != ERR_OK) {
 **Symptom:** Display shows 0.00 dm² despite leather detected.
 
 **Check Display Communication:**
+
 1. **Verify UART1 connection:**
    - TX (PA9) → Display RX
    - RX (PA10) → Display TX
    - Baud rate: 115200 (both sides)
 
 2. **Test VP write manually:**
+
    ```c
    // In lgc_hmi_task.c
    uint16_t test_value = VP_AREA_TO_UINT16(5.25f);  // 525
@@ -542,25 +553,25 @@ if (res != ERR_OK) {
 ```markdown
 # Hardware Integration Test Report
 
-**Date:** ___________
-**Tester:** ___________
+**Date:** ****\_\_\_****
+**Tester:** ****\_\_\_****
 **Firmware Version:** 2.0.0 (Session 4.3)
-**Hardware Revision:** ___________
+**Hardware Revision:** ****\_\_\_****
 
 ## Test 1: Sensor Communication
 
 - [ ] All 11 sensors respond (no timeout)
 - [ ] FLAGS sequence correct (1→0)
-- [ ] Latency measured: _______ ms (target: <600ms)
+- [ ] Latency measured: **\_\_\_** ms (target: <600ms)
 - [ ] No CRC errors
-- [ ] Notes: _________________________________________________
+- [ ] Notes: ************************\_************************
 
 ## Test 2: Encoder Synchronization
 
 - [ ] Every encoder pulse triggers read
 - [ ] No missed pulses (10/10 pulses processed)
-- [ ] Encoder→read latency: _______ ms (target: <5ms)
-- [ ] Notes: _________________________________________________
+- [ ] Encoder→read latency: **\_\_\_** ms (target: <5ms)
+- [ ] Notes: ************************\_************************
 
 ## Test 3: HMI Display Update
 
@@ -568,30 +579,31 @@ if (res != ERR_OK) {
 - [ ] VP_ACCUMULATED_AREA accumulates correctly
 - [ ] Piece detection works (3-slice hysteresis)
 - [ ] Update latency < 100ms
-- [ ] Notes: _________________________________________________
+- [ ] Notes: ************************\_************************
 
 ## Test 4: Stress Test
 
 - [ ] 10 min continuous operation: PASS / FAIL
 - [ ] No hard faults or freezes
-- [ ] CPU usage measured: _______ % (target: <60%)
-- [ ] Missed pulses: _______ % (target: <5%)
-- [ ] Notes: _________________________________________________
+- [ ] CPU usage measured: **\_\_\_** % (target: <60%)
+- [ ] Missed pulses: **\_\_\_** % (target: <5%)
+- [ ] Notes: ************************\_************************
 
 ## Issues Found
 
-1. ___________________________________________________________
-2. ___________________________________________________________
-3. ___________________________________________________________
+1. ***
+2. ***
+3. ***
 
 ## Overall Status: ✅ PASS / ❌ FAIL / ⏳ PARTIAL
 
-**Signed:** ___________
+**Signed:** ****\_\_\_****
 ```
 
 ---
 
 **Next Steps After Hardware Test:**
+
 1. Session 4.4: Encoder pulse buffering (if bottleneck confirmed)
 2. Session 4.5: Unit tests implementation (CMock + Unity)
 3. Session 4.6: Observer pattern refactor (eliminate event flags)
