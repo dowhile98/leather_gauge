@@ -235,8 +235,6 @@ void lgc_main_task_entry(void *param)
 		lgc_modbus_write_holding_regs(i, 46, &baudrate, 1);
 	}
 #endif
-
-	lgc_interface_modbus_set_mode(LGC_BUS_MODE_MODBUS);
 	for (;;)
 	{
 		lgc_module_conf_get(&config); // load configuration

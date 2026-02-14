@@ -80,52 +80,52 @@ static void lgc_update_live_status(void);
  */
 static void lgc_finalize_batch_snapshot(void)
 {
-	LGC_CONF_TypeDef_t config;
-	RTC_DateTime_t dt;
-
-	/* acquire measurements mutex to ensure atomic snapshot */
-	osAcquireMutex(&measurements.mutex);
-
-	lgc_module_conf_get(&config);
-	lgc_module_rtc_get(&dt);
-
-	/* Populate snapshot */
-	finalized_batch.batch_id = config.batch;
-	finalized_batch.year = dt.year;
-	finalized_batch.month = dt.month;
-	finalized_batch.day = dt.day;
-	finalized_batch.hours = dt.hours;
-	finalized_batch.minutes = dt.minutes;
-	finalized_batch.seconds = dt.seconds;
-
-	strncpy(finalized_batch.client_name, config.client_name, sizeof(finalized_batch.client_name));
-	strncpy(finalized_batch.color, config.color, sizeof(finalized_batch.color));
-	strncpy(finalized_batch.leather_id, config.leather_id, sizeof(finalized_batch.leather_id));
-
-	memcpy(finalized_batch.pieces_area, measurements.leather_measurement, sizeof(measurements.leather_measurement));
-
-	finalized_batch.total_pieces = measurements.current_leather_index;
-	finalized_batch.total_area = measurements.batch_measurement[measurements.current_batch_index];
-	finalized_batch.units = config.units;
-	finalized_batch.conversion = config.conversion;
-	finalized_batch.is_valid = 1;
-
-	/* Reset Live Data for next batch */
-	measurements.current_leather_index = 0;
-	measurements.current_leather_area = 0.0f;
-	memset(measurements.leather_measurement, 0, sizeof(measurements.leather_measurement));
-	/* Also reset current batch area accumulator */
-	measurements.batch_measurement[measurements.current_batch_index] = 0.0f;
-
-	/* Increment batch number in config and save to persistent storage */
-	config.batch++;
-	lgc_module_conf_set(&config);
-
-	osReleaseMutex(&measurements.mutex);
-
-	/* Signal observers (HMI and Printer) that a new consistent report is ready */
-	lgc_report_update_snapshot(&finalized_batch);
-	osSetEventBits(&events, LGC_EVENT_SNAPSHOT_READY);
+    LGC_CONF_TypeDef_t config;
+    RTC_DateTime_t dt;
+    
+    /* acquire measurements mutex to ensure atomic snapshot */
+    osAcquireMutex(&measurements.mutex);
+    
+    lgc_module_conf_get(&config);
+    lgc_module_rtc_get(&dt);
+    
+    /* Populate snapshot */
+    finalized_batch.batch_id = config.batch;
+    finalized_batch.year = dt.year;
+    finalized_batch.month = dt.month;
+    finalized_batch.day = dt.day;
+    finalized_batch.hours = dt.hours;
+    finalized_batch.minutes = dt.minutes;
+    finalized_batch.seconds = dt.seconds;
+    
+    strncpy(finalized_batch.client_name, config.client_name, sizeof(finalized_batch.client_name));
+    strncpy(finalized_batch.color, config.color, sizeof(finalized_batch.color));
+    strncpy(finalized_batch.leather_id, config.leather_id, sizeof(finalized_batch.leather_id));
+    
+    memcpy(finalized_batch.pieces_area, measurements.leather_measurement, sizeof(measurements.leather_measurement));
+    
+    finalized_batch.total_pieces = measurements.current_leather_index;
+    finalized_batch.total_area = measurements.batch_measurement[measurements.current_batch_index];
+    finalized_batch.units = config.units;
+    finalized_batch.conversion = config.conversion;
+    finalized_batch.is_valid = 1;
+    
+    /* Reset Live Data for next batch */
+    measurements.current_leather_index = 0;
+    measurements.current_leather_area = 0.0f;
+    memset(measurements.leather_measurement, 0, sizeof(measurements.leather_measurement));
+    /* Also reset current batch area accumulator */
+    measurements.batch_measurement[measurements.current_batch_index] = 0.0f; 
+    
+    /* Increment batch number in config and save to persistent storage */
+    config.batch++;
+    lgc_module_conf_set(&config);
+    
+    osReleaseMutex(&measurements.mutex);
+    
+    /* Signal observers (HMI and Printer) that a new consistent report is ready */
+    lgc_report_update_snapshot(&finalized_batch);
+    osSetEventBits(&events, LGC_EVENT_SNAPSHOT_READY);
 }
 
 /**
@@ -197,27 +197,6 @@ void lgc_main_task_entry(void *param)
 	}
 	// test only
 	//--------------------------------
-#if 1
-	lgc_interface_modbus_set_mode(LGC_BUS_MODE_DAISY_CHAIN);
-	/* SENSOR ACQUISITION STRATEGY: Daisy Chain Burst */
-	// Reset burst accumulation before trigger
-	lgc_modbus_reset_burst();
-	// Trigger the sensors
-	lgc_trigger_chain();
-
-	// Wait for data (Burst Ready)
-	if (osWaitForEventBits(&events, LGC_EVENT_BURST_READY, TRUE, TRUE, 50) == TRUE)
-	{
-
-		lgc_modbus_get_burst_data(raw_burst, &burst_len_rx);
-		lgc_parse_burst_data(raw_burst, burst_len_rx);
-	}
-	else
-	{
-		/* Burst failed - Mark sensors as failed to skip processing this slice */
-		data.sensor_status = 0x7FF; // All 11 sensors failed
-	}
-#endif
 #if 0
 	/*config.batch = 2;
 	config.conversion = 1;
@@ -235,8 +214,6 @@ void lgc_main_task_entry(void *param)
 		lgc_modbus_write_holding_regs(i, 46, &baudrate, 1);
 	}
 #endif
-
-	lgc_interface_modbus_set_mode(LGC_BUS_MODE_MODBUS);
 	for (;;)
 	{
 		lgc_module_conf_get(&config); // load configuration
@@ -258,8 +235,8 @@ void lgc_main_task_entry(void *param)
 					lgc_set_leds(LGC_RUNNING_LED, 1);
 					// go to running
 					lgc_set_state(LGC_RUNNING);
-					// Set Daisy Chain mode for production
-					lgc_interface_modbus_set_mode(LGC_BUS_MODE_DAISY_CHAIN);
+                    // Set Daisy Chain mode for production
+                    lgc_interface_modbus_set_mode(LGC_BUS_MODE_DAISY_CHAIN);
 					// clear encoder flag
 					osWaitForSemaphore(&encoder_flag, 0);
 				}
@@ -291,8 +268,8 @@ void lgc_main_task_entry(void *param)
 					lgc_set_leds(LGC_RUNNING_LED, 0);
 					// go to stop
 					lgc_set_state(LGC_STOP);
-					// Ensure we return to Modbus mode if needed
-					lgc_interface_modbus_set_mode(LGC_BUS_MODE_MODBUS);
+                    // Ensure we return to Modbus mode if needed
+                    lgc_interface_modbus_set_mode(LGC_BUS_MODE_MODBUS);
 				}
 				else if (data.guard_motor)
 				{
@@ -306,44 +283,44 @@ void lgc_main_task_entry(void *param)
 				break;
 			}
 
-			/* Handle manual batch closure request from HMI */
-			if (osWaitForEventBits(&events, LGC_EVENT_CLOSE_BATCH_REQ, TRUE, TRUE, 0) == TRUE)
-			{
-				batch_close_pending = true;
-			}
+            /* Handle manual batch closure request from HMI */
+            if (osWaitForEventBits(&events, LGC_EVENT_CLOSE_BATCH_REQ, TRUE, TRUE, 0) == TRUE)
+            {
+                batch_close_pending = true;
+            }
 
-			/* Check if a batch closure is pending and we are NOT measuring a leather piece */
-			if (batch_close_pending && measurements.is_measuring == 0)
-			{
-				lgc_finalize_batch_snapshot();
-				batch_close_pending = false;
-				/* Note: Snapshot logic already increments the batch and signals observers */
-			}
+            /* Check if a batch closure is pending and we are NOT measuring a leather piece */
+            if (batch_close_pending && measurements.is_measuring == 0)
+            {
+                lgc_finalize_batch_snapshot();
+                batch_close_pending = false;
+                /* Note: Snapshot logic already increments the batch and signals observers */
+            }
 
 			/* Verify encoder flag - proceed if pulse received */
 			if (osWaitForSemaphore(&encoder_flag, 50) == TRUE)
 			{
 				last_sensor_read_ms = osGetSystemTime();
 
-				/* SENSOR ACQUISITION STRATEGY: Daisy Chain Burst */
-				// Reset burst accumulation before trigger
-				lgc_modbus_reset_burst();
-				// Trigger the sensors
-				lgc_trigger_chain();
+                /* SENSOR ACQUISITION STRATEGY: Daisy Chain Burst */
+                // Reset burst accumulation before trigger
+                lgc_modbus_reset_burst();
+                // Trigger the sensors
+                lgc_trigger_chain();
 
-				// Wait for data (Burst Ready)
-				if (osWaitForEventBits(&events, LGC_EVENT_BURST_READY, TRUE, TRUE, 50) == TRUE)
-				{
+                // Wait for data (Burst Ready)
+                if (osWaitForEventBits(&events, LGC_EVENT_BURST_READY, TRUE, TRUE, 50) == TRUE)
+                {
 
-					lgc_modbus_get_burst_data(raw_burst, &burst_len_rx);
-					lgc_parse_burst_data(raw_burst, burst_len_rx);
-				}
-				else
-				{
-					/* Burst failed - Mark sensors as failed to skip processing this slice */
-					data.sensor_status = 0x7FF; // All 11 sensors failed
-				}
-
+                    lgc_modbus_get_burst_data(raw_burst, &burst_len_rx);
+                    lgc_parse_burst_data(raw_burst, burst_len_rx);
+                }
+                else
+                {
+                    /* Burst failed - Mark sensors as failed to skip processing this slice */
+                    data.sensor_status = 0x7FF; // All 11 sensors failed
+                }
+                
 				sensor_read_time_diff_ms = osGetSystemTime() - last_sensor_read_ms;
 				/* Process measurement only if all sensors are healthy */
 				if (data.sensor_status == NO_ERROR)
@@ -369,8 +346,8 @@ void lgc_main_task_entry(void *param)
 					else if (measurement_event == 2)
 					{
 						/* Automatic batch full: trigger safe closure */
-						lgc_finalize_batch_snapshot();
-
+                        lgc_finalize_batch_snapshot();
+                        
 						// set hmi flag
 						osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED);
 					}
@@ -404,17 +381,17 @@ void lgc_clear_measurement_last_leather(void)
 	{
 		// current leather area (reset since we are "undoing")
 		measurements.current_leather_area = 0.0f;
-
+        
 		// Get the area of the last piece to subtract it from the batch total
 		float last_piece_area = measurements.leather_measurement[measurements.current_leather_index - 1];
-
+        
 		// subtract from current batch total
 		measurements.batch_measurement[measurements.current_batch_index] -= last_piece_area;
 		if (measurements.batch_measurement[measurements.current_batch_index] < 0.0f)
 		{
 			measurements.batch_measurement[measurements.current_batch_index] = 0.0f;
 		}
-
+        
 		// clear the piece entry in the buffer
 		measurements.leather_measurement[measurements.current_leather_index - 1] = 0.0f;
 		measurements.current_leather_index--;
@@ -424,9 +401,9 @@ void lgc_clear_measurement_last_leather(void)
 
 	// release measurements mutex
 	osReleaseMutex(&measurements.mutex);
-
-	/* SYNC: Notify HMI of the manual modification */
-	lgc_update_live_status();
+    
+    /* SYNC: Notify HMI of the manual modification */
+    lgc_update_live_status();
 }
 
 void lgc_increment_batch_index(void)
@@ -666,9 +643,9 @@ static uint8_t lgc_process_measurement(LGC_CONF_TypeDef_t *config)
 				{
 					/* ====== EVENT: END OF BATCH DETECTED ====== */
 					measurements.total_leathers_measured = measurements.current_leather_index;
-
-					/* Note: Batch reset and snapshotting is now handled by lgc_finalize_batch_snapshot()
-					 * called from the main task when event_status == 2 is received. */
+					
+                    /* Note: Batch reset and snapshotting is now handled by lgc_finalize_batch_snapshot()
+                     * called from the main task when event_status == 2 is received. */
 					event_status = 2; /* Batch measurement completed */
 				}
 
@@ -826,24 +803,24 @@ void lgc_get_state_data(lgc_t *out_data)
  */
 static void lgc_update_live_status(void)
 {
-	LgcLiveStatus_t status;
-
-	osAcquireMutex(&measurements.mutex);
-	status.batch_count = measurements.current_batch_index;
-	status.leather_count = measurements.current_leather_index;
-	status.current_leather_area = measurements.current_leather_area;
-	status.accumulated_batch_area = measurements.batch_measurement[measurements.current_batch_index];
-	status.is_measuring = measurements.is_measuring;
-	osReleaseMutex(&measurements.mutex);
-
-	osAcquireMutex(&mutex);
-	status.system_state = data.state;
-	status.motor_feedback = data.feedback_motor;
-	status.motor_speed = data.speed_motor;
-	status.guard_status = data.guard_motor;
-	osReleaseMutex(&mutex);
-
-	lgc_report_update_live_status(&status);
+    LgcLiveStatus_t status;
+    
+    osAcquireMutex(&measurements.mutex);
+    status.batch_count = measurements.current_batch_index;
+    status.leather_count = measurements.current_leather_index;
+    status.current_leather_area = measurements.current_leather_area;
+    status.accumulated_batch_area = measurements.batch_measurement[measurements.current_batch_index];
+    status.is_measuring = measurements.is_measuring;
+    osReleaseMutex(&measurements.mutex);
+    
+    osAcquireMutex(&mutex);
+    status.system_state = data.state;
+    status.motor_feedback = data.feedback_motor;
+    status.motor_speed = data.speed_motor;
+    status.guard_status = data.guard_motor;
+    osReleaseMutex(&mutex);
+    
+    lgc_report_update_live_status(&status);
 }
 
 /**
@@ -854,34 +831,34 @@ static void lgc_update_live_status(void)
  */
 static error_t lgc_parse_burst_data(uint8_t *buffer, uint16_t len)
 {
-	if (len < 33 || buffer == NULL) return ERROR_INVALID_PARAMETER;
+    if (len < 33 || buffer == NULL) return ERROR_INVALID_PARAMETER;
 
-	osAcquireMutex(&mutex);
+    osAcquireMutex(&mutex);
+    
+    /* Reset sensor failure status for this slice */
+    data.sensor_status = NO_ERROR;
 
-	/* Reset sensor failure status for this slice */
-	data.sensor_status = NO_ERROR;
+    for (uint8_t i = 0; i < LGC_SENSOR_NUMBER; i++)
+    {
+        uint16_t offset = i * 3;
+        uint8_t sensor_id = buffer[offset];
+        
+        /* Validate sensor ID consistency (expected 1 to 11) */
+        if (sensor_id == (i + 1))
+        {
+            /* Reconstruct 16-bit sensor data */
+            data.sensor[i] = (uint16_t)((buffer[offset + 1] << 8) | buffer[offset + 2]);
+        }
+        else
+        {
+            /* Sync error or sensor missing - Mark as failed */
+            data.sensor[i] = 0;
+            data.sensor_status |= (1 << i);
+        }
+    }
 
-	for (uint8_t i = 0; i < LGC_SENSOR_NUMBER; i++)
-	{
-		uint16_t offset = i * 3;
-		uint8_t sensor_id = buffer[offset];
-
-		/* Validate sensor ID consistency (expected 1 to 11) */
-		if (sensor_id == (i + 1))
-		{
-			/* Reconstruct 16-bit sensor data */
-			data.sensor[i] = (uint16_t)((buffer[offset + 1] << 8) | buffer[offset + 2]);
-		}
-		else
-		{
-			/* Sync error or sensor missing - Mark as failed */
-			data.sensor[i] = 0;
-			data.sensor_status |= (1 << i);
-		}
-	}
-
-	osReleaseMutex(&mutex);
-	return NO_ERROR;
+    osReleaseMutex(&mutex);
+    return NO_ERROR;
 }
 
 /**
@@ -889,11 +866,11 @@ static error_t lgc_parse_burst_data(uint8_t *buffer, uint16_t len)
  */
 static void lgc_trigger_chain(void)
 {
-	HAL_GPIO_WritePin(MASTER_TRIGGER_GPIO_Port, MASTER_TRIGGER_Pin, GPIO_PIN_SET);
-
-	/* Small delay for the pulse width (~500us) */
-	/* Using a simple NOP loop */
-	for(volatile uint32_t i = 0; i < 5000; i++);
-
-	HAL_GPIO_WritePin(MASTER_TRIGGER_GPIO_Port, MASTER_TRIGGER_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(MASTER_TRIGGER_GPIO_Port, MASTER_TRIGGER_Pin, GPIO_PIN_SET);
+    
+    /* Small delay for the pulse width (~500us) */
+    /* Using a simple NOP loop */
+    for(volatile uint32_t i = 0; i < 5000; i++); 
+    
+    HAL_GPIO_WritePin(MASTER_TRIGGER_GPIO_Port, MASTER_TRIGGER_Pin, GPIO_PIN_RESET);
 }
