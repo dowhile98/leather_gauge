@@ -1,0 +1,3 @@
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/DSP_Biquad/DSP_Biquad.c:11:6:Biquad_Init	80	static
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/DSP_Biquad/DSP_Biquad.c:77:6:Biquad_Reset	16	static
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/DSP_Biquad/DSP_Biquad.c:84:7:Biquad_Apply	32	static

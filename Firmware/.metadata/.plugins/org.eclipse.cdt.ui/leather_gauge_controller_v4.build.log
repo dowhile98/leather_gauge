@@ -1,0 +1,10 @@
+20:10:31 **** Incremental Build of configuration Debug for project leather_gauge_controller_v4 ****
+make -j12 all 
+arm-none-eabi-size  leather_gauge_controller_v4.elf 
+   text	   data	    bss	    dec	    hex	filename
+ 115040	    252	 100356	 215648	  34a60	leather_gauge_controller_v4.elf
+Finished building: default.size.stdout
+ 
+
+20:10:31 Build Finished. 0 errors, 0 warnings. (took 526ms)
+

@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "leather gauge",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/**"
+            ],
+            "defines": [
+                "USE_HAL_DRIVER",
+                "STM32G030xx"
+            ],
+            "compilerPath": "arm-none-eabi-gcc",
+            "cStandard": "c11",
+            "cppStandard": "gnu++11",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}

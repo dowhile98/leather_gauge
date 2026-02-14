@@ -1,0 +1,4 @@
+../leather_gauge_sensor/app/Src/leather_gauge.c:25:9:lg_sensor_init	3
+../leather_gauge_sensor/app/Src/leather_gauge.c:54:6:lg_sensor_run	3
+../leather_gauge_sensor/app/Src/leather_gauge.c:76:14:lg_sensor_get_mode	1
+../leather_gauge_sensor/app/Src/leather_gauge.c:81:6:lg_sensor_set_mode	2

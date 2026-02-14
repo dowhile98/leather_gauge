@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;leather_gauge_sensor_v4/leather_gauge_sensor.ioc&apos; to &apos;leather_gauge_sensor_v4.ioc&apos;" description="Rename resource &apos;leather_gauge_sensor.ioc&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="leather_gauge_sensor.ioc" name="leather_gauge_sensor_v4.ioc" stamp="1771073574150" updateReferences="false"/>
+</session>

@@ -3,6 +3,14 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
+		<item value="lgc_update_live_status"/>
+		<item value="snprintf"/>
+		<item value="lgc_modbus_re"/>
+		<item value="lgc_interface_modbus"/>
+		<item value="lwpkt_uart_rx_callback"/>
+		<item value="display_uart_tx_callback"/>
+		<item value="print"/>
+		<item value="printer"/>
 		<item value="modbus_rx_semaphore"/>
 		<item value="conf.threshold"/>
 		<item value="SENSOR_THRESHOLD_ADDR"/>
@@ -12,6 +20,7 @@
 		<item value="ARR"/>
 	</list>
 	<list key="replacehistory">
+		<item value="lwprintf_snprintf"/>
 		<item value="lgc"/>
 	</list>
 </section>
