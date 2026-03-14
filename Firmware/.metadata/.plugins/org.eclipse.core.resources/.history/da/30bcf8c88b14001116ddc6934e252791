@@ -1,0 +1,91 @@
+/*
+ * lgc_p10_task.c
+ *
+ *  Created on: 28 feb 2026
+ *      Author: tecna-smart-lab
+ */
+
+
+//-------------------------------------------------------------------------------
+// includes
+//-------------------------------------------------------------------------------
+#include "lgc.h"
+#include "lgc_interface_printer.h"
+#include "lgc_interface_modbus.h"
+#include "os_port.h"
+#include "lgc_module_input.h"
+#include "lgc_module_eeprom.h"
+#include "lwbtn.h"
+#include "lgc_module_encoder.h"
+#include "lgc_module_rtc.h"
+#include "lgc_report_manager.h"
+//-------------------------------------------------------------------------------
+// defines
+//-------------------------------------------------------------------------------
+#define RTU_SERVER_ADDRESS 1
+
+
+
+//-------------------------------------------------------------------------------
+// global variables
+//-------------------------------------------------------------------------------
+static nmbs_platform_conf platform_conf;
+static nmbs_t nmbs;
+
+//-------------------------------------------------------------------------------
+// extern definition
+//-------------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------------
+// private function prototype
+//-------------------------------------------------------------------------------
+static int32_t p10_read_serial(uint8_t* buf, uint16_t count, int32_t byte_timeout_ms, void* arg);
+static int32_t p10_write_serial(const uint8_t* buf, uint16_t count, int32_t byte_timeout_ms, void* arg);
+//-------------------------------------------------------------------------------
+// task definition
+//-------------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------------
+// public function definition
+//-------------------------------------------------------------------------------
+uint8_t lgc_p10_init(void)
+{
+	mbs_platform_conf_create(&platform_conf);
+	platform_conf.transport = NMBS_TRANSPORT_RTU;
+	platform_conf.read = read_serial;
+	platform_conf.write = write_serial;
+
+}
+
+//-------------------------------------------------------------------------------
+// callbacks
+//-------------------------------------------------------------------------------
+static int32_t p10_read_serial(uint8_t* buf, uint16_t count, int32_t byte_timeout_ms, void* arg)
+{
+	HAL_GPIO_WritePin(DIR_DISPLAY_GPIO_Port, DIR_DISPLAY_Pin, GPIO_PIN_RESET); // Set direction to receive
+
+	if(HAL_UART_Receive(&huart5, buf, count, byte_timeout_ms) != HAL_OK)
+	{
+		return 0;
+	}
+
+	return count;
+}
+
+
+static int32_t p10_write_serial(const uint8_t* buf, uint16_t count, int32_t byte_timeout_ms, void* arg)
+{
+	HAL_GPIO_WritePin(DIR_DISPLAY_GPIO_Port, DIR_DISPLAY_Pin, GPIO_PIN_SET); // Set direction to transmit
+
+	if(HAL_UART_Transmit(&huart5, (uint8_t*)buf, count, byte_timeout_ms) != HAL_OK)
+	{
+		HAL_GPIO_WritePin(DIR_DISPLAY_GPIO_Port, DIR_DISPLAY_Pin, GPIO_PIN_RESET); // Set direction to receive
+		return 0;
+	}
+	HAL_GPIO_WritePin(DIR_DISPLAY_GPIO_Port, DIR_DISPLAY_Pin, GPIO_PIN_RESET); // Set direction to receive
+	return count;
+
+}
+//-------------------------------------------------------------------------------
+// private function definition
+//-------------------------------------------------------------------------------

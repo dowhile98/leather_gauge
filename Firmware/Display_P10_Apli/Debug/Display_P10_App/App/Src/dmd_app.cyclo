@@ -1,0 +1,6 @@
+../Display_P10_App/App/Src/dmd_app.cpp:49:6:void display_p10_main_task_entry(const void*)	13
+../Display_P10_App/App/Src/dmd_app.cpp:261:6:void display_p10_udapte_task_entry(const void*)	1
+../Display_P10_App/App/Src/dmd_app.cpp:267:6:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef*)	1
+../Display_P10_App/App/Src/dmd_app.cpp:273:6:void Scrolling_text(int, int, int, char*, int)	4
+../Display_P10_App/App/Src/dmd_app.cpp:296:1:cpp)	1
+../Display_P10_App/App/Src/dmd_app.cpp:296:1:cpp)	1

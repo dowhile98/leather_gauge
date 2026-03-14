@@ -9,6 +9,7 @@
 // includes
 //-------------------------------------------------------------------------------
 #include <stdint.h>
+#include <stdbool.h>
 #include "os_port.h"
 #include "error.h"
 //-------------------------------------------------------------------------------
@@ -20,7 +21,7 @@
 #endif
 
 #ifndef LGC_LEATHER_COUNT_MAX
-#define LGC_LEATHER_COUNT_MAX 300
+#define LGC_LEATHER_COUNT_MAX 150
 #endif
 
 #ifndef LGC_LEATHER_BATCH_COUNT_MAX
@@ -30,6 +31,54 @@
 //-------------------------------------------------------------------------------
 // typedefs
 //-------------------------------------------------------------------------------
+
+/**
+ * @brief Single leather piece measurement slot with soft-delete support.
+ */
+typedef struct
+{
+    float area;   /**< Measured area in the configured unit */
+    bool deleted; /**< Soft-delete flag: true = exclude from display and print */
+} LgcBatchSlot_t;
+
+/**
+ * @brief Complete batch snapshot with per-piece data and soft-delete support.
+ *        Replaces LgcBatchReport_t as the canonical batch storage type.
+ */
+typedef struct
+{
+    /* Batch identification */
+    uint32_t batch_id;
+    uint32_t batch_index;
+
+    /* Timestamp (from RTC at finalization) */
+    uint16_t year;
+    uint8_t month;
+    uint8_t day;
+    uint8_t hours;
+    uint8_t minutes;
+    uint8_t seconds;
+
+    /* Client metadata (copied from config at finalization) */
+    char client_name[16];
+    char color[16];
+    char leather_id[16];
+
+    /* Individual piece measurements */
+    LgcBatchSlot_t slots[LGC_LEATHER_COUNT_MAX];
+
+    /* Counters */
+    uint16_t total_slots;  /**< Slots used, including deleted entries */
+    uint16_t active_count; /**< Valid (non-deleted) pieces */
+    float total_area;      /**< Sum of areas for non-deleted pieces */
+
+    /* Unit configuration */
+    uint8_t units;
+    uint8_t conversion;
+
+    /* Validity flag */
+    uint8_t is_valid; /**< 0 = empty/invalid, 1 = contains valid data */
+} LgcBatchSnapshot_t;
 typedef enum
 {
     LGC_DI_START_STOP = 0,
@@ -65,7 +114,6 @@ typedef struct
     uint16_t total_leathers_measured;                     /* Total leathers measured */
     float current_leather_area;                           /* Accumulator for current leather area */
     float leather_measurement[LGC_LEATHER_COUNT_MAX];     /* Individual leather areas */
-    float leather_measurement_last[LGC_LEATHER_COUNT_MAX];     /* Individual leather areas */
     float batch_measurement[LGC_LEATHER_BATCH_COUNT_MAX]; /* Batch sums */
     uint8_t is_measuring;                                 /* Measuring state flag */
     uint8_t no_detection_count;                           /* Consecutive steps with no detection */
@@ -89,6 +137,7 @@ typedef struct
 typedef struct
 {
     uint32_t batch_id;
+    uint32_t batch_index;
     uint16_t year;
     uint8_t month;
     uint8_t day;
@@ -137,7 +186,8 @@ typedef enum
     LGC_SPEED_HIGH_LED,
 } LGC_LEDS_TypeDef_t;
 
-typedef enum {
+typedef enum
+{
     LGC_BUS_MODE_MODBUS = 0,
     LGC_BUS_MODE_DAISY_CHAIN
 } LGC_BUS_MODE_t;

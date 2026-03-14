@@ -1,0 +1,9 @@
+../Display_P10_App/Components/at24cxx/driver_at24cxx.c:62:9:at24cxx_init	8	static
+../Display_P10_App/Components/at24cxx/driver_at24cxx.c:136:9:at24cxx_deinit	16	static
+../Display_P10_App/Components/at24cxx/driver_at24cxx.c:167:9:at24cxx_set_type	0	static
+../Display_P10_App/Components/at24cxx/driver_at24cxx.c:188:9:at24cxx_get_type	0	static
+../Display_P10_App/Components/at24cxx/driver_at24cxx.c:209:9:at24cxx_set_addr_pin	0	static
+../Display_P10_App/Components/at24cxx/driver_at24cxx.c:231:9:at24cxx_get_addr_pin	0	static
+../Display_P10_App/Components/at24cxx/driver_at24cxx.c:257:9:at24cxx_read	32	static
+../Display_P10_App/Components/at24cxx/driver_at24cxx.c:360:9:at24cxx_write	48	static
+../Display_P10_App/Components/at24cxx/driver_at24cxx.c:459:9:at24cxx_info	8	static

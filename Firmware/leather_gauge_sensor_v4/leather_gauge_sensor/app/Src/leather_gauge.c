@@ -13,8 +13,8 @@
  * ========================================================================= */
 static LG_OP_MODE_t current_mode = LG_MODE_MODBUS;
 static uint32_t last_trigger_tick = 0;
-
-#define LG_STREAM_TIMEOUT_MS 100
+extern volatile uint8_t tx_flag;
+#define LG_STREAM_TIMEOUT_MS 1500
 /* ============================================================================
  * private functions prototype
  * ========================================================================= */
@@ -48,6 +48,7 @@ uint8_t lg_sensor_init(void)
     /*modbus init*/
     ret = lg_module_modbus_init(conf.address, conf.baudrate);
 
+
     return ret;
 }
 
@@ -62,13 +63,31 @@ void lg_sensor_run(void)
         }
         else
         {
+//        	if(tx_flag)
+//        	{
+//        		HAL_Delay(10);
+//        		/* Generate Trigger Out pulse on PB12 */
+//        		HAL_GPIO_WritePin(DIR_OUTPUT_GPIO_Port, DIR_OUTPUT_Pin, GPIO_PIN_SET);
+//        		/* Small delay for pulse width - could be optimized with NOPs or a timer if needed.
+//        		               Given the 32us per node requirement, a few cycles is enough. */
+//        		for(volatile uint32_t i = 0; i < 500; i++);
+//        		HAL_GPIO_WritePin(DIR_OUTPUT_GPIO_Port, DIR_OUTPUT_Pin, GPIO_PIN_RESET);
+//
+//        		HAL_GPIO_WritePin(DIR_GPIO_Port, DIR_Pin, GPIO_PIN_RESET);
+//
+//
+//        		tx_flag = 0;
+//        	}
+        	if(((HAL_GetTick() - last_trigger_tick)> 5) && (tx_flag == 1))
+        	{
+        		tx_flag = 0;
+        	}
             /* In STREAM mode, check for timeout to revert to MODBUS */
             if ((HAL_GetTick() - last_trigger_tick) > LG_STREAM_TIMEOUT_MS)
             {
                 current_mode = LG_MODE_MODBUS;
                 lg_module_modbus_reset();
             }
-            HAL_Delay(1); // Small delay to avoid tight loop
         }
     }
 }

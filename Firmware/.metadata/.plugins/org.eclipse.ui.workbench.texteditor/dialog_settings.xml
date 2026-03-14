@@ -3,6 +3,9 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="true"/>
 	<list key="searchhistory">
+		<item value="CURRENT_SCREEN_ADDR"/>
+		<item value="data"/>
+		<item value="LGC_HMI_SENSOR_TEST_UPDATE"/>
 		<item value="lgc_update_live_status"/>
 		<item value="snprintf"/>
 		<item value="lgc_modbus_re"/>
@@ -15,9 +18,6 @@
 		<item value="conf.threshold"/>
 		<item value="SENSOR_THRESHOLD_ADDR"/>
 		<item value="hmi_msg"/>
-		<item value="lgc_printer_status"/>
-		<item value="steri_vac"/>
-		<item value="ARR"/>
 	</list>
 	<list key="replacehistory">
 		<item value="lwprintf_snprintf"/>

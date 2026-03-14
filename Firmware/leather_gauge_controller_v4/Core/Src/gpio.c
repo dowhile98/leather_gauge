@@ -65,6 +65,13 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(DIR_DISPLAY_GPIO_Port, &GPIO_InitStruct);
 
+
+  //ouptu pin
+  GPIO_InitStruct.Pin = GPIO_PIN_2;
+   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+   GPIO_InitStruct.Pull = GPIO_NOPULL;
+   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
   /*Configure GPIO pins : DI_2_Pin DI_3_Pin DI_4_Pin DI_5_Pin */
   GPIO_InitStruct.Pin = DI_2_Pin|DI_3_Pin|DI_4_Pin|DI_5_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;

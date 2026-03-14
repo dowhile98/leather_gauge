@@ -1,0 +1,4 @@
+leather_gauge_controller/middlewares/DSP_Biquad/DSP_Biquad.o: \
+ ../leather_gauge_controller/middlewares/DSP_Biquad/DSP_Biquad.c \
+ ../leather_gauge_controller/middlewares/DSP_Biquad/DSP_Biquad.h
+../leather_gauge_controller/middlewares/DSP_Biquad/DSP_Biquad.h:

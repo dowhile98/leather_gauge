@@ -1,0 +1,8 @@
+../Display_P10_App/Components/at24cxx/interface/driver_at24cxx_interface.c:51:9:at24cxx_interface_iic_init	1
+../Display_P10_App/Components/at24cxx/interface/driver_at24cxx_interface.c:64:9:at24cxx_interface_iic_deinit	1
+../Display_P10_App/Components/at24cxx/interface/driver_at24cxx_interface.c:81:9:at24cxx_interface_iic_read	1
+../Display_P10_App/Components/at24cxx/interface/driver_at24cxx_interface.c:97:9:at24cxx_interface_iic_write	1
+../Display_P10_App/Components/at24cxx/interface/driver_at24cxx_interface.c:113:9:at24cxx_interface_iic_read_address16	1
+../Display_P10_App/Components/at24cxx/interface/driver_at24cxx_interface.c:129:9:at24cxx_interface_iic_write_address16	1
+../Display_P10_App/Components/at24cxx/interface/driver_at24cxx_interface.c:139:6:at24cxx_interface_delay_ms	1
+../Display_P10_App/Components/at24cxx/interface/driver_at24cxx_interface.c:153:6:at24cxx_interface_debug_print	7

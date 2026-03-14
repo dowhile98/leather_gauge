@@ -1,0 +1,4 @@
+../Display_P10_App/Components/lwprintf/src/system/lwprintf_sys_cmsis_os.c:42:1:lwprintf_sys_mutex_create	8	static
+../Display_P10_App/Components/lwprintf/src/system/lwprintf_sys_cmsis_os.c:47:1:lwprintf_sys_mutex_isvalid	0	static
+../Display_P10_App/Components/lwprintf/src/system/lwprintf_sys_cmsis_os.c:52:1:lwprintf_sys_mutex_wait	8	static
+../Display_P10_App/Components/lwprintf/src/system/lwprintf_sys_cmsis_os.c:57:1:lwprintf_sys_mutex_release	8	static

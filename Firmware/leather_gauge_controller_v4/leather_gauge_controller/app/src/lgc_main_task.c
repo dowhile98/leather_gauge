@@ -21,8 +21,8 @@
 
 /* Trigger Pin Definition - Placeholder (User should confirm) */
 #ifndef MASTER_TRIGGER_GPIO_Port
-#define MASTER_TRIGGER_GPIO_Port GPIOB
-#define MASTER_TRIGGER_Pin GPIO_PIN_12
+#define MASTER_TRIGGER_GPIO_Port GPIOA
+#define MASTER_TRIGGER_Pin GPIO_PIN_2
 #endif
 
 /* Pixel width in mm (single sensor pixel) */
@@ -32,7 +32,7 @@
 
 /* Encoder step distance in mm */
 #ifndef LGC_ENCODER_STEP_MM
-#define LGC_ENCODER_STEP_MM 5.5f
+#define LGC_ENCODER_STEP_MM 20.398f
 #endif
 
 /* Number of photoreceptors per sensor */
@@ -43,9 +43,8 @@
 #define LGC_LEATHER_END_HYSTERESIS 3
 #endif
 
-
 #ifndef LGC_LEATHER_MAX_PULSE_FLAG
-#define LGC_LEATHER_MAX_PULSE_FLAG 5
+#define LGC_LEATHER_MAX_PULSE_FLAG 1
 #endif
 //-------------------------------------------------------------------------------
 // global variables
@@ -59,6 +58,12 @@ static OsMutex mutex;
 static uint32_t pulse_count = 0;
 static uint32_t last_sensor_read_ms = 0;
 static uint32_t sensor_read_time_diff_ms = 0;
+
+//-------------------------------------------------------------------------------
+// extern definition
+//-------------------------------------------------------------------------------
+extern uint8_t lgc_hmi_is_sensor_test_active(void);
+extern void lgc_hmi_set_sensor_value(uint16_t *value);
 //-------------------------------------------------------------------------------
 // private function prototype
 //-------------------------------------------------------------------------------
@@ -85,12 +90,15 @@ static void lgc_finalize_batch_snapshot(void)
 
 	/* acquire measurements mutex to ensure atomic snapshot */
 	osAcquireMutex(&measurements.mutex);
+	uint16_t finished_index = measurements.current_batch_index;
 
 	lgc_module_conf_get(&config);
 	lgc_module_rtc_get(&dt);
 
 	/* Populate snapshot */
+	// original
 	finalized_batch.batch_id = config.batch;
+	// modificatrion
 	finalized_batch.year = dt.year;
 	finalized_batch.month = dt.month;
 	finalized_batch.day = dt.day;
@@ -105,25 +113,46 @@ static void lgc_finalize_batch_snapshot(void)
 	memcpy(finalized_batch.pieces_area, measurements.leather_measurement, sizeof(measurements.leather_measurement));
 
 	finalized_batch.total_pieces = measurements.current_leather_index;
-	finalized_batch.total_area = measurements.batch_measurement[measurements.current_batch_index];
+	finalized_batch.total_area = measurements.batch_measurement[finished_index];
+	// finalized_batch.total_area = measurements.batch_measurement[measurements.current_batch_index-1];
 	finalized_batch.units = config.units;
 	finalized_batch.conversion = config.conversion;
 	finalized_batch.is_valid = 1;
-
+	finalized_batch.batch_index = measurements.current_batch_index;
 	/* Reset Live Data for next batch */
 	measurements.current_leather_index = 0;
 	measurements.current_leather_area = 0.0f;
 	memset(measurements.leather_measurement, 0, sizeof(measurements.leather_measurement));
 	/* Also reset current batch area accumulator */
-	measurements.batch_measurement[measurements.current_batch_index] = 0.0f;
-
+	// measurements.batch_measurement[measurements.current_batch_index] = 0.0f; // comentado
+	measurements.current_batch_index += 1;
 	/* Increment batch number in config and save to persistent storage */
-	config.batch++;
-	lgc_module_conf_set(&config);
+	// config.batch++; // comentado
+	// lgc_module_conf_set(&config); // comentado
 
 	osReleaseMutex(&measurements.mutex);
 
-	/* Signal observers (HMI and Printer) that a new consistent report is ready */
+	/* Build metadata for the new snapshot and promote current → last */
+	{
+		LgcBatchSnapshot_t meta;
+		memset(&meta, 0, sizeof(LgcBatchSnapshot_t));
+		meta.batch_id = finalized_batch.batch_id;
+		meta.batch_index = finalized_batch.batch_index;
+		meta.year = finalized_batch.year;
+		meta.month = finalized_batch.month;
+		meta.day = finalized_batch.day;
+		meta.hours = finalized_batch.hours;
+		meta.minutes = finalized_batch.minutes;
+		meta.seconds = finalized_batch.seconds;
+		meta.units = finalized_batch.units;
+		meta.conversion = finalized_batch.conversion;
+		strncpy(meta.client_name, finalized_batch.client_name, sizeof(meta.client_name));
+		strncpy(meta.color, finalized_batch.color, sizeof(meta.color));
+		strncpy(meta.leather_id, finalized_batch.leather_id, sizeof(meta.leather_id));
+		lgc_report_finalize_batch(&meta);
+	}
+
+	/* Legacy snapshot update (backward compat for any remaining callers) */
 	lgc_report_update_snapshot(&finalized_batch);
 	osSetEventBits(&events, LGC_EVENT_SNAPSHOT_READY);
 }
@@ -156,15 +185,15 @@ void lgc_main_task_entry(void *param)
 	LGC_CONF_TypeDef_t config;
 	uint8_t measurement_event; /* Event status from measurement processing */
 	RTC_Config_t rtc_config = {
-			.initial_datetime = {
-					.year = 2026,
-					.month = 1,
-					.day = 19,
-					.weekday = 7, // Domingo
-					.hours = 14,
-					.minutes = 30,
-					.seconds = 0},
-					.use_initial_datetime = false};
+		.initial_datetime = {
+			.year = 2026,
+			.month = 1,
+			.day = 19,
+			.weekday = 7, // Domingo
+			.hours = 14,
+			.minutes = 30,
+			.seconds = 0},
+		.use_initial_datetime = false};
 	/*create semaphore*/
 	osCreateSemaphore(&encoder_flag, 0);
 	/*Mutex*/
@@ -182,9 +211,9 @@ void lgc_main_task_entry(void *param)
 
 	lgc_module_conf_load();
 
-	//verify speed select for init
+	// verify speed select for init
 	osDelayTask(300);
-	if(HAL_GPIO_ReadPin(DI_4_GPIO_Port, DI_4_Pin) == 0)
+	if (HAL_GPIO_ReadPin(DI_4_GPIO_Port, DI_4_Pin) == 0)
 	{
 		// lock
 		osAcquireMutex(&mutex);
@@ -197,42 +226,34 @@ void lgc_main_task_entry(void *param)
 	}
 	// test only
 	//--------------------------------
-#if 1
-	lgc_interface_modbus_set_mode(LGC_BUS_MODE_DAISY_CHAIN);
-	/* SENSOR ACQUISITION STRATEGY: Daisy Chain Burst */
-	// Reset burst accumulation before trigger
-	lgc_modbus_reset_burst();
-	// Trigger the sensors
-	lgc_trigger_chain();
-
-	// Wait for data (Burst Ready)
-	if (osWaitForEventBits(&events, LGC_EVENT_BURST_READY, TRUE, TRUE, 50) == TRUE)
-	{
-
-		lgc_modbus_get_burst_data(raw_burst, &burst_len_rx);
-		lgc_parse_burst_data(raw_burst, burst_len_rx);
-	}
-	else
-	{
-		/* Burst failed - Mark sensors as failed to skip processing this slice */
-		data.sensor_status = 0x7FF; // All 11 sensors failed
-	}
-#endif
 #if 0
-	/*config.batch = 2;
-	config.conversion = 1;
-	config.units = 1;
-	strcpy(config.client_name, "test");
-	strcpy(config.color, "marron");
-	strcpy(config.leather_id, "xxx");
-	lgc_module_conf_set(&config);*/
-	//--------------------------------
-	uint16_t baudrate = 0;
-
-	for(uint8_t i = 1; i<=11; i++)
+	lgc_interface_modbus_set_mode(LGC_BUS_MODE_DAISY_CHAIN);
+	while(1)
 	{
+		last_sensor_read_ms = osGetSystemTime();
+		/* SENSOR ACQUISITION STRATEGY: Daisy Chain Burst */
+		// Reset burst accumulation before trigger
+		lgc_modbus_reset_burst();
+		// Trigger the sensors
+		lgc_trigger_chain();
 
-		lgc_modbus_write_holding_regs(i, 46, &baudrate, 1);
+
+		// Wait for data (Burst Ready)
+		if (osWaitForEventBits(&events, LGC_EVENT_BURST_READY, TRUE, TRUE, 80) == TRUE)
+		{f
+
+			lgc_modbus_get_burst_data(raw_burst, &burst_len_rx);
+			lgc_parse_burst_data(raw_burst, burst_len_rx);
+		}
+		else
+		{
+			/* Burst failed - Mark sensors as failed to skip processing this slice */
+			data.sensor_status = 0x7FF; // All 11 sensors failed
+		}
+
+		sensor_read_time_diff_ms = osGetSystemTime() - last_sensor_read_ms;
+
+		osDelayTask(5);
 	}
 #endif
 
@@ -279,7 +300,7 @@ void lgc_main_task_entry(void *param)
 		case LGC_RUNNING:
 		{
 			/* Verify stop condition and transition to LGC_STOP */
-			if (osWaitForEventBits(&events, LGC_EVENT_STOP | LGC_FAILURE_DETECTED | LGC_EVENT_ENTER_CONFIG, FALSE, TRUE, 0) == TRUE)
+			if (osWaitForEventBits(&events, LGC_EVENT_STOP | LGC_FAILURE_DETECTED /* | LGC_EVENT_ENTER_CONFIG*/, FALSE, TRUE, 0) == TRUE)
 			{
 				// set cero
 				osAcquireMutex(&mutex);
@@ -320,7 +341,6 @@ void lgc_main_task_entry(void *param)
 				/* Note: Snapshot logic already increments the batch and signals observers */
 			}
 
-			/* Verify encoder flag - proceed if pulse received */
 			if (osWaitForSemaphore(&encoder_flag, 50) == TRUE)
 			{
 				last_sensor_read_ms = osGetSystemTime();
@@ -329,6 +349,7 @@ void lgc_main_task_entry(void *param)
 				// Reset burst accumulation before trigger
 				lgc_modbus_reset_burst();
 				// Trigger the sensors
+
 				lgc_trigger_chain();
 
 				// Wait for data (Burst Ready)
@@ -337,6 +358,12 @@ void lgc_main_task_entry(void *param)
 
 					lgc_modbus_get_burst_data(raw_burst, &burst_len_rx);
 					lgc_parse_burst_data(raw_burst, burst_len_rx);
+
+					/*verity if sensor test active for update*/
+					if (lgc_hmi_is_sensor_test_active())
+					{
+						lgc_hmi_set_sensor_value(data.sensor);
+					}
 				}
 				else
 				{
@@ -354,6 +381,12 @@ void lgc_main_task_entry(void *param)
 					measurement_event = lgc_process_measurement(&config);
 					// release measurements mutex
 					osReleaseMutex(&measurements.mutex);
+
+					if (measurements.is_measuring == 1)
+					{
+						lgc_update_live_status();
+					}
+
 					/* Handle measurement events
 					 * 0: No event (still measuring or idle)
 					 * 1: Leather measurement completed
@@ -362,12 +395,13 @@ void lgc_main_task_entry(void *param)
 					if (measurement_event == 1)
 					{
 						/* TODO: Signal leather completion (e.g., update UI, log event) */
-
+						lgc_update_live_status();
 						// set hmi flag
 						osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED);
 					}
 					else if (measurement_event == 2)
 					{
+						lgc_update_live_status();
 						/* Automatic batch full: trigger safe closure */
 						lgc_finalize_batch_snapshot();
 
@@ -397,35 +431,56 @@ void lgc_main_task_entry(void *param)
 
 void lgc_clear_measurement_last_leather(void)
 {
-	// acquire measurements mutex
+	/* DEPRECATED: calls the new index-based delete on the last piece.
+	 * Kept for backward compatibility. Prefer lgc_delete_leather_by_visual_index().
+	 * Uses lgc_report_get_current_active_count() to avoid allocating a 1.25 KB
+	 * LgcBatchSnapshot_t on the stack. */
+	uint16_t active = lgc_report_get_current_active_count();
+	if (active > 0)
+	{
+		lgc_delete_leather_by_visual_index(active); /* last visual index */
+	}
+}
+
+/**
+ * @brief Delete a leather piece from the current batch by visual (display) index.
+ *
+ * Soft-deletes the slot in the Report Manager snapshot and keeps the internal
+ * measurements accumulators consistent so the batch closure condition remains
+ * correct: measurements.current_leather_index == s_current_batch.active_count.
+ *
+ * @param visual_index  1-based index as shown on the DWIN display.
+ */
+void lgc_delete_leather_by_visual_index(uint16_t visual_index)
+{
+	float deleted_area = 0.0f;
+
+	/* Step 1-4: soft-delete in snapshot and get the area */
+	if (lgc_report_delete_current_slot(visual_index, &deleted_area) != NO_ERROR)
+	{
+		return; /* index not found, nothing to do */
+	}
+
+	/* Step 5: keep internal measurements consistent */
 	osAcquireMutex(&measurements.mutex);
-	/* Clear last leather measurement within the CURRENT batch buffer */
+
+	measurements.batch_measurement[measurements.current_batch_index] -= deleted_area;
+	if (measurements.batch_measurement[measurements.current_batch_index] < 0.0f)
+	{
+		measurements.batch_measurement[measurements.current_batch_index] = 0.0f;
+	}
+
 	if (measurements.current_leather_index > 0)
 	{
-		// current leather area (reset since we are "undoing")
-		measurements.current_leather_area = 0.0f;
-
-		// Get the area of the last piece to subtract it from the batch total
-		float last_piece_area = measurements.leather_measurement[measurements.current_leather_index - 1];
-
-		// subtract from current batch total
-		measurements.batch_measurement[measurements.current_batch_index] -= last_piece_area;
-		if (measurements.batch_measurement[measurements.current_batch_index] < 0.0f)
-		{
-			measurements.batch_measurement[measurements.current_batch_index] = 0.0f;
-		}
-
-		// clear the piece entry in the buffer
-		measurements.leather_measurement[measurements.current_leather_index - 1] = 0.0f;
 		measurements.current_leather_index--;
 	}
-	// total leathers measured
+
+	measurements.current_leather_area = 0.0f;
 	measurements.total_leathers_measured = measurements.current_leather_index;
 
-	// release measurements mutex
 	osReleaseMutex(&measurements.mutex);
 
-	/* SYNC: Notify HMI of the manual modification */
+	/* Step 6: notify HMI */
 	lgc_update_live_status();
 }
 
@@ -451,15 +506,13 @@ void lgc_increment_batch_index(void)
 static void lgc_encoder_callback(void)
 {
 
-
 	pulse_count += 1;
-	if(pulse_count > LGC_LEATHER_MAX_PULSE_FLAG)
+	if (pulse_count > LGC_LEATHER_MAX_PULSE_FLAG)
 	{
 		pulse_count = 0;
 		// set flag
 		osReleaseSemaphore(&encoder_flag);
 	}
-
 }
 
 static uint8_t lgc_get_state(void)
@@ -538,8 +591,10 @@ static uint16_t lgc_count_active_bits(void)
  * @param active_bits Number of detected photoreceptors in this step
  * @return float Area in mm² (or configured units)
  */
+
 static float lgc_calculate_slice_area(uint16_t active_bits)
 {
+
 	/* Area = width (active_bits * pixel_width) * length (encoder_step) */
 	float width = active_bits * LGC_PIXEL_WIDTH_MM;
 	float area = width * LGC_ENCODER_STEP_MM * LGC_LEATHER_MAX_PULSE_FLAG;
@@ -559,6 +614,8 @@ static float lgc_calculate_slice_area(uint16_t active_bits)
  *         - 1: Leather measurement completed (end of leather)
  *         - 2: Batch measurement completed (batch full)
  */
+#include <math.h>
+
 static uint8_t lgc_process_measurement(LGC_CONF_TypeDef_t *config)
 {
 	uint16_t active_bits;
@@ -571,6 +628,11 @@ static uint8_t lgc_process_measurement(LGC_CONF_TypeDef_t *config)
 	active_bits = lgc_count_active_bits();
 	slice_area = lgc_calculate_slice_area(active_bits); // mm2
 	slice_area = slice_area / 1000000.0f;				// Convert mm² to m²
+	/*The calibration was made using 30x30cm2 reference, so its necessary to
+	 * always start with the corresponding conversion factor from f2 to 30x30cm2 scale*/
+	slice_area = slice_area * 11.11111f; // convert to f2 scale 30x30
+
+#if 0
 	/* Unit conversion if required */
 	if (config->units == 0) // ft2
 	{
@@ -578,20 +640,23 @@ static uint8_t lgc_process_measurement(LGC_CONF_TypeDef_t *config)
 		{
 		case 0:
 			/* code */
-			area_conversion = 10.7639f; // m2 to ft2
+			area_conversion = 12.755102; // m2 to ft2 (28x28)
 			break;
 		case 1:
-			area_conversion = 30.48f; // m2 to ft2
+			area_conversion = 11.111111f; // m2 to ft2 (30x30)
 			break;
 		case 2:
-			area_conversion = 30.0f; // m2 to ft2
+			area_conversion = 10.7639f; // m2 to ft2 (30.48x30.48)
 			break;
 		default:
-			area_conversion = 28.0f; // m2 to ft2
+			area_conversion = 10.7639f; // m2 to ft2
 			break;
 		}
 		slice_area = slice_area * area_conversion;
+
+
 	}
+#endif
 	/* ============================================================================
 	 * STEP 2: LEATHER DETECTION STATE MACHINE
 	 * ============================================================================ */
@@ -636,13 +701,78 @@ static uint8_t lgc_process_measurement(LGC_CONF_TypeDef_t *config)
 				measurements.no_detection_count = 0;
 				event_status = 1; /* Leather measurement completed */
 
+				/*DELETE NOISE IN FT2 MEASURES */
+#if 1
+				if (measurements.current_leather_area < 0.10f && config->units == 0)
+				{
+					measurements.current_leather_area = 0.0f;
+					return 0;
+				}
+
+				/*APPLY FACTOR CONVERSION TO DATA*/
+
+				float x = measurements.current_leather_area;
+				if (data.speed_motor)
+				{ // high
+					measurements.current_leather_area =
+						((0.004803324f * x - 0.082321956f) * x + 1.69341995f) * x - 0.2115029f;
+				}
+				else
+				{ // low
+					measurements.current_leather_area =
+						((0.00168635f * x - 0.0397947f) * x + 1.22991f) * x - 0.239696f;
+				}
+				/*DELETE NOISE OF THE POLINOMIAL CONVERSION*/
+				if (measurements.current_leather_area < 0.50f && config->units == 0)
+				{
+					measurements.current_leather_area = 0.0f;
+					return 0;
+				}
+				/* Unit conversion if required */
+				if (config->units == 0) // ft2
+				{
+					switch (config->conversion)
+					{
+					case 0:
+						/* code */
+						area_conversion = 1.14795f; // m2 to ft2 (28x28)
+						break;
+					case 1:
+						area_conversion = 1.0f; // m2 to ft2 (30x30)
+						break;
+					case 2:
+						area_conversion = 0.968750f; // m2 to ft2 (30.48x30.48)
+						break;
+					default:
+						area_conversion = 0.968750f; // m2 to ft2
+						break;
+					}
+					measurements.current_leather_area =
+						measurements.current_leather_area * area_conversion;
+
+					/*ROUND LEATHER AREA TO MATCH MATCH REAL MEASURES*/
+					float base = floorf(measurements.current_leather_area / 0.25f) * 0.25f;
+					float diff = measurements.current_leather_area - base;
+					if (diff > 0.15f)
+					{
+						base += 0.25f;
+					}
+					measurements.current_leather_area = base;
+				}
+				else // m2
+				{
+					measurements.current_leather_area =
+						measurements.current_leather_area / 11.11111f;
+				}
+#endif
+
 				/* ==================================================
 				 * SECTION A: SAVE INDIVIDUAL LEATHER MEASUREMENT
 				 * ================================================== */
 				if (measurements.current_leather_index < LGC_LEATHER_COUNT_MAX)
 				{
 					measurements.leather_measurement[measurements.current_leather_index] =
-							measurements.current_leather_area;
+						measurements.current_leather_area;
 				}
 
 				/* ==================================================
@@ -651,13 +781,25 @@ static uint8_t lgc_process_measurement(LGC_CONF_TypeDef_t *config)
 				if (measurements.current_batch_index < LGC_LEATHER_BATCH_COUNT_MAX)
 				{
 					measurements.batch_measurement[measurements.current_batch_index] +=
-							measurements.current_leather_area;
+						measurements.current_leather_area;
 				}
 
 				/* ==================================================
 				 * SECTION C: INCREMENT LEATHER INDEX
 				 * ================================================== */
 				measurements.current_leather_index++;
+
+				/* ==================================================
+				 * SECTION C2: SYNC WITH BATCH SNAPSHOT (NEW)
+				 * Append a new slot to the Report Manager's current
+				 * batch so the HMI and printer can access per-piece data.
+				 * ================================================== */
+				{
+					LgcBatchSlot_t new_slot;
+					new_slot.area = measurements.current_leather_area;
+					new_slot.deleted = false;
+					lgc_report_append_current_slot(&new_slot);
+				}
 
 				/* ==================================================
 				 * SECTION D: BATCH MANAGEMENT AND TRANSITIONS
@@ -831,7 +973,21 @@ static void lgc_update_live_status(void)
 	osAcquireMutex(&measurements.mutex);
 	status.batch_count = measurements.current_batch_index;
 	status.leather_count = measurements.current_leather_index;
-	status.current_leather_area = measurements.current_leather_area;
+	/* Save the previous leather area measurement so its not show 0 every time
+	 * the leather pass trough the sensors*/
+#if 1
+	if (measurements.current_leather_index > 0)
+	{
+		status.current_leather_area = measurements.leather_measurement[measurements.current_leather_index - 1];
+	}
+	else
+	{
+		status.current_leather_area = 0;
+	}
+
+#endif
+	/*Undo the comment of the next line if the previous doesn't work*/
+	// status.current_leather_area = measurements.current_leather_area;
 	status.accumulated_batch_area = measurements.batch_measurement[measurements.current_batch_index];
 	status.is_measuring = measurements.is_measuring;
 	osReleaseMutex(&measurements.mutex);
@@ -848,13 +1004,14 @@ static void lgc_update_live_status(void)
 
 /**
  * @brief Parse the raw 33-byte burst data from Daisy Chain mode
- * 
+ *
  * Format per sensor (3 bytes): [ID] [DATA_H] [DATA_L]
  * Total length: 11 sensors * 3 bytes = 33 bytes
  */
 static error_t lgc_parse_burst_data(uint8_t *buffer, uint16_t len)
 {
-	if (len < 33 || buffer == NULL) return ERROR_INVALID_PARAMETER;
+	if (len < 33 || buffer == NULL)
+		return ERROR_INVALID_PARAMETER;
 
 	osAcquireMutex(&mutex);
 
@@ -893,7 +1050,10 @@ static void lgc_trigger_chain(void)
 
 	/* Small delay for the pulse width (~500us) */
 	/* Using a simple NOP loop */
-	for(volatile uint32_t i = 0; i < 5000; i++);
+	for (volatile uint32_t i = 0; i < 6000; i++)
+		;
 
 	HAL_GPIO_WritePin(MASTER_TRIGGER_GPIO_Port, MASTER_TRIGGER_Pin, GPIO_PIN_RESET);
+	// for(volatile uint32_t i = 0; i < 1000; i++);
+	//__HAL_UART_FLUSH_DRREGISTER(&huart3);
 }

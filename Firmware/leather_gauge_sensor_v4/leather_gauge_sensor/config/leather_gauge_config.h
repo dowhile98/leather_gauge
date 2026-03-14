@@ -6,7 +6,7 @@
 
 // TODO: Add configuration macros and constants here
 
-#define LG_MODBUS_SERVER_DEFAULT_ADDR 1
+#define LG_MODBUS_SERVER_DEFAULT_ADDR 11
 
 #define LB_FILTER_FC_DEFAULT 10.0f
 

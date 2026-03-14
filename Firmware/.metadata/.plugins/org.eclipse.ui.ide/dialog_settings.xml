@@ -9,6 +9,8 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/Display_P10_Apli"/>
+			<item value="/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_controller_v4"/>
 			<item value="/home/tecna-smart-lab/Descargas/OTA/smt32f407"/>
 		</list>
 		<section name="SmartImportWizard.dialogBounds">

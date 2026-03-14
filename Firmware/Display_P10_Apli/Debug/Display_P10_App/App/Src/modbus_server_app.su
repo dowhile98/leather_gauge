@@ -1,0 +1,12 @@
+../Display_P10_App/App/Src/modbus_server_app.cpp:209:13:void modbus_server_data_update()	0	static
+../Display_P10_App/App/Src/modbus_server_app.cpp:234:12:nmbs_error handler_read_holding_registers(uint16_t, uint16_t, uint16_t*, uint8_t, void*)	16	static
+../Display_P10_App/App/Src/modbus_server_app.cpp:178:9:int32_t modbus_rtu_read(uint8_t*, uint16_t, int32_t, void*)	32	static
+../Display_P10_App/App/Src/modbus_server_app.cpp:193:9:int32_t modbus_rtu_write(const uint8_t*, uint16_t, int32_t, void*)	16	static
+../Display_P10_App/App/Src/modbus_server_app.cpp:143:6:void HAL_UART_ErrorCallback(UART_HandleTypeDef*)	8	static
+../Display_P10_App/App/Src/modbus_server_app.cpp:147:6:void HAL_UART_RxCpltCallback(UART_HandleTypeDef*)	24	static,ignoring_inline_asm
+../Display_P10_App/App/Src/modbus_server_app.cpp:163:6:void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef*, uint16_t)	24	static,ignoring_inline_asm
+../Display_P10_App/App/Src/modbus_server_app.cpp:361:6:void USART1_UART_Init(uint32_t)	8	static
+../Display_P10_App/App/Src/modbus_server_app.cpp:79:6:void modbusServerRTU_Task(const void*)	88	static,ignoring_inline_asm
+../Display_P10_App/App/Src/modbus_server_app.cpp:281:12:nmbs_error modbus_rtu_write_data(uint16_t, uint16_t)	16	static,ignoring_inline_asm
+../Display_P10_App/App/Src/modbus_server_app.cpp:256:12:nmbs_error handle_write_multiple_registers(uint16_t, uint16_t, const uint16_t*, uint8_t, void*)	24	static
+../Display_P10_App/App/Src/modbus_server_app.cpp:252:12:nmbs_error handle_write_single_register(uint16_t, uint16_t, uint8_t, void*)	24	static

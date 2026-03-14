@@ -73,7 +73,13 @@ error_t lgc_system_init(void *memory)
 	{
 		return ret;
 	}
-	
+	/*todo: verify*/
+	ret = lgc_p10_init();
+
+	if (ret != NO_ERROR)
+	{
+		return ret;
+	}
 	// main task init
 	params.priority = LGC_MAIN_TASK_PRI;
 	params.stackSize = LGC_MAIN_TASK_STACK;

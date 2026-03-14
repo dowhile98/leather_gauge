@@ -1,0 +1,31 @@
+../Display_P10_App/Components/dmd/Bitmap.cpp:17:1:Bitmap::Bitmap(int, int)	3
+../Display_P10_App/Components/dmd/Bitmap.cpp:27:1:Bitmap::~Bitmap()	2
+../Display_P10_App/Components/dmd/Bitmap.cpp:33:6:void Bitmap::clearScreen()	1
+../Display_P10_App/Components/dmd/Bitmap.cpp:39:6:void Bitmap::fillScreen()	1
+../Display_P10_App/Components/dmd/Bitmap.cpp:45:6:bool Bitmap::getPixel(int, int) const	3
+../Display_P10_App/Components/dmd/Bitmap.cpp:57:6:void Bitmap::setPixel(int, int, uint8_t)	4
+../Display_P10_App/Components/dmd/Bitmap.cpp:69:6:void Bitmap::drawLine(int, int, int, int, uint8_t)	10
+../Display_P10_App/Components/dmd/Bitmap.cpp:215:6:void Bitmap::drawBitmap(int, int, const Bitmap&, uint8_t)	7
+../Display_P10_App/Components/dmd/Bitmap.cpp:242:6:void Bitmap::drawBitmap(int, int, const void*, uint8_t)	7
+../Display_P10_App/Components/dmd/Bitmap.cpp:270:6:void Bitmap::drawInvertedBitmap(int, int, const Bitmap&)	1
+../Display_P10_App/Components/dmd/Bitmap.cpp:275:6:void Bitmap::drawInvertedBitmap(int, int, const void*)	1
+../Display_P10_App/Components/dmd/Bitmap.cpp:280:6:void Bitmap::setFont(const uint8_t*)	1
+../Display_P10_App/Components/dmd/Bitmap.cpp:400:5:int Bitmap::getCharWidth(char) const	6
+../Display_P10_App/Components/dmd/Bitmap.cpp:417:5:int Bitmap::getTextWidth(const char*, int) const	4
+../Display_P10_App/Components/dmd/Bitmap.cpp:431:5:int Bitmap::getTextWidth(const std::string&, int, int) const	4
+../Display_P10_App/Components/dmd/Bitmap.cpp:445:5:int Bitmap::getTextHeight() const	2
+../Display_P10_App/Components/dmd/Bitmap.cpp:475:6:void Bitmap::fill(int, int, int, int, uint8_t)	5
+../Display_P10_App/Components/dmd/Bitmap.cpp:139:6:void Bitmap::drawRect(int, int, int, int, uint8_t, uint8_t)	10
+../Display_P10_App/Components/dmd/Bitmap.cpp:172:6:void Bitmap::drawFilledRect(int, int, int, int, uint8_t)	1
+../Display_P10_App/Components/dmd/Bitmap.cpp:332:5:int Bitmap::drawChar(int, int, char)	20
+../Display_P10_App/Components/dmd/Bitmap.cpp:292:6:void Bitmap::drawString(int, int, const char*, int)	5
+../Display_P10_App/Components/dmd/Bitmap.cpp:311:6:void Bitmap::drawString(int, int, const std::string&, int, int)	6
+../Display_P10_App/Components/dmd/Bitmap.cpp:486:6:void Bitmap::fill(int, int, int, int, const void*, uint8_t)	10
+../Display_P10_App/Components/dmd/Bitmap.cpp:599:6:void Bitmap::invert(int, int, int, int)	5
+../Display_P10_App/Components/dmd/Bitmap.cpp:610:6:void Bitmap::blit(int, int, int, int, int, int)	12
+../Display_P10_App/Components/dmd/Bitmap.cpp:453:6:void Bitmap::copy(int, int, int, int, Bitmap*, int, int)	6
+../Display_P10_App/Components/dmd/Bitmap.cpp:532:6:void Bitmap::scroll(int, int, int, int, int, int, uint8_t)	17
+../Display_P10_App/Components/dmd/Bitmap.cpp:527:6:void Bitmap::scroll(int, int, uint8_t)	1
+../Display_P10_App/Components/dmd/Bitmap.cpp:634:6:void Bitmap::drawCirclePoints(int, int, int, int, int, uint8_t, uint8_t)	8
+../Display_P10_App/Components/dmd/Bitmap.cpp:177:6:void Bitmap::drawCircle(int, int, int, uint8_t, uint8_t)	4
+../Display_P10_App/Components/dmd/Bitmap.cpp:210:6:void Bitmap::drawFilledCircle(int, int, int, uint8_t)	1

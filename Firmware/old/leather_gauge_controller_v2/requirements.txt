@@ -1,4 +1,0 @@
-# Python dependencies for Leather Gauge Sensor testing scripts
-# Install with: pip install -r requirements.txt
-
-pyserial>=3.5

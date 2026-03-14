@@ -76,6 +76,19 @@ typedef struct
 	OsMutex mutex;
 	// page
 	uint8_t current_page;
+	/**
+	 * @brief Selector de vista para las páginas de lista de cueros (12-17).
+	 *   0 = lote en curso (current)  ← valor por defecto
+	 *   1 = último lote cerrado (last)
+	 * Se modifica desde el HMI mediante LGC_HMI_VP_BATCH_VIEW_SELECT.
+	 */
+	uint8_t batch_view_index;
+	/**
+	 * @brief Índice visual (1-150) seleccionado para borrado en dos pasos.
+	 *   0  = ningún índice seleccionado (estado inicial / tras confirmar).
+	 *   >0 = índice pendiente de confirmación; se ejecuta cuando llega 0.
+	 */
+	uint8_t pending_delete_index;
 } lgc_hmi_data_t;
 
 //-------------------------------------------------------------------------------
@@ -112,6 +125,10 @@ void lgc_dwin_uart_TxCpltCallback(UART_HandleTypeDef *huart);
 static void on_dwin_event(dwin_evt_t *evt, void *ctx);
 error_t lgc_hmi_send_msg(dwin_evt_t *evt);
 static void hmi_set_current_page(uint8_t page);
+
+uint8_t lgc_hmi_is_sensor_test_active(void);
+
+void lgc_hmi_set_sensor_value(uint16_t *value);
 //-------------------------------------------------------------------------------
 // task definition
 //-------------------------------------------------------------------------------
@@ -119,23 +136,25 @@ void lgc_hmi_update_task_entry(void *param)
 {
 	/*local variables*/
 	LgcLiveStatus_t live_status;
-    LgcBatchReport_t *snapshot;
+	static LgcBatchSnapshot_t s_page_snap; /* static: avoids ~1.25 KB on the task stack */
 	RTC_DateTime_t datetime;
 	LGC_CONF_TypeDef_t conf = {0};
+#if 0
 	uint16_t value = 0;
+#endif
 	uint16_t vp_addr = 0;
 
 	osDelayTask(2000); // wait for system to stabilize
 
 	// set initial page
 	hmi_set_current_page(HMI_PAGE1);
-	//set hmi 1
+	// set hmi 1
 	dwin_page_jump(&dwin_hmi, HMI_PAGE1);
 
 	for (;;)
 	{
 		// wait for update event
-		osWaitForEventBits(&events, LGC_HMI_UPDATE_REQUIRED | LGC_HMI_SENSOR_TEST_UPDATE, FALSE, TRUE, 1000);
+		osWaitForEventBits(&events, LGC_HMI_UPDATE_REQUIRED | LGC_HMI_SENSOR_TEST_UPDATE, FALSE, TRUE, 300);
 		// state machine
 		switch (hmi_data.current_page)
 		{
@@ -157,20 +176,20 @@ void lgc_hmi_update_task_entry(void *param)
 			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_YEAR, datetime.year);
 			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_MONTH, datetime.month);
 			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_DAY, datetime.day);
-			
+
 			//  batch count
 			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_BATCH_COUNT, live_status.batch_count);
 			// leather count
 			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_LEATHER_COUNT, live_status.leather_count);
 			//->current leather area
-			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CURRENT_LEATHER_AREA, (uint16_t)(live_status.current_leather_area * 100)); 
+			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CURRENT_LEATHER_AREA, (uint16_t)(live_status.current_leather_area * 100));
 			//->motor feedback
 			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_FEEDBACK_MOTOR, live_status.motor_feedback);
 			// ->total area count
-			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_ACUMULATED_LEATHER_AREA, (uint16_t)(live_status.accumulated_batch_area * 100)); 
+			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_ACUMULATED_LEATHER_AREA, (uint16_t)(live_status.accumulated_batch_area * 100));
 
 			/*Current configuration*/
-			//set units
+			// set units
 			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_UNITS, conf.units);
 			//->client name
 			dwin_write_text(&dwin_hmi, LGC_HMI_VP_CONFIG_TEXT_NAME_CLIENT, conf.client_name);
@@ -187,6 +206,8 @@ void lgc_hmi_update_task_entry(void *param)
 		case HMI_PAGE3:
 		case HMI_PAGE4:
 		{
+#if 0
+			lgc_interface_modbus_set_mode(LGC_BUS_MODE_MODBUS);
 			// sensor test update
 			if (lgc_modbus_read_holding_regs(hmi_data.sensor_test_id % 12, 45, &value, 1) == NO_ERROR)
 			{
@@ -202,6 +223,8 @@ void lgc_hmi_update_task_entry(void *param)
 				// set another sensor test update
 				osSetEventBits(&events, LGC_HMI_SENSOR_TEST_UPDATE);
 			}
+#endif
+			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_TEST_BIT_SENSOR, hmi_data.sensor_test_value);
 			break;
 		}
 		case HMI_PAGE12:
@@ -212,23 +235,68 @@ void lgc_hmi_update_task_entry(void *param)
 		case HMI_PAGE17:
 		{
 			vp_addr = LGC_HMI_VP_LIST_ADDRESS_LEATHER_BASE + (hmi_data.current_page - HMI_PAGE12) * 50;
-			// batch report pages
-// ... [rest of the file remains same, replacing magic numbers where found]
-			// get static snapshot instead of live measurements
-			snapshot = lgc_report_get_last_snapshot();
-            
-            if (snapshot->is_valid)
-            {
-                // send data
-                for (uint8_t i = 0; i < 50; i++)
-                {
-                    uint16_t piece_idx = i + (hmi_data.current_page - HMI_PAGE12) * 50;
-                    if (piece_idx < LGC_LEATHER_COUNT_MAX)
-                    {
-                        dwin_write_vp_u16(&dwin_hmi, vp_addr + i, (uint16_t)(snapshot->pieces_area[piece_idx] * 100));
-                    }
-                }
-            }
+
+			/* Fetch the snapshot selected by batch_view_index:
+			 *   0 = current batch (default)
+			 *   1 = last closed batch */
+			if (hmi_data.batch_view_index == 1)
+			{
+				lgc_report_get_last_batch(&s_page_snap);
+			}
+			else
+			{
+				lgc_report_get_current_batch(&s_page_snap);
+			}
+
+			if (s_page_snap.is_valid)
+			{
+				/* Each page shows up to 50 visual pieces starting at page_offset */
+				uint16_t page_offset = (uint16_t)(hmi_data.current_page - HMI_PAGE12) * 50U;
+				uint16_t visual = 0U; /* 0-based running count of non-deleted pieces */
+
+				/* Cap to array bound — total_slots must never exceed LGC_LEATHER_COUNT_MAX */
+				uint16_t limit = s_page_snap.total_slots;
+				if (limit > LGC_LEATHER_COUNT_MAX)
+				{
+					limit = LGC_LEATHER_COUNT_MAX;
+				}
+
+				for (uint16_t j = 0; j < limit; j++)
+				{
+					if (s_page_snap.slots[j].deleted)
+					{
+						continue;
+					}
+
+					if (visual >= page_offset && visual < page_offset + 50U)
+					{
+						dwin_write_vp_u16(&dwin_hmi,
+										  vp_addr + (visual - page_offset),
+										  (uint16_t)(s_page_snap.slots[j].area * 100.0f));
+					}
+
+					visual++;
+					if (visual >= page_offset + 50U)
+					{
+						break;
+					} /* page filled */
+				}
+
+				/* Clear remaining VP slots that have no data on this page */
+				uint16_t filled = (visual > page_offset) ? (visual - page_offset) : 0U;
+				for (uint16_t k = filled; k < 50U; k++)
+				{
+					dwin_write_vp_u16(&dwin_hmi, vp_addr + k, 0);
+				}
+			}
+			else
+			{
+				/* No valid batch yet — clear all slots */
+				for (uint8_t i = 0; i < 50U; i++)
+				{
+					dwin_write_vp_u16(&dwin_hmi, vp_addr + i, 0);
+				}
+			}
 
 			break;
 		}
@@ -264,11 +332,11 @@ void lgc_hmi_task_entry(void *param)
 			/*set current page*/
 			hmi_set_current_page((uint8_t)value);
 
-            /* Signal config mode if entering config/test pages */
-            if (value == HMI_PAGE3 || value == HMI_PAGE4 || value == HMI_PAGE6)
-            {
-                osSetEventBits(&events, LGC_EVENT_ENTER_CONFIG);
-            }
+			/* Signal config mode if entering config/test pages */
+			if (value == HMI_PAGE3 || value == HMI_PAGE4 || value == HMI_PAGE6)
+			{
+				osSetEventBits(&events, LGC_EVENT_ENTER_CONFIG);
+			}
 
 			// verify page
 			if (value == HMI_PAGE20 || value == HMI_PAGE6)
@@ -295,27 +363,8 @@ void lgc_hmi_task_entry(void *param)
 				}
 				else
 				{
-					// update ft2 conversion
-					switch (conf.conversion)
-					{
-					case 0:
-						dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_PATTERN_ICON_3048, 1);
-						dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_PATTERN_ICON_3000, 0);
-						dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_PATTERN_ICON_2800, 0);
-						break;
-					case 1:
-						dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_PATTERN_ICON_3048, 0);
-						dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_PATTERN_ICON_3000, 1);
-						dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_PATTERN_ICON_2800, 0);
-						break;
-					case 2:
-						dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_PATTERN_ICON_3048, 0);
-						dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_PATTERN_ICON_3000, 0);
-						dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_PATTERN_ICON_2800, 1);
-						break;
-					default:
-						break;
-					}
+					// ft2 convertion method
+					dwin_write_vp_u16(&dwin_hmi, 0x121A, conf.conversion);
 				}
 			}
 
@@ -325,6 +374,7 @@ void lgc_hmi_task_entry(void *param)
 				hmi_data.sensor_test_id = 1; // initial sensor test value
 				hmi_data.sensor_test_active = true;
 				osReleaseMutex(&hmi_data.mutex);
+#if 0 /*not necessary to read sensor value at this point, will be read when entering sensor test page, and also when updating slider*/
 				//read
 				lgc_modbus_read_holding_regs(hmi_data.sensor_test_id, 12, &value, 1);
 				// set initial sensor test value
@@ -332,20 +382,22 @@ void lgc_hmi_task_entry(void *param)
 				// update HMI values
 				dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_TEST_SLIDER_THRESHOLD_SENSOR, value);
 				dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_TEST_NUMBER_THRESHOLD_SENSOR, value);
+#endif
+				osSetEventBits(&events, LGC_HMI_SENSOR_TEST_UPDATE);
 			}
 
 			else if (value == HMI_PAGE10)
 			{
-				//get current date
+				// get current date
 				lgc_module_rtc_get(&datetime);
 
 				dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_HOUR, datetime.hours);
 				dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_MINUTE, datetime.minutes);
 				dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_SECOND, datetime.seconds);
 			}
-			else if(value == HMI_PAGE7)
+			else if (value == HMI_PAGE7)
 			{
-				//get current date
+				// get current date
 				lgc_module_rtc_get(&datetime);
 
 				dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_DAY, datetime.day);
@@ -355,21 +407,67 @@ void lgc_hmi_task_entry(void *param)
 
 			break;
 		}
-		// clear one leather area
+		/* Borrado en dos pasos:
+		 *   PASO 1 — El display envía un valor de 1 a 150: se almacena como índice
+		 *            seleccionado en hmi_data.pending_delete_index. No se borra nada.
+		 *   PASO 2 — El display envía 0: se ejecuta el borrado sobre el índice
+		 *            guardado en el paso anterior y se limpia pending_delete_index.
+		 *            Si no había índice pendiente (== 0) no se hace nada. */
 		case LGC_HMI_VP_LIST_DELETE:
 		{
-			// clear index
-			lgc_clear_measurement_last_leather();
-			// set hmi update
-			osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED);
+			uint16_t val = (uint16_t)((msg.data[0] << 8) | msg.data[1]);
+
+			if (val >= 1U && val <= LGC_LEATHER_COUNT_MAX)
+			{
+				/* PASO 1: guardar selección */
+				osAcquireMutex(&hmi_data.mutex);
+				hmi_data.pending_delete_index = (uint8_t)val;
+				osReleaseMutex(&hmi_data.mutex);
+				/* Opcional: refrescar pantalla para destacar el ítem seleccionado */
+				osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED);
+			}
+			else if (val == 0U)
+			{
+				/* PASO 2: confirmar y ejecutar borrado */
+				osAcquireMutex(&hmi_data.mutex);
+				uint8_t idx = hmi_data.pending_delete_index;
+				hmi_data.pending_delete_index = 0U;
+				osReleaseMutex(&hmi_data.mutex);
+
+				if (idx > 0U)
+				{
+					lgc_delete_leather_by_visual_index((uint16_t)idx);
+					osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED);
+				}
+			}
+			break;
 		}
-		// print report
+		// Selector de vista de la lista: 0 = current, 1 = last
+		case LGC_HMI_VP_BATCH_VIEW_SELECT:
+		{
+			uint16_t sel = (uint16_t)((msg.data[0] << 8) | msg.data[1]);
+			osAcquireMutex(&hmi_data.mutex);
+			hmi_data.batch_view_index = (sel != 0) ? 1U : 0U;
+			osReleaseMutex(&hmi_data.mutex);
+			// refrescar la página de lista inmediatamente
+			osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED);
+			break;
+		}
+		/* Imprimir reporte según la vista de lote activa:
+		 *   batch_view_index == 0  → imprimir lote en curso (sin cerrarlo)
+		 *   batch_view_index == 1  → cerrar lote e imprimir el último cerrado */
 		case LGC_HMI_VP_PRINT:
 		{
-			/* Request batch closure from Main Task (safe atomic operation) */
-            osSetEventBits(&events, LGC_EVENT_CLOSE_BATCH_REQ);
-            
-			// set hmi update
+			if (hmi_data.batch_view_index == 1U)
+			{
+				/* Cerrar el lote actual y publicar el snapshot → Report Task imprime last */
+				osSetEventBits(&events, LGC_EVENT_CLOSE_BATCH_REQ);
+			}
+			else
+			{
+				/* Imprimir el lote en curso sin cerrarlo */
+				osSetEventBits(&events, LGC_EVENT_PRINT_BATCH);
+			}
 			osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED);
 			break;
 		}
@@ -383,6 +481,7 @@ void lgc_hmi_task_entry(void *param)
 			hmi_data.sensor_test_id = value;
 			hmi_data.sensor_test_active = true;
 			osReleaseMutex(&hmi_data.mutex);
+#if 0
 			// update sensor threadhold
 			lgc_modbus_read_holding_regs(hmi_data.sensor_test_id % 12, 12, &value, 1);
 
@@ -390,6 +489,7 @@ void lgc_hmi_task_entry(void *param)
 			// update HMI values
 			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_TEST_SLIDER_THRESHOLD_SENSOR, value);
 			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_TEST_NUMBER_THRESHOLD_SENSOR, value);
+#endif
 			// set update event
 			osSetEventBits(&events, LGC_HMI_SENSOR_TEST_UPDATE);
 			break;
@@ -397,8 +497,10 @@ void lgc_hmi_task_entry(void *param)
 		// save data
 		case LGC_HMI_VP_CONFIG_SAVE_CMD:
 		{
+
 			if (hmi_data.sensor_test_active)
 			{
+#if 0
 				/*get value: only test sensor comunication*/
 				if (lgc_modbus_read_holding_regs(hmi_data.sensor_test_id % 12, 12, &value, 1) != NO_ERROR)
 				{
@@ -409,6 +511,7 @@ void lgc_hmi_task_entry(void *param)
 					value = 1;
 				}
 				/*store value*/
+#endif
 			}
 			else if (hmi_data.current_page == HMI_PAGE7)
 			{
@@ -465,13 +568,26 @@ void lgc_hmi_task_entry(void *param)
 				// save ok
 				value = 1;
 			}
+			else if (hmi_data.current_page == HMI_PAGE20)
+			{
+				// get current value
+				dwin_read_u16(&dwin_hmi, 0x121A, &value, 1000);
+
+				lgc_module_conf_get(&conf);
+
+				conf.conversion = value % 3;
+
+				lgc_module_conf_set(&conf);
+			}
 			// another save data
 			else
 			{
 				lgc_module_conf_set(&conf);
 				value = 1;
 			}
-			// update result
+			// lgc_module_conf_get(&conf);
+			// lgc_module_conf_set(&conf);
+			// value = 1; // Resultado OK
 			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_SAVE_RESULT, value);
 			osDelayTask(1000);
 			dwin_write_vp_u16(&dwin_hmi, LGC_HMI_VP_CONFIG_SAVE_RESULT, 0);
@@ -480,9 +596,21 @@ void lgc_hmi_task_entry(void *param)
 		case LGC_HMI_VP_CONFIG_UNITS:
 		{
 			value = (msg.data[0] << 8) | msg.data[1];
+
+			// load actual configuration
+			lgc_module_conf_get(&conf);
+
+			// update just the units
 			conf.units = (uint8_t)value;
+
+			// Save
+			lgc_module_conf_set(&conf);
+
+			// Update HMI screen
+			osSetEventBits(&events, LGC_HMI_UPDATE_REQUIRED);
 			break;
 		}
+#if 0
 		case LGC_HMI_VP_TEST_SLIDER_THRESHOLD_SENSOR:
 		{
 
@@ -496,13 +624,14 @@ void lgc_hmi_task_entry(void *param)
 			osSetEventBits(&events, LGC_HMI_SENSOR_TEST_UPDATE);
 			break;
 		}
+#endif
 		case 0x130F: // client id name return keyboard
 		{
 			memset(text, 0, sizeof(text));
 			// get text value
 			dwin_read_text(&dwin_hmi, 0x1310, text, 10, 1000);
 			len = strlen((const char *)text);
-			for(size_t i = len ; i <11; i++)
+			for (size_t i = len; i < 11; i++)
 			{
 				text[i] = ' ';
 			}
@@ -519,7 +648,7 @@ void lgc_hmi_task_entry(void *param)
 			// get text value
 			dwin_read_text(&dwin_hmi, 0x1320, text, 10, 1000);
 			len = strlen((const char *)text);
-			for(size_t i = len ; i <11; i++)
+			for (size_t i = len; i < 11; i++)
 			{
 				text[i] = ' ';
 			}
@@ -536,7 +665,7 @@ void lgc_hmi_task_entry(void *param)
 			// get text value
 			dwin_read_text(&dwin_hmi, 0x1330, text, 20, 1000);
 			len = strlen((const char *)text);
-			for(size_t i = len ; i <11; i++)
+			for (size_t i = len; i < 11; i++)
 			{
 				text[i] = ' ';
 			}
@@ -569,7 +698,7 @@ void lgc_hmi_task_entry(void *param)
 			lgc_module_conf_set(&conf);
 			break;
 		}
-
+#if 0
 		case 0x121A:
 		{
 			// update config
@@ -595,7 +724,7 @@ void lgc_hmi_task_entry(void *param)
 			dwin_write_vp_u16(&dwin_hmi, 0x123A, 1);
 			break;
 		}
-
+#endif
 		default:
 			break;
 		}
@@ -823,6 +952,33 @@ static void hmi_set_current_page(uint8_t page)
 	{
 		hmi_data.sensor_test_active = false;
 	}
+
+	if (page == HMI_PAGE1)
+	{
+		/*reset view batch*/
+		hmi_data.batch_view_index = 0;
+	}
 	osReleaseMutex(&hmi_data.mutex);
 	return;
+}
+
+uint8_t lgc_hmi_is_sensor_test_active(void)
+{
+	return hmi_data.sensor_test_active;
+}
+
+void lgc_hmi_set_sensor_value(uint16_t *value)
+{
+	/*sensor index*/
+	uint8_t id = hmi_data.sensor_test_id % 12;
+	if (id == 0)
+	{
+		id = 1;
+	}
+	/*update sensor value*/
+	osAcquireMutex(&hmi_data.mutex);
+	hmi_data.sensor_test_value = value[id - 1];
+	osReleaseMutex(&hmi_data.mutex);
+	/*update hmi*/
+	osSetEventBits(&events, LGC_HMI_SENSOR_TEST_UPDATE);
 }

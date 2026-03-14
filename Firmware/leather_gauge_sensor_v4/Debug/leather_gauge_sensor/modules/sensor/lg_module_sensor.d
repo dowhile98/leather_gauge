@@ -3,7 +3,7 @@ leather_gauge_sensor/modules/sensor/lg_module_sensor.o: \
  ../leather_gauge_sensor/modules/sensor/lg_module_sensor.h \
  /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor_v4/leather_gauge_sensor/app/Inc/leather_gauge_typedefs.h \
  /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor_v4/leather_gauge_sensor/config/leather_gauge_config.h \
- /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/DSP_Biquad/DSP_Biquad.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor_v4/leather_gauge_sensor/middlewares/DSP_Biquad/DSP_Biquad.h \
  ../Core/Inc/adc.h ../Core/Inc/main.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal.h \
  ../Core/Inc/stm32g0xx_hal_conf.h \
@@ -43,12 +43,12 @@ leather_gauge_sensor/modules/sensor/lg_module_sensor.o: \
  ../Core/Inc/tim.h ../Core/Inc/usart.h ../Core/Inc/gpio.h \
  /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor_v4/leather_gauge_sensor/app/Inc/leather_gauge.h \
  /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor_v4/leather_gauge_sensor/modules/modbus/lg_module_modbus.h \
- /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/nanoMODBUS/nanomodbus.h \
+ /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor_v4/leather_gauge_sensor/middlewares/nanoMODBUS/nanomodbus.h \
  /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor_v4/leather_gauge_sensor/modules/eeprom/lg_module_eeprom.h
 ../leather_gauge_sensor/modules/sensor/lg_module_sensor.h:
 /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor_v4/leather_gauge_sensor/app/Inc/leather_gauge_typedefs.h:
 /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor_v4/leather_gauge_sensor/config/leather_gauge_config.h:
-/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/DSP_Biquad/DSP_Biquad.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor_v4/leather_gauge_sensor/middlewares/DSP_Biquad/DSP_Biquad.h:
 ../Core/Inc/adc.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal.h:
@@ -91,5 +91,5 @@ leather_gauge_sensor/modules/sensor/lg_module_sensor.o: \
 ../Core/Inc/gpio.h:
 /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor_v4/leather_gauge_sensor/app/Inc/leather_gauge.h:
 /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor_v4/leather_gauge_sensor/modules/modbus/lg_module_modbus.h:
-/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/middlewares/nanoMODBUS/nanomodbus.h:
+/home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor_v4/leather_gauge_sensor/middlewares/nanoMODBUS/nanomodbus.h:
 /home/tecna-smart-lab/GitHub/leather_gauge/Firmware/leather_gauge_sensor_v4/leather_gauge_sensor/modules/eeprom/lg_module_eeprom.h:

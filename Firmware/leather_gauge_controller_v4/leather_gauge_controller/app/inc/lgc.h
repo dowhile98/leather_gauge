@@ -49,7 +49,22 @@ extern void lgc_get_state_data(lgc_t *out_data);
 
 extern void lgc_increment_batch_index(void);
 
+/** @deprecated Use lgc_delete_leather_by_visual_index() instead */
 extern void lgc_clear_measurement_last_leather(void);
+
+/**
+ * @brief Delete a leather piece from the current batch by its visual (display) index.
+ *
+ * The visual index is 1-based and matches the numbering shown on the DWIN display.
+ * Soft-deletes the piece: marks it as deleted in the current batch snapshot,
+ * subtracts its area from accumulators, and decrements the leather counter so
+ * the batch closure condition (active_count >= config.batch) is honoured.
+ *
+ * @param visual_index  1-based index as displayed to the operator.
+ */
+extern void lgc_delete_leather_by_visual_index(uint16_t visual_index);
+
+extern uint8_t lgc_p10_init(void);
 
 extern OsEvent events;
 //-------------------------------------------------------------------------------

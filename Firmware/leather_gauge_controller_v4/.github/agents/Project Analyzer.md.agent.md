@@ -1,6 +1,6 @@
 ---
 description: 'Expert embedded systems analyst for Leather Gauge Controller project architecture, code quality, and improvement recommendations.'
-tools: ['usages', 'vscodeAPI', 'problems', 'fetch', 'githubRepo', 'search', 'grep', 'glob']
+[vscode, execute, read, agent, edit, search, web, todo]
 ---
 # Leather Gauge Project Analyzer
 

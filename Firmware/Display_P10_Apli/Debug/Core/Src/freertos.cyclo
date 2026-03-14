@@ -1,0 +1,4 @@
+../Core/Src/freertos.c:117:13:display_p10_main_task_entry	1
+../Core/Src/freertos.c:135:13:display_p10_udapte_task_entry	1
+../Core/Src/freertos.c:153:13:modbusServerRTU_Task	1
+../Core/Src/freertos.c:70:6:MX_FREERTOS_Init	1

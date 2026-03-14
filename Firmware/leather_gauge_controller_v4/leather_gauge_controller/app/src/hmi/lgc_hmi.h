@@ -62,15 +62,15 @@ typedef enum
 	LGC_HMI_VP_PATTERN_ICON_3000 = 0x122A,	 // Icon que indica que se ha escogido esta opción
 	LGC_HMI_VP_PATTERN_RETURN_3000 = 0x122B, // Botón que nos permite escoger esta opción
 
-	LGC_HMI_VP_PATTERN_ICON_2800 = 0x123A,	// Icon que indica que se ha escogido esta opción
+	LGC_HMI_VP_PATTERN_ICON_2800 = 0x123A,	 // Icon que indica que se ha escogido esta opción
 	LGC_HMI_VP_PATTERN_RETURN_2800 = 0x123B, // Botón que nos permite escoger esta opción
 
 	LGC_HMI_VP_CONFIG_TEXT_NAME_CLIENT = 0x1310,	// Texto: Nombre del cliente
-    LGC_HMI_VP_CONFIG_CLIENT_NAME_RET  = 0x130F,    // Retorno teclado nombre cliente
+	LGC_HMI_VP_CONFIG_CLIENT_NAME_RET = 0x130F,		// Retorno teclado nombre cliente
 	LGC_HMI_VP_CONFIG_TEXT_NAME_COLOR = 0x1320,		// Texto: Nombre del color
-    LGC_HMI_VP_CONFIG_COLOR_RET        = 0x131F,    // Retorno teclado color
+	LGC_HMI_VP_CONFIG_COLOR_RET = 0x131F,			// Retorno teclado color
 	LGC_HMI_VP_CONFIG_TEXT_NAME_LEATHER = 0x1330,	// Texto: Nombre del cuero
-    LGC_HMI_VP_CONFIG_LEATHER_ID_RET   = 0x132F,    // Retorno teclado ID cuero
+	LGC_HMI_VP_CONFIG_LEATHER_ID_RET = 0x132F,		// Retorno teclado ID cuero
 	LGC_HMI_VP_CONFIG_NUMBER_NAME_LEATHER = 0x1340, // Numero de cueros máximos por lote / Retorno teclado
 
 	// Configuración del día
@@ -90,8 +90,16 @@ typedef enum
 
 	LGC_HMI_VP_PRINT = 0x1400, // Botón que indica que se cierra el lote tal como está
 
-	LGC_HMI_VP_LIST_DELETE = 0x1501,			  // Botón que elimina el último cuero medido
-	LGC_HMI_VP_LIST_ADDRESS_LEATHER_BASE = 0x1601 // Dirección base del primer cuero guardado.
+	LGC_HMI_VP_LIST_DELETE = 0x1501,			   // Botón que elimina el último cuero medido
+	LGC_HMI_VP_LIST_ADDRESS_LEATHER_BASE = 0x1601, // Dirección base del primer cuero guardado.
+
+	/**
+	 * Selector de vista de la lista de cueros:
+	 *   0 = lote en curso (current)  — valor por defecto
+	 *   1 = último lote cerrado (last)
+	 * El botón/VP en DWIN que escribe este valor se agregará posteriormente.
+	 */
+	LGC_HMI_VP_BATCH_VIEW_SELECT = 0x1502,
 
 } LGC_HMI_VAR_ADDR_TypeDef_t;
 

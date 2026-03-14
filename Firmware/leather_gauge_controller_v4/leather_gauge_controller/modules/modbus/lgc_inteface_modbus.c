@@ -22,7 +22,7 @@
  * DEFINES
  * ============================================================================ */
 #ifndef NMBS_READ_TIMEOUT
-#define NMBS_READ_TIMEOUT 10
+#define NMBS_READ_TIMEOUT 50
 #endif
 
 #ifndef NMBS_WRITE_TIMEOUT
@@ -188,6 +188,10 @@ error_t lgc_interface_modbus_set_mode(LGC_BUS_MODE_t mode)
         /* Set direction for RS485 transceiver to RX mode and keep it there */
         HAL_GPIO_WritePin(DIR_SENSORES_GPIO_Port, DIR_SENSORES_Pin, GPIO_PIN_RESET);
     }
+    else
+    {
+
+    }
     osReleaseMutex(&mutex);
     return NO_ERROR;
 }
@@ -262,6 +266,12 @@ static int32_t lgc_modbus_uart_read(uint8_t *buffer, uint16_t count, int32_t tim
  */
 static int32_t lgc_modbus_uart_write(const uint8_t *buffer, uint16_t count, int32_t timeout, void *args)
 {
+	// Safety gate: during Daisy Chain acquisition we must keep the RS485 transceiver in RX.
+	// Any TX here would flip DIR and create long gaps / corrupt bursts.
+	//if (current_bus_mode == LGC_BUS_MODE_DAISY_CHAIN)
+	//{
+	//	return 0;
+	//}
 	/* Set direction for RS485 transceiver to TX mode */
 	HAL_GPIO_WritePin(DIR_SENSORES_GPIO_Port, DIR_SENSORES_Pin, GPIO_PIN_SET);
 

@@ -118,7 +118,7 @@ uint8_t lg_module_modbus_init(uint8_t addr, uint8_t baudrate_index)
 {
 	uint8_t ret = 0;
 
-	modbus_baudrate_set(bauds_tables[baudrate_index]);
+//	modbus_baudrate_set(bauds_tables[baudrate_index]);
 	/*ring buffer init*/
 	lwrb_init(&rb, rb_buffer, LG_UART_RX_BUFFER_SIZE);
 	/*start rx with uart*/
@@ -150,6 +150,8 @@ uint8_t lg_module_modbus_init(uint8_t addr, uint8_t baudrate_index)
 
 	nmbs_set_read_timeout(&nmbs, 1000);
 	nmbs_set_byte_timeout(&nmbs, 1000);
+
+	lg_sensor_set_mode(LG_MODE_STREAM);
 
 	return ret;
 }

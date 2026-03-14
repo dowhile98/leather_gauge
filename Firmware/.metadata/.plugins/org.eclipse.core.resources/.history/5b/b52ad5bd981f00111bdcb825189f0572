@@ -1,0 +1,8 @@
+leather_gauge_controller/middlewares/lwbtn/src/lwbtn/lwbtn.o: \
+ ../leather_gauge_controller/middlewares/lwbtn/src/lwbtn/lwbtn.c \
+ C:/Users/eplim/Downloads/firmware/leather_gauge_controller_v4/leather_gauge_controller/middlewares/lwbtn/src/include/lwbtn/lwbtn.h \
+ C:/Users/eplim/Downloads/firmware/leather_gauge_controller_v4/leather_gauge_controller/middlewares/lwbtn/src/include/lwbtn/lwbtn_opt.h \
+ C:/Users/eplim/Downloads/firmware/leather_gauge_controller_v4/leather_gauge_controller/config/lwbtn_opts.h
+C:/Users/eplim/Downloads/firmware/leather_gauge_controller_v4/leather_gauge_controller/middlewares/lwbtn/src/include/lwbtn/lwbtn.h:
+C:/Users/eplim/Downloads/firmware/leather_gauge_controller_v4/leather_gauge_controller/middlewares/lwbtn/src/include/lwbtn/lwbtn_opt.h:
+C:/Users/eplim/Downloads/firmware/leather_gauge_controller_v4/leather_gauge_controller/config/lwbtn_opts.h:

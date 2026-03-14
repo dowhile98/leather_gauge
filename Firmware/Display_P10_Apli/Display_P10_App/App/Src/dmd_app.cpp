@@ -1,0 +1,296 @@
+/*
+ * dmd_app.c
+ *
+ *  Created on: Aug 19, 2024
+ *      Author: eplim
+ */
+
+/*Includes -------------------------------------------------------------------------*/
+#include "dmd.h"
+#include "Bitmap.h"
+#include "SystemFont5x7.h"
+#include <string.h>
+#include "dmd_app.h"
+#include "lwprintf.h"
+#include "driver_at24cxx.h"
+#include "driver_at24cxx_interface.h"
+#include "fixednums7x15.h"
+#include "Wendy3x5.h"
+#include "Droid_Sans_16.h"
+#include "My32x15Font.h"
+#include "Arial_Black_16.h"
+#include "Microsoft_Sans_Serif40_037_057.h"
+#include "Droid_Sans_12.h"
+#include "Arial14.h"
+#define DISPLAY_TYPE 	0 //0: Toggle three values, 1: toggle five values
+/*Defines ---------------------------------------------------------------------------*/
+#define WIDTH 1                          // Set width & height
+#define HEIGHT 1
+/*Extern definition -----------------------------------------------------------------*/
+extern "C"{
+void display_p10_main_task_entry(void const * argument);
+void display_p10_udapte_task_entry(void const * argument);
+extern SemaphoreHandle_t p10_update;
+}
+
+
+/*Global variables ------------------------------------------------------------------*/
+DMDESP display(WIDTH, HEIGHT);
+char message[64];
+diplay_p10_t data;
+at24cxx_handle_t eHandle;
+at24cxx_address_t addr_eeprom = AT24CXX_ADDRESS_A000;
+at24cxx_t chip_type = AT24C256;
+
+
+/*Function prototype ----------------------------------------------------------------*/
+void Scrolling_text(int x, int y , int scroll_speed , char * scroll_text, int endPx );
+/*Task definition -------------------------------------------------------------------*/
+void display_p10_main_task_entry(void const * argument)
+{
+	/*Variables ---------------------------------------------------------------------*/
+	data.conf.brightnes = 10;
+	char str[32];
+	uint8_t res;
+	//default configuration
+	data.conf.addr = DEFAULT_SERVER_ADDR;
+	data.conf.baud = BAUD_9600;
+	data.conf.brightnes = 90;
+	data.conf.toggleTime = 2;
+	uint8_t screen_one_substate = 0;
+	uint32_t ticks = 0;
+	uint32_t current_ticks = 0;
+	/*Eeeprom init ------------------------------------------------------------*/
+	DRIVER_AT24CXX_LINK_INIT(&eHandle, at24cxx_handle_t);
+	DRIVER_AT24CXX_LINK_IIC_INIT(&eHandle, at24cxx_interface_iic_init);
+	DRIVER_AT24CXX_LINK_IIC_DEINIT(&eHandle, at24cxx_interface_iic_deinit);
+	DRIVER_AT24CXX_LINK_IIC_READ(&eHandle, at24cxx_interface_iic_read);
+	DRIVER_AT24CXX_LINK_IIC_WRITE(&eHandle, at24cxx_interface_iic_write);
+	DRIVER_AT24CXX_LINK_IIC_READ_ADDRESS16(&eHandle, at24cxx_interface_iic_read_address16);
+	DRIVER_AT24CXX_LINK_IIC_WRITE_ADDRESS16(&eHandle, at24cxx_interface_iic_write_address16);
+	DRIVER_AT24CXX_LINK_DELAY_MS(&eHandle, at24cxx_interface_delay_ms);
+	DRIVER_AT24CXX_LINK_DEBUG_PRINT(&eHandle, at24cxx_interface_debug_print);
+	at24cxx_set_type(&eHandle, chip_type);
+	/* set addr pin */
+	at24cxx_set_addr_pin(&eHandle, addr_eeprom);
+
+	/* at24cxx init */
+	res = at24cxx_init(&eHandle);
+	if (res != 0)
+	{
+		at24cxx_interface_debug_print("at24cxx: init failed.\n");
+		//fail: error
+	}
+
+	at24cxx_read(&eHandle, FIRST_ADDR, (uint8_t *)&res, 1);
+	if(res != 1){
+		res = 1;
+		at24cxx_write(&eHandle, FIRST_ADDR, (uint8_t *)&res, 1);
+		at24cxx_write(&eHandle, CONF_ADDR, (uint8_t *)&data.conf, sizeof(dmd_p10_config_t));
+	}else{
+		at24cxx_read(&eHandle, CONF_ADDR, (uint8_t *)&data.conf, sizeof(dmd_p10_config_t));
+	}
+	//ready flag
+
+	/*Init --------------------------------------------------------------------------*/
+	HAL_TIM_Base_Start_IT(&htim4);			//star display update
+
+	//display.mutexTake();
+	display.setConnectScheme(CONNECT_ZIGZAG);
+	display.start();						//init pwm
+
+	//display.mutexRelease();
+
+	if(data.conf.toggleTime < 1){
+		data.conf.toggleTime = 1;
+	}
+
+	data.screen = 3; //default screen
+	ticks = xTaskGetTickCount();
+
+	for(;;)
+	{
+		/*wait for update flag*/
+		xSemaphoreTake(p10_update, pdMS_TO_TICKS(200));
+		/*current ticks*/
+		current_ticks = xTaskGetTickCount();
+
+		//screen 0, substate
+		if((data.screen == 0) && ((current_ticks - ticks )>= pdMS_TO_TICKS(data.conf.toggleTime * 1000)))
+		{
+			ticks = current_ticks;
+			screen_one_substate += 1;
+			screen_one_substate = screen_one_substate % 3;
+
+		}
+		switch(data.screen)
+		{
+		//oldest-----------------------------------------------------
+		case 0:
+		{
+			switch(screen_one_substate)
+			{
+			case 0:
+			{
+
+				display.mutexTake();
+
+				display.clearScreen();
+				display.setFont(Microsoft_Sans_Serif40_037_057);
+				lwprintf_snprintf(str, 32, "%2d", data.pressure1);
+				if(data.pressure1 < 10){
+					display.drawString(12, 0, str);
+				}else{
+					display.drawString(0, 0, str);
+				}
+				display.setFont(Arial_Black_16);
+				display.drawString(44, 2, "P1");
+				display.setFont(Droid_Sans_12);
+				display.drawString(44, 20, "Bar");
+
+				display.mutexRelease();
+				break;
+			}
+			case 1:
+			{
+
+				display.mutexTake();
+				display.clearScreen();
+				display.setFont(Microsoft_Sans_Serif40_037_057);
+				lwprintf_snprintf(str, 32, "%2d", data.pressure2);
+				if(data.pressure2 < 10){
+					display.drawString(12, 0, str);
+				}else{
+					display.drawString(0, 0, str);
+				}
+
+				display.setFont(Arial_Black_16);
+				display.drawString(44, 2, "P2");
+				display.setFont(Droid_Sans_12);
+				display.drawString(44, 20, "Bar");
+
+				display.mutexRelease();
+
+			}
+			case 2:
+			{
+				display.mutexTake();
+				display.clearScreen();
+				display.setFont(Microsoft_Sans_Serif40_037_057);
+				lwprintf_snprintf(str, 32, "%2d", data.temp1);
+				if(data.temp1< 10){
+					display.drawString(12, 0, str);
+				}else{
+					display.drawString(0, 0, str);
+				}
+
+				display.setFont(Arial_Black_16);
+				display.drawString(44, 2, "T1");
+				display.setFont(Droid_Sans_12);
+				display.drawString(47, 20, "C");
+				display.drawRect(44, 20, 45, 22);
+				display.mutexRelease();
+				break;
+
+			}
+			}
+		}
+		//screen 1
+		case 1:
+		{
+			screen_one_substate = 0;
+			display.mutexTake();
+
+			display.clearScreen();
+			display.setFont(Microsoft_Sans_Serif40_037_057);
+			//T/H
+			lwprintf_snprintf(str, 32, "%d", data.numeric1);
+
+			//AMP
+			lwprintf_snprintf(str, 32, "%d", data.numeric2);
+
+			display.mutexRelease();
+			break;
+		}
+		//screen 2
+		case 2:
+		{
+			screen_one_substate = 0;
+
+			display.mutexTake();
+
+			display.clearScreen();
+			display.setFont(Microsoft_Sans_Serif40_037_057);
+			//%
+			lwprintf_snprintf(str, 32, "%d", data.numeric3);
+
+			//AMP
+			lwprintf_snprintf(str, 32, "%d", data.numeric2);
+
+			display.mutexRelease();
+			break;
+		}
+		case 3:
+		{
+			/*show leather gauge measurement data*/
+				screen_one_substate = 0;
+//				data.numeric3 = 525;
+				display.mutexTake();
+
+				display.clearScreen();
+				/*todo: choice font and show data*/
+				display.setFont(fixednums7x15);
+//				display.setFont(Droid_Sans_12);
+				//%
+				lwprintf_snprintf(str, 32, "%.2f", (float)data.numeric3 / 100);
+
+				/*todo: select position*/
+				//(x, y 32x16)
+				display.drawString(0, 0, str);
+
+
+				display.mutexRelease();
+		}
+		}
+	}
+
+}
+
+
+
+void display_p10_udapte_task_entry(void const * argument){
+	for(;;){
+		display.setBrightness(data.conf.brightnes);
+		display.loop();
+	}
+}
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	display.updateFlag();
+}
+
+
+void Scrolling_text(int x, int y , int scroll_speed , char * scroll_text, int endPx ) {
+	/*Local variables -----------------------------------------------------*/
+	static int _x = x;
+	bool  scrl_while = 1 ;
+	char text[64];
+
+	/*Copy buffer ---------------------------------------------------------*/
+	strcpy(text, scroll_text);
+	strcat(text, " ");
+
+	while(scrl_while){
+		display.mutexTake();
+		display.drawString(_x, y, text);
+		display.mutexRelease();
+		_x--;
+		if ((-1 *_x) >  endPx) {
+
+			_x = 0 ;
+			scrl_while = 0 ;
+		}else{
+			vTaskDelay(pdMS_TO_TICKS(scroll_speed));
+		}
+	}
+}

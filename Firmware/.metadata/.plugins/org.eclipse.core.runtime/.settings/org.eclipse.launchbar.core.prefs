@@ -1,9 +1,13 @@
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch=x86_64
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/name=Local
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=linux
-configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:leather_gauge_controller
+configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:leather_gauge_sensor_v4 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:leather_gauge_controller_v4,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Display_P10_Apli
 eclipse.preferences.version=1
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Display_P10_Apli/activeLaunchMode=run
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Display_P10_Apli/activeLaunchTarget=null\:---
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:leather_gauge_controller/activeLaunchMode=debug
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:leather_gauge_controller/activeLaunchTarget=null\:---
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:leather_gauge_controller_v4/activeLaunchMode=run
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:leather_gauge_controller_v4/activeLaunchTarget=null\:---
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:smt32f407\ Debug/activeLaunchMode=debug
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:smt32f407\ Debug/activeLaunchTarget=null\:---

@@ -1,0 +1,7 @@
+../leather_gauge_controller/app/src/lgc_report_manager.c:44:9:lgc_report_manager_init	4
+../leather_gauge_controller/app/src/lgc_report_manager.c:74:19:lgc_report_get_last_snapshot	1
+../leather_gauge_controller/app/src/lgc_report_manager.c:82:6:lgc_report_update_snapshot	1
+../leather_gauge_controller/app/src/lgc_report_manager.c:89:6:lgc_report_get_live_status	2
+../leather_gauge_controller/app/src/lgc_report_manager.c:97:6:lgc_report_update_live_status	2
+../leather_gauge_controller/app/src/lgc_report_manager.c:109:13:lgc_report_task_entry	4
+../leather_gauge_controller/app/src/lgc_report_manager.c:138:13:lgc_print_batch_report	4

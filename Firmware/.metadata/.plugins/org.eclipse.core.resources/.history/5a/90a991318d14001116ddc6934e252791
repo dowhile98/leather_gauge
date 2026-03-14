@@ -1,0 +1,144 @@
+/*
+ * lgc_p10_task.c
+ *
+ *  Created on: 28 feb 2026
+ *      Author: tecna-smart-lab
+ */
+
+
+//-------------------------------------------------------------------------------
+// includes
+//-------------------------------------------------------------------------------
+#include "lgc.h"
+#include "lgc_interface_printer.h"
+#include "lgc_interface_modbus.h"
+#include "os_port.h"
+#include "lgc_module_input.h"
+#include "lgc_module_eeprom.h"
+#include "lwbtn.h"
+#include "lgc_module_encoder.h"
+#include "lgc_module_rtc.h"
+#include "lgc_report_manager.h"
+#include "nanomodbus.h"
+#include "usart.h"
+//-------------------------------------------------------------------------------
+// defines
+//-------------------------------------------------------------------------------
+#define RTU_SERVER_ADDRESS 1
+
+#ifndef P10_TASK_PRI
+#define P10_TASK_PRI 10
+#endif
+
+#ifndef P10_TASK_STACK
+#define P10_TASK_STACK 512
+#endif
+
+
+//-------------------------------------------------------------------------------
+// global variables
+//-------------------------------------------------------------------------------
+static nmbs_platform_conf platform_conf;
+static nmbs_t nmbs;
+static OsTaskId lgc_p10_task;
+//-------------------------------------------------------------------------------
+// extern definition
+//-------------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------------
+// private function prototype
+//-------------------------------------------------------------------------------
+static int32_t p10_read_serial(uint8_t* buf, uint16_t count, int32_t byte_timeout_ms, void* arg);
+static int32_t p10_write_serial(const uint8_t* buf, uint16_t count, int32_t byte_timeout_ms, void* arg);
+//-------------------------------------------------------------------------------
+// task definition
+//-------------------------------------------------------------------------------
+static void lgc_p10_task_entry(void *params)
+{
+	nmbs_error err;
+	LgcLiveStatus_t live_status;
+	uint16_t value;
+	osDelayTask(1000); // wait for system to stabilize
+
+	for(;;)
+	{
+		/*get live value */
+		lgc_report_get_live_status(&live_status);
+		/*todo: verify*/
+		value = (uint16_t)(live_status.current_leather_area * 10);
+		/*write to modbus registers*/
+		err = nmbs_write_multiple_registers(&nmbs, 0x9, 1, &value);
+
+		osDelayTask(500);
+	}
+
+}
+//-------------------------------------------------------------------------------
+// public function definition
+//-------------------------------------------------------------------------------
+uint8_t lgc_p10_init(void)
+{
+
+	OsTaskParameters params = OS_TASK_DEFAULT_PARAMS;
+	/*init nmbs*/
+	mbs_platform_conf_create(&platform_conf);
+	platform_conf.transport = NMBS_TRANSPORT_RTU;
+	platform_conf.read = p10_read_serial;
+	platform_conf.write = p10_write_serial;
+
+	nmbs_error err = nmbs_client_create(&nmbs, &platform_conf);
+	if (err != NMBS_ERROR_NONE)
+		return err;
+
+	nmbs_set_read_timeout(&nmbs, 1000);
+	nmbs_set_byte_timeout(&nmbs, 100);
+
+	nmbs_set_destination_rtu_address(&nmbs, RTU_SERVER_ADDRESS);
+
+
+	/*task create*/
+	params.priority = P10_TASK_PRI;
+	params.stackSize = P10_TASK_STACK;
+
+	lgc_p10_task = osCreateTask("P10 Task", lgc_p10_task_entry, NULL, &params);
+
+	if(lgc_p10_task == NULL)
+	{
+		return ERROR_FAILURE;
+	}
+
+	return NO_ERROR;
+}
+
+//-------------------------------------------------------------------------------
+// callbacks
+//-------------------------------------------------------------------------------
+static int32_t p10_read_serial(uint8_t* buf, uint16_t count, int32_t byte_timeout_ms, void* arg)
+{
+	HAL_GPIO_WritePin(DIR_DISPLAY_GPIO_Port, DIR_DISPLAY_Pin, GPIO_PIN_RESET); // Set direction to receive
+
+	if(HAL_UART_Receive(&huart5, buf, count, byte_timeout_ms) != HAL_OK)
+	{
+		return 0;
+	}
+
+	return count;
+}
+
+
+static int32_t p10_write_serial(const uint8_t* buf, uint16_t count, int32_t byte_timeout_ms, void* arg)
+{
+	HAL_GPIO_WritePin(DIR_DISPLAY_GPIO_Port, DIR_DISPLAY_Pin, GPIO_PIN_SET); // Set direction to transmit
+
+	if(HAL_UART_Transmit(&huart5, (uint8_t*)buf, count, byte_timeout_ms) != HAL_OK)
+	{
+		HAL_GPIO_WritePin(DIR_DISPLAY_GPIO_Port, DIR_DISPLAY_Pin, GPIO_PIN_RESET); // Set direction to receive
+		return 0;
+	}
+	HAL_GPIO_WritePin(DIR_DISPLAY_GPIO_Port, DIR_DISPLAY_Pin, GPIO_PIN_RESET); // Set direction to receive
+	return count;
+
+}
+//-------------------------------------------------------------------------------
+// private function definition
+//-------------------------------------------------------------------------------

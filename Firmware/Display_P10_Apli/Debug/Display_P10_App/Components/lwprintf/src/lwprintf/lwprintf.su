@@ -1,0 +1,16 @@
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:207:1:prv_out_fn_print	16	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:228:1:prv_out_fn_write_buff	0	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:263:1:prv_out_str_before	16	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:338:1:prv_out_str_after	16	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:373:1:prv_out_str	24	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:388:1:prv_unsigned_int_to_str	32	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:400:1:prv_unsigned_long_int_to_str	32	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:431:1:prv_unsigned_longlong_int_to_str	56	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:528:1:prv_calculate_dbl_num_data	40	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:415:1:prv_strnlen	0	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:853:1:prv_format	144	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:1151:1:lwprintf_init_ex	8	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:1175:1:lwprintf_vprintf_ex	64	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:1202:1:lwprintf_printf_ex	12	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:1228:1:lwprintf_vsnprintf_ex	56	static
+../Display_P10_App/Components/lwprintf/src/lwprintf/lwprintf.c:1256:1:lwprintf_snprintf_ex	28	static

@@ -1,0 +1,4 @@
+leather_gauge_controller/middlewares/lwrb/src/lwrb/lwrb_ex.o: \
+ ../leather_gauge_controller/middlewares/lwrb/src/lwrb/lwrb_ex.c \
+ C:/Users/eplim/Downloads/firmware/leather_gauge_controller_v4/leather_gauge_controller/middlewares/lwrb/src/include/lwrb/lwrb.h
+C:/Users/eplim/Downloads/firmware/leather_gauge_controller_v4/leather_gauge_controller/middlewares/lwrb/src/include/lwrb/lwrb.h:

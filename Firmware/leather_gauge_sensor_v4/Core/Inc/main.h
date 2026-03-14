@@ -58,7 +58,7 @@ void Error_Handler(void);
 
 /* Private defines -----------------------------------------------------------*/
 #define DIR_OUTPUT_Pin GPIO_PIN_12
-#define DIR_OUTPUT_GPIO_Port GPIOA
+#define DIR_OUTPUT_GPIO_Port GPIOB
 #define DIR_Pin GPIO_PIN_3
 #define DIR_GPIO_Port GPIOB
 #define DIR_INPUT_Pin GPIO_PIN_4
